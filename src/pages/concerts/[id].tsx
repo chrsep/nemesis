@@ -28,7 +28,8 @@ const ConcertPage: FC<Props> = ({ event }) => {
   return (
     <Box mx="auto" sx={{ maxWidth: 1200 }}>
       <Box
-        p={[0, 3]}
+        px={[0, 3]}
+        pb={[0, 3]}
         sx={{
           width: "100%",
         }}

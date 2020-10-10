@@ -20,7 +20,7 @@ const Layout: FC = ({ children }) => {
       <Flex
         as="nav"
         p={3}
-        sx={{ alignItems: "center", maxWidth: 1200 }}
+        sx={{ alignItems: "flex-end", maxWidth: 1200 }}
         mx="auto"
       >
         <Link href="/">
