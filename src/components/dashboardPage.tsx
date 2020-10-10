@@ -1,5 +1,5 @@
 import Link from "next/link"
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 import { Box, Card, Flex, Heading, Input, Text } from "theme-ui"
 import dayjs from "dayjs"
 import { ConcertEvent } from "../domain"
@@ -9,22 +9,39 @@ interface Props {
 }
 
 const DashboardPage: FC<Props> = ({ events }) => {
+  const [search, setSearch] = useState("")
+
   return (
     <main>
-      <Flex sx={{ flexWrap: "wrap" }} mb={4}>
-        <Box px={3} sx={{ width: ["100%", "33.3333%"] }}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            (function() {
+              const cookies = document.cookie.replace(" ", "").split(";")
+              const isLoggedIn = cookies.findIndex((item) => item === "loggedIn=1")
+              if (isLoggedIn < 0) {
+                window.location.href  = "/api/auth/login"
+              }    
+            })()
+        `,
+          }}
+        />
+      </head>
+      <Flex sx={{ flexWrap: "wrap" }} mb={4} px={2}>
+        <Box px={2} sx={{ width: ["100%", "33.3333%"] }}>
           <Card p={3} my={2}>
             <Heading as="h4">Revenue</Heading>
           </Card>
         </Box>
 
-        <Box px={3} sx={{ width: ["100%", "33.3333%"] }}>
+        <Box px={2} sx={{ width: ["100%", "33.3333%"] }}>
           <Card p={3} my={2}>
             <Heading as="h4">Audience</Heading>
           </Card>
         </Box>
 
-        <Box px={3} sx={{ width: ["100%", "33.33333%"] }}>
+        <Box px={2} sx={{ width: ["100%", "33.33333%"] }}>
           <Card p={3} my={2}>
             <Heading as="h4">Engangement Metric</Heading>
           </Card>
@@ -32,7 +49,13 @@ const DashboardPage: FC<Props> = ({ events }) => {
       </Flex>
 
       <Box sx={{ width: ["100%", 300] }} px={3}>
-        <Input p={2} sx={{ fontSize: 1 }} placeholder="Search" />
+        <Input
+          p={2}
+          sx={{ fontSize: 1 }}
+          placeholder="Search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </Box>
 
       <Box p={3} sx={{}}>
@@ -64,65 +87,67 @@ const DashboardPage: FC<Props> = ({ events }) => {
               Tanggal
             </Text>
           </Flex>
-          {events.map((event) => (
-            <Link href={`/dashboard/analytics/${event.id}`} key={event.id}>
-              <Flex
-                p={3}
-                sx={{
-                  minWidth: "30rem",
-                  cursor: "pointer",
-                  alignItems: "center",
-                  borderBottomStyle: "solid",
-                  borderBottomWidth: 1,
-                  borderColor: "rgba(0,0,0,0.2)",
-                  fontSize: [0, 1],
-                  whiteSpace: "nowrap",
-                  "&:hover": {
-                    backgroundColor: "rgba(0,0,0,0.04)",
-                  },
-                }}
-              >
-                <Card
+          {events
+            .filter(({ name }) => name.match(search))
+            .map((event) => (
+              <Link href={`/dashboard/analytics/${event.id}`} key={event.id}>
+                <Flex
+                  p={3}
                   sx={{
-                    height: "2rem",
-                    width: "3rem",
-                    backgroundColor: "black",
-                    display: ["none", "block"],
-                  }}
-                  mr={3}
-                />
-                <Text
-                  sx={{
-                    width: "35%",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
+                    minWidth: "30rem",
+                    cursor: "pointer",
+                    alignItems: "center",
+                    borderBottomStyle: "solid",
+                    borderBottomWidth: 1,
+                    borderColor: "rgba(0,0,0,0.2)",
+                    fontSize: [0, 1],
+                    whiteSpace: "nowrap",
+                    "&:hover": {
+                      backgroundColor: "rgba(0,0,0,0.04)",
+                    },
                   }}
                 >
-                  {event.name}
-                </Text>
-                <Text
-                  ml={2}
-                  sx={{
-                    width: "30%",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  Nama Artist
-                </Text>
-                <Text
-                  ml={2}
-                  sx={{
-                    width: "35%",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {dayjs(event.date).format("DD MMM YYYY")}
-                </Text>
-              </Flex>
-            </Link>
-          ))}
+                  <Card
+                    sx={{
+                      height: "2rem",
+                      width: "3rem",
+                      backgroundColor: "black",
+                      display: ["none", "block"],
+                    }}
+                    mr={3}
+                  />
+                  <Text
+                    sx={{
+                      width: "35%",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {event.name}
+                  </Text>
+                  <Text
+                    ml={2}
+                    sx={{
+                      width: "30%",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    Nama Artist
+                  </Text>
+                  <Text
+                    ml={2}
+                    sx={{
+                      width: "35%",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {dayjs(event.date).format("DD MMM YYYY")}
+                  </Text>
+                </Flex>
+              </Link>
+            ))}
         </Card>
       </Box>
     </main>

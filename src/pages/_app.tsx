@@ -15,15 +15,12 @@ const Layout: FC = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
-    const d = new Date()
-    d.setTime(d.getTime() + 1000)
-    const expires = `expires=${d.toUTCString()}`
-
-    document.cookie = `a0:session=new_value;path=/;${expires}`
-    if (document.cookie.indexOf(`a0:session=`) === -1) {
-      setIsLoggedIn(true)
-    } else {
+    const cookies = document.cookie.replace(" ", "").split(";")
+    const flag = cookies.findIndex((item) => item === "loggedIn=1")
+    if (flag < 0) {
       setIsLoggedIn(false)
+    } else {
+      setIsLoggedIn(true)
     }
   }, [])
 
