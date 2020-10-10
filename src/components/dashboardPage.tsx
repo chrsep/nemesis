@@ -4,10 +4,17 @@ import { Box, Card, Flex, Heading, Input, Text } from "theme-ui"
 import dayjs from "dayjs"
 
 interface Props {
-  data: string[]
+  events: Array<{
+    attendance: 0
+    date: string
+    id: number
+    name: string
+    price: number
+    ticketsSold: number
+    totalTickets: number
+  }>
 }
-
-const DashboardPage: FC<Props> = ({ data }) => {
+const DashboardPage: FC<Props> = ({ events }) => {
   return (
     <main>
       <Flex sx={{ flexWrap: "wrap" }} mb={4}>
@@ -63,7 +70,7 @@ const DashboardPage: FC<Props> = ({ data }) => {
               Tanggal
             </Text>
           </Flex>
-          {data.map(() => (
+          {events.map((event) => (
             <Link href="/dashboard/analytics/1">
               <Flex
                 p={3}
@@ -97,7 +104,7 @@ const DashboardPage: FC<Props> = ({ data }) => {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  Nama Concert
+                  {event.name}
                 </Text>
                 <Text
                   ml={2}
@@ -117,7 +124,7 @@ const DashboardPage: FC<Props> = ({ data }) => {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  {dayjs().format("DD MMM YYYY")}
+                  {dayjs(event.date).format("DD MMM YYYY")}
                 </Text>
               </Flex>
             </Link>

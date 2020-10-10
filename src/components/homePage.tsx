@@ -19,7 +19,7 @@ const HomePage: FC<Props> = ({ events }) => {
       <Flex sx={{ flexWrap: "wrap", width: "100%" }}>
         {events.map((event) => {
           return (
-            <Link href="/concerts/1">
+            <Link href="/concerts/1" key={event.id}>
               <Box
                 p={3}
                 sx={{
