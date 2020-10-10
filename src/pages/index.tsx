@@ -14,7 +14,7 @@ const Home: FC = () => (
               const cookies = document.cookie.replace(" ", "").split(";")
               const isLoggedIn = cookies.findIndex((item) => item === "loggedIn=1")
               if (isLoggedIn < 0) {
-                window.location.href  = "/"
+                window.location.href  = "/login"
               }    
             })()
         `,
