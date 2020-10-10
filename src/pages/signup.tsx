@@ -18,7 +18,9 @@ const Home: FC = () => (
           Sign Up PLZ
         </Heading>
         <Label>e-mail</Label>
-        <Input mb={3} />
+        <Input mb={2} />
+        <Label>name</Label>
+        <Input mb={2} />
         <Button ml="auto">Log In</Button>
       </Card>
     </Flex>
