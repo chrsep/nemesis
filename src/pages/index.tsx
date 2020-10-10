@@ -52,7 +52,7 @@ const Home: FC<Props> = ({ events }) => {
 export async function getStaticProps() {
   return {
     props: {
-      events: [],
+      events: await listEvents(),
     },
     // we will attempt to re-generate the page:
     // - when a request comes in
