@@ -6,7 +6,7 @@ interface Props {
   data: string[]
 }
 
-const HomePage: FC<Props> = ({ data }) => {
+const DashboardPage: FC<Props> = ({ data }) => {
   return (
     <main>
       <Flex sx={{ flexWrap: "wrap", width: "100%" }}>
@@ -38,4 +38,4 @@ const HomePage: FC<Props> = ({ data }) => {
   )
 }
 
-export default HomePage
+export default DashboardPage
