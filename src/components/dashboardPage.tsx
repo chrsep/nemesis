@@ -1,6 +1,6 @@
 import Link from "next/link"
 import React, { FC } from "react"
-import { Box, Card, Flex, Heading, Text } from "theme-ui"
+import { Box, Card, Flex, Heading, Input, Text } from "theme-ui"
 import dayjs from "dayjs"
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 const DashboardPage: FC<Props> = ({ data }) => {
   return (
     <main>
-      <Flex sx={{ flexWrap: "wrap" }}>
+      <Flex sx={{ flexWrap: "wrap" }} mb={4}>
         <Box px={3} sx={{ width: ["100%", "33.3333%"] }}>
           <Card p={3} my={2}>
             <Heading as="h4">Revenue</Heading>
@@ -29,6 +29,10 @@ const DashboardPage: FC<Props> = ({ data }) => {
           </Card>
         </Box>
       </Flex>
+
+      <Box sx={{ width: ["100%", 200] }} px={3}>
+        <Input p={2} sx={{ fontSize: 1 }} placeholder="Search" />
+      </Box>
 
       <Box p={3} sx={{}}>
         <Card sx={{ flexWrap: "wrap", width: "100%" }}>
@@ -71,7 +75,7 @@ const DashboardPage: FC<Props> = ({ data }) => {
                   fontSize: [0, 1],
                   whiteSpace: "nowrap",
                   "&:hover": {
-                    backgroundColor: "rgba(0,0,0,0.07)",
+                    backgroundColor: "rgba(0,0,0,0.04)",
                   },
                 }}
               >
