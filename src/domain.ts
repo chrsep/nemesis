@@ -7,3 +7,11 @@ export interface ConcertEvent {
   ticketsSold: number
   totalTickets: number
 }
+
+export interface OrderData {
+  id: number
+  userId: string
+  eventId: number
+  price: number
+  buyDate: Date
+}

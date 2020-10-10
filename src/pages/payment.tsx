@@ -1,9 +1,15 @@
 import Link from "next/link"
-import React from "react"
+import React, { FC } from "react"
 import { Button, Flex, Heading } from "theme-ui"
 import { useQueryString } from "../hooks/useQueryString"
+import { insertOrder } from "../db"
+import { ConcertEvent } from "../domain"
 
-const PaymentPage = () => {
+interface Props {
+  userId?: string
+  event?: ConcertEvent
+}
+const PaymentPage: FC<Props> = ({ userId, event }) => {
   const redirectUrl = useQueryString("redirectUrl")
   return (
     <Flex
