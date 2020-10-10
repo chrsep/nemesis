@@ -7,7 +7,9 @@ export default async function logout(
   res: NextApiResponse
 ) {
   try {
-    destroyCookie({ res }, "loggedIn")
+    destroyCookie({ res }, "loggedIn", {
+      path: "/",
+    })
     await auth0.handleLogout(req, res)
   } catch (error) {
     console.error(error)

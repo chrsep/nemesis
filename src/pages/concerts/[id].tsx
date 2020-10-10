@@ -72,7 +72,7 @@ const ConcertPage: FC<Props> = ({ event }) => {
                 </Link>
               ) : (
                 <ThemeUiLink
-                  href={`/api/auth/login?redirectTo=/concerts/${event.id}`}
+                  href={`/api/auth/login?redirectTo=/buy/${event.id}`}
                   sx={{ ml: "auto", display: "block" }}
                 >
                   <Button>Beli tiket</Button>
