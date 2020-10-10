@@ -12,7 +12,7 @@ const HomePage: FC<Props> = ({ data }) => {
       <Flex sx={{ flexWrap: "wrap", width: "100%" }}>
         {data.map(() => {
           return (
-            <Link href="/dashboard/analytics/1">
+            <Link href="/concerts/1">
               <Card
                 p={3}
                 sx={{
