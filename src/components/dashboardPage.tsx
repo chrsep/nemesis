@@ -1,5 +1,5 @@
 import Link from "next/link"
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 import { Box, Card, Flex, Heading, Input, Text } from "theme-ui"
 import dayjs from "dayjs"
 import { ConcertEvent } from "../domain"
@@ -9,8 +9,25 @@ interface Props {
 }
 
 const DashboardPage: FC<Props> = ({ events }) => {
+  const [search, setSearch] = useState("")
+
   return (
     <main>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            (function() {
+              const cookies = document.cookie.replace(" ", "").split(";")
+              const isLoggedIn = cookies.findIndex((item) => item === "loggedIn=1")
+              if (isLoggedIn < 0) {
+                window.location.href  = "/api/auth/login"
+              }    
+            })()
+        `,
+          }}
+        />
+      </head>
       <Flex sx={{ flexWrap: "wrap" }} mb={4}>
         <Box px={3} sx={{ width: ["100%", "33.3333%"] }}>
           <Card p={3} my={2}>
