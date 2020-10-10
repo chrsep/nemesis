@@ -1,4 +1,5 @@
 import { initAuth0 } from "@auth0/nextjs-auth0"
+import { NextApiRequest } from "next"
 
 if (
   !process.env.AUTH0_DOMAIN ||
@@ -26,3 +27,15 @@ export default initAuth0({
     storeRefreshToken: false,
   },
 })
+
+export const getQueryString = (
+  req: NextApiRequest,
+  key: string
+): string | undefined => {
+  const result = req.query[key]
+
+  if (Array.isArray(result)) {
+    return result[0]
+  }
+  return result
+}

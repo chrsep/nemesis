@@ -8,7 +8,7 @@ export default async function callback(
 ) {
   try {
     await auth0.handleCallback(req, res, {
-      onUserLoaded: async (authReq, authRes, session, state) => {
+      onUserLoaded: async (authReq, authRes, session) => {
         setCookie({ res: authRes }, "loggedIn", "1", {
           secure: process.env.NODE_ENV === "production",
           sameSite: true,

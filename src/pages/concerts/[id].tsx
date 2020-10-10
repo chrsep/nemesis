@@ -1,41 +1,60 @@
 import React, { FC } from "react"
-import { Box, Button, Card, Flex, Heading, Text } from "theme-ui"
 import Link from "next/link"
+import {
+  Box,
+  Button,
+  Card,
+  Flex,
+  Heading,
+  Link as ThemeUiLink,
+  Text,
+} from "theme-ui"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { ConcertEvent } from "../../domain"
 import { findEventsById, listEventIds } from "../../db"
+import useIsLoggedIn from "../../hooks/useIsLoggedIn"
 
 interface Props {
   event?: ConcertEvent
 }
 const ConcertPage: FC<Props> = ({ event }) => {
+  const isLoggedIn = useIsLoggedIn()
+
   if (!event) {
     return <div />
   }
 
   return (
     <Box mx="auto" sx={{ maxWidth: 1200 }}>
-      <Card
+      <Box
+        p={[0, 3]}
         sx={{
           width: "100%",
-          height: 382,
-          backgroundColor: "black",
-          borderRadius: [0, 6],
         }}
-      />
+      >
+        <Card
+          sx={{
+            width: "100%",
+            height: 382,
+            backgroundColor: "black",
+            borderRadius: [0, 6],
+          }}
+        />
+      </Box>
       <Flex sx={{ flexDirection: ["column", "row"], alignItems: "flex-start" }}>
         <Box
           p={3}
           sx={{
             width: "100%",
-            position: "sticky",
+            position: ["fixed", "sticky"],
             maxWidth: [undefined, 400],
-            top: 0,
+            top: [undefined, 0],
+            bottom: [0, undefined],
             zIndex: 100,
           }}
         >
           <Card p={3} sx={{ backgroundColor: "white" }}>
-            <Flex>
+            <Flex sx={{ alignItems: "center" }}>
               <div>
                 <Heading sx={{ fontSize: [3, 4] }} mb={2}>
                   Harga
@@ -49,13 +68,22 @@ const ConcertPage: FC<Props> = ({ event }) => {
                 </Text>
               </div>
               {/* TODO: use real page id */}
-              <Link href="/payment?redirectUrl=/concerts/1">
-                <Button sx={{ ml: "auto" }}>Beli tiket</Button>
-              </Link>
+              {isLoggedIn ? (
+                <Link href={`/payment?redirectUrl=/concerts/${event.id}`}>
+                  <Button sx={{ ml: "auto" }}>Beli tiket</Button>
+                </Link>
+              ) : (
+                <ThemeUiLink
+                  href={`/api/auth/login?redirectTo=/concerts/${event.id}`}
+                  sx={{ ml: "auto", display: "block" }}
+                >
+                  <Button>Beli tiket</Button>
+                </ThemeUiLink>
+              )}
             </Flex>
           </Card>
         </Box>
-        <Box p={3} sx={{ width: "100%" }}>
+        <Box p={3} pb={6} sx={{ width: "100%" }}>
           <Heading mb={3}>{event.name}</Heading>
           <Text mb={3}>John Mayer</Text>
           <Text sx={{ opacity: 0.75, fontSize: 3 }} mb={3}>
