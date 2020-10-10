@@ -17,7 +17,6 @@ interface Props {
 }
 
 const Home: FC<Props> = ({ events }) => {
-  console.log(events)
   return (
     <div>
       <Head>
