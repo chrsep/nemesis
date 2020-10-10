@@ -18,7 +18,9 @@ const Layout: FC = ({ children }) => {
             <Heading>Nemesis</Heading>
           </a>
         </Link>
-        <Button ml="auto">Log In</Button>
+        <Link href="/api/auth/login">
+          <Button ml="auto">Log In</Button>
+        </Link>
       </Flex>
       <Box
         mx="auto"

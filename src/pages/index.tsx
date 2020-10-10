@@ -6,7 +6,7 @@ interface Props {
   data: string[]
 }
 
-const Home: FC<Props> = ({ data }) => (
+const Home: FC<Props> = () => (
   <div>
     <Head>
       <title>Create Next App</title>
