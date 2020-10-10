@@ -30,12 +30,12 @@ const DashboardPage: FC<Props> = ({ data }) => {
         </Box>
       </Flex>
 
-      <Box sx={{ width: ["100%", 200] }} px={3}>
+      <Box sx={{ width: ["100%", 300] }} px={3}>
         <Input p={2} sx={{ fontSize: 1 }} placeholder="Search" />
       </Box>
 
       <Box p={3} sx={{}}>
-        <Card sx={{ flexWrap: "wrap", width: "100%" }}>
+        <Card sx={{ flexWrap: "wrap", width: "100%", overflowX: "auto" }}>
           <Flex
             p={3}
             sx={{
@@ -45,6 +45,7 @@ const DashboardPage: FC<Props> = ({ data }) => {
               borderBottomWidth: 1,
               borderColor: "rgba(0,0,0,0.2)",
               backgroundColor: "rgba(0,0,0,0.07)",
+              minWidth: "30rem",
             }}
           >
             <Text
@@ -67,6 +68,7 @@ const DashboardPage: FC<Props> = ({ data }) => {
               <Flex
                 p={3}
                 sx={{
+                  minWidth: "30rem",
                   cursor: "pointer",
                   alignItems: "center",
                   borderBottomStyle: "solid",
