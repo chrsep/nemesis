@@ -11,9 +11,11 @@
   },
   "dependencies": {
     "@prefresh/next": "1.2.4",
+    "@types/pg": "^7.14.5",
     "next": "9.5.5",
     "next-compose-plugins": "2.2.0",
     "next-optimized-images": "3.0.0-canary.10",
+    "pg": "^8.4.1",
     "postcss-preset-env": "6.7.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
