@@ -1,4 +1,5 @@
 import { Pool } from "pg"
+import exp from "constants";
 
 const pgPool = new Pool({
   user: process.env.PG_USER,
@@ -119,6 +120,60 @@ export const updateEventTicketSold = async (
         where id = $2
     `,
     [ticketsSold, id]
+  )
+  return result.rowCount
+}
+
+export const insertOrder = async(
+    userId: string,
+    eventId: string,
+    price: string
+) => {
+  try {
+    // language=PostgreSQL
+    await query(`BEGIN TRANSACTION`, [])
+    await query(
+        `
+          insert into orders (userId,eventId,price,buyDate)
+          values ($1,$2,$3,NOW())
+      `,
+        [userId, eventId, price]
+    )
+    return true
+  } catch (e) {
+    await query(`ROLLBACK`, [])
+    throw e
+  }
+}
+
+export const getOrderByUser = async (userId: string) => {
+  const order = await query(`
+          select * from  orders
+          where userId = $1
+      `,
+      [userId]
+  )
+  return order
+}
+
+export const getOrderById = async (id: string) => {
+  const order = await query(`
+          select * from  orders
+          where id = $1
+      `,
+      [id]
+  )
+  return order
+}
+
+export const deleteOrder = async (id: string) => {
+  // language=PostgreSQL
+  const result = await query(
+      `
+        delete from orders
+        where id = $2
+    `,
+      [id]
   )
   return result.rowCount
 }
