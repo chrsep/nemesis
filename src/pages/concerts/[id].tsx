@@ -7,7 +7,7 @@ const ConcertPage = () => {
     <Box mx="auto" sx={{ maxWidth: 1200 }}>
       <Card sx={{ width: "100%", height: 382, backgroundColor: "black" }} />
       <Flex sx={{ flexDirection: ["column", "row"], alignItems: "flex-start" }}>
-        <Box m={3} sx={{ width: "100%" }}>
+        <Box p={3} sx={{ width: "100%" }}>
           <Heading>Nama Concert</Heading>
           <Text mb={3}>John Mayer</Text>
           <Text sx={{ opacity: 0.75, fontSize: 3 }} mb={3}>
