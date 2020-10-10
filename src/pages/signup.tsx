@@ -1,7 +1,6 @@
 import Head from "next/head"
 import React, { FC } from "react"
-import { Button, Card, Flex, Heading, Input, Label, Text } from "theme-ui"
-import Link from "next/link"
+import { Button, Card, Flex, Heading, Input, Label } from "theme-ui"
 
 const Home: FC = () => (
   <div>
@@ -16,20 +15,11 @@ const Home: FC = () => (
     >
       <Card pb={6} sx={{ display: "flex", flexDirection: "column" }}>
         <Heading mb={4} sx={{ textAlign: "center" }}>
-          Login PLZ
+          Sign Up PLZ
         </Heading>
         <Label>e-mail</Label>
         <Input mb={3} />
-        <Button ml="auto" mb={3}>
-          Log In
-        </Button>
-
-        <Text>
-          Don't have an account?{" "}
-          <Link href="/signup">
-            <a>Sign Up</a>
-          </Link>
-        </Text>
+        <Button ml="auto">Log In</Button>
       </Card>
     </Flex>
   </div>
