@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { AppPropsType } from "next/dist/next-server/lib/utils"
 import {
   Box,
@@ -12,6 +12,21 @@ import Link from "next/link"
 import theme from "../theme"
 
 const Layout: FC = ({ children }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    const d = new Date()
+    d.setTime(d.getTime() + 1000)
+    const expires = `expires=${d.toUTCString()}`
+
+    document.cookie = `a0:session=new_value;path=/;${expires}`
+    if (document.cookie.indexOf(`a0:session=`) === -1) {
+      setIsLoggedIn(true)
+    } else {
+      setIsLoggedIn(false)
+    }
+  }, [])
+
   return (
     <Box>
       <Flex
@@ -25,9 +40,11 @@ const Layout: FC = ({ children }) => {
             <Heading>Nemesis</Heading>
           </LinkComponent>
         </Link>
-        <Link href="/api/auth/login">
-          <Button ml="auto">Log In</Button>
-        </Link>
+        {!isLoggedIn && (
+          <LinkComponent href="/api/auth/login" ml="auto">
+            <Button>Log In</Button>
+          </LinkComponent>
+        )}
       </Flex>
       <Box
         mx="auto"
