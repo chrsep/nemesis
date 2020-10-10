@@ -13,9 +13,11 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@auth0/nextjs-auth0": "^0.16.0",
     "@prefresh/next": "1.2.4",
     "@types/pg": "^7.14.5",
     "@types/styled-system": "^5.1.10",
+    "dayjs": "^1.9.1",
     "next": "9.5.5",
     "next-compose-plugins": "2.2.0",
     "next-optimized-images": "3.0.0-canary.10",
