@@ -27,8 +27,9 @@ const Home: FC<Props> = ({ data }) => (
       {/* /> */}
     </Head>
 
-    <HomePage data={["", "", "", "", "", ""]} />
-    <main>app</main>
+    <main>
+      <HomePage data={["", "", "", "", "", ""]} />
+    </main>
   </div>
 )
 
