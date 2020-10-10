@@ -113,4 +113,10 @@ export default {
       cursor: "pointer",
     },
   },
+  forms: {
+    input: {
+      borderColor: "rgba(0,0,0,0.2)",
+      borderRadius: 6,
+    },
+  },
 } as Theme
