@@ -6,7 +6,7 @@ import Link from "next/link"
 const Home: FC = () => (
   <div>
     <Head>
-      <title>Create Next App</title>
+      <title>Nemesis</title>
       <link rel="icon" href="/favicon.ico" />
     </Head>
 

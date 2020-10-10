@@ -5,7 +5,7 @@ import { Button, Card, Flex, Heading, Input, Label } from "theme-ui"
 const Home: FC = () => (
   <div>
     <Head>
-      <title>Create Next App</title>
+      <title>Nemesis</title>
       <link rel="icon" href="/favicon.ico" />
     </Head>
 
