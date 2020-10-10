@@ -61,6 +61,18 @@ export const listEvents = async (): Promise<ConcertEvent[]> => {
   return result.rows
 }
 
+export const listEventIds = async (): Promise<{ id: string }[]> => {
+  // language=PostgreSQL
+  const result = await query(
+    `
+        select id 
+        from events s
+    `,
+    []
+  )
+  return result.rows
+}
+
 export const findEventsById = async (id: string): Promise<ConcertEvent> => {
   // language=PostgreSQL
   const result = await query(

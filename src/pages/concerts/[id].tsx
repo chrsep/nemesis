@@ -3,7 +3,7 @@ import { Box, Button, Card, Flex, Heading, Text } from "theme-ui"
 import Link from "next/link"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { ConcertEvent } from "../../domain"
-import { findEventsById } from "../../db"
+import { findEventsById, listEventIds } from "../../db"
 
 interface Props {
   event?: ConcertEvent
@@ -92,7 +92,8 @@ export const getStaticProps: GetStaticProps<Props, { id: string }> = async ({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  return { paths: [], fallback: true }
+  const ids = await listEventIds()
+  return { paths: ids.map(({ id }) => `/concerts/${id}`), fallback: true }
 }
 
 export default ConcertPage

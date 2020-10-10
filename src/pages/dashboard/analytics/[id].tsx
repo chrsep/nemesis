@@ -1,7 +1,16 @@
-import React from "react"
+import React, { FC } from "react"
 import { Box, Card, Flex, Heading, Text } from "theme-ui"
+import { GetStaticPaths, GetStaticProps } from "next"
+import { findEventsById, listEventIds } from "../../../db"
+import { ConcertEvent } from "../../../domain"
 
-const ConcertPage = () => {
+interface Props {
+  event?: ConcertEvent
+}
+const ConcertPage: FC<Props> = ({ event }) => {
+  if (!event) {
+    return <div />
+  }
   return (
     <Box mx="auto" sx={{ maxWidth: 1200 }}>
       <Card
@@ -14,7 +23,7 @@ const ConcertPage = () => {
         mb={2}
       >
         <Box p={3} sx={{ width: "100%", color: "white" }}>
-          <Heading>Nama Concert</Heading>
+          <Heading>{event.name}</Heading>
           <Text mb={3}>John Mayer</Text>
         </Box>
       </Card>
@@ -39,6 +48,27 @@ const ConcertPage = () => {
       </Flex>
     </Box>
   )
+}
+
+export const getStaticProps: GetStaticProps<Props, { id: string }> = async ({
+  params,
+}) => {
+  const id = params?.id ?? ""
+
+  return {
+    props: {
+      event: await findEventsById(id),
+    },
+    revalidate: 3600,
+  }
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const ids = await listEventIds()
+  return {
+    paths: ids.map(({ id }) => `/dashboard/analytics/${id}`),
+    fallback: true,
+  }
 }
 
 export default ConcertPage
