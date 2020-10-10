@@ -22,6 +22,7 @@ const query = async (sql: string, params: string[]) => {
     client.release()
   }
 }
+
 export const insertUser = async (
   id: string,
   email: string,
@@ -44,7 +45,18 @@ export const insertUser = async (
     throw e
   }
 }
-export const listEvents = async () => {
+
+interface Event {
+  attendance: 0
+  date: string
+  id: number
+  name: string
+  price: number
+  ticketsSold: number
+  totalTickets: number
+}
+
+export const listEvents = async (): Promise<Event[]> => {
   // language=PostgreSQL
   const result = await query(
     `
