@@ -3,14 +3,21 @@ import React, { FC } from "react"
 import { Box, Card, Flex, Heading, Text } from "theme-ui"
 
 interface Props {
-  data: string[]
+  events: Array<{
+    attendance: 0
+    date: string
+    id: number
+    name: string
+    price: number
+    ticketsSold: number
+    totalTickets: number
+  }>
 }
-
-const HomePage: FC<Props> = ({ data }) => {
+const HomePage: FC<Props> = ({ events }) => {
   return (
     <main>
       <Flex sx={{ flexWrap: "wrap", width: "100%" }}>
-        {data.map(() => {
+        {events.map((event) => {
           return (
             <Link href="/concerts/1">
               <Box
@@ -27,9 +34,14 @@ const HomePage: FC<Props> = ({ data }) => {
                   }}
                   mb={2}
                 />
-                <Heading>Nama Concert</Heading>
+                <Heading>{event.name}</Heading>
                 <Text>Nama Artist</Text>
-                <Text>Rp. 20.000.000</Text>
+                <Text>
+                  {Intl.NumberFormat("id", {
+                    style: "currency",
+                    currency: "IDR",
+                  }).format(event.price)}
+                </Text>
               </Box>
             </Link>
           )
