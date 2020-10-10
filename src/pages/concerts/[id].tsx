@@ -1,11 +1,12 @@
 import React from "react"
 import { Box, Button, Card, Flex, Heading, Text } from "theme-ui"
+import Link from "next/link"
 
 const ConcertPage = () => {
   return (
     <Box mx="auto" sx={{ maxWidth: 1200 }}>
       <Card sx={{ width: "100%", height: 382, backgroundColor: "black" }} />
-      <Flex sx={{ flexDirection: ["column", "row"] }}>
+      <Flex sx={{ flexDirection: ["column", "row"], alignItems: "flex-start" }}>
         <Box m={3} sx={{ width: "100%" }}>
           <Heading>Nama Concert</Heading>
           <Text mb={3}>John Mayer</Text>
@@ -36,7 +37,10 @@ const ConcertPage = () => {
           <Flex sx={{ flexDirection: "column" }}>
             <Heading mb={2}>Harga</Heading>
             <Heading as="h3">Rp. 99999999/pax</Heading>
-            <Button ml="auto">Beli tiket</Button>
+            {/* TODO: use real page id */}
+            <Link href="/payment?redirectUrl=/concerts/1">
+              <Button sx={{ ml: "auto" }}>Beli tiket</Button>
+            </Link>
           </Flex>
         </Card>
       </Flex>
