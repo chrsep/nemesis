@@ -10,7 +10,9 @@ const PaymentPage = () => {
       sx={{ alignItems: "center", justifyContent: "center", height: "100vh" }}
     >
       <Flex sx={{ flexDirection: "column" }}>
-        <Heading mb={3}>Halaman 3rd party Payment Vendor</Heading>
+        <Heading mb={3} sx={{ textAlign: "center" }}>
+          Halaman 3rd party Payment Vendor
+        </Heading>
         <Link href={redirectUrl}>
           <Button mx="auto">Confirm</Button>
         </Link>

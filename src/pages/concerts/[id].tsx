@@ -5,8 +5,42 @@ import Link from "next/link"
 const ConcertPage = () => {
   return (
     <Box mx="auto" sx={{ maxWidth: 1200 }}>
-      <Card sx={{ width: "100%", height: 382, backgroundColor: "black" }} />
+      <Card
+        sx={{
+          width: "100%",
+          height: 382,
+          backgroundColor: "black",
+          borderRadius: [0, 6],
+        }}
+      />
       <Flex sx={{ flexDirection: ["column", "row"], alignItems: "flex-start" }}>
+        <Box
+          p={3}
+          sx={{
+            width: "100%",
+            position: "sticky",
+            maxWidth: [undefined, 400],
+            top: 0,
+            zIndex: 100,
+          }}
+        >
+          <Card p={3} sx={{ backgroundColor: "white" }}>
+            <Flex>
+              <div>
+                <Heading sx={{ fontSize: [3, 4] }} mb={2}>
+                  Harga
+                </Heading>
+                <Text sx={{ fontSize: [1, 2] }} as="h3">
+                  Rp. 200.000/pax
+                </Text>
+              </div>
+              {/* TODO: use real page id */}
+              <Link href="/payment?redirectUrl=/concerts/1">
+                <Button sx={{ ml: "auto" }}>Beli tiket</Button>
+              </Link>
+            </Flex>
+          </Card>
+        </Box>
         <Box p={3} sx={{ width: "100%" }}>
           <Heading>Nama Concert</Heading>
           <Text mb={3}>John Mayer</Text>
@@ -25,23 +59,6 @@ const ConcertPage = () => {
             instrument.
           </Text>
         </Box>
-        <Card
-          m={[0, 3]}
-          p={3}
-          sx={{
-            maxWidth: [undefined, 400],
-            width: "100%",
-          }}
-        >
-          <Flex sx={{ flexDirection: "column" }}>
-            <Heading mb={2}>Harga</Heading>
-            <Text as="h3">Rp. 200.000/pax</Text>
-            {/* TODO: use real page id */}
-            <Link href="/payment?redirectUrl=/concerts/1">
-              <Button sx={{ ml: "auto" }}>Beli tiket</Button>
-            </Link>
-          </Flex>
-        </Card>
       </Flex>
     </Box>
   )
