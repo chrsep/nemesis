@@ -13,14 +13,14 @@ const DashboardPage: FC<Props> = ({ data }) => {
         {data.map(() => {
           return (
             <Link href="/dashboard/analytics/1">
-              <Card
+              <Box
                 p={3}
                 sx={{
                   cursor: "pointer",
                   width: ["100%", "50%", "25%"],
                 }}
               >
-                <Box
+                <Card
                   sx={{
                     height: "10rem",
                     backgroundColor: "black",
@@ -29,8 +29,8 @@ const DashboardPage: FC<Props> = ({ data }) => {
                 />
                 <Heading>Nama Concert</Heading>
                 <Text>Nama Artist</Text>
-                <Text>Rp. 20.000.000</Text>
-              </Card>
+                <Text>Tanggal</Text>
+              </Box>
             </Link>
           )
         })}

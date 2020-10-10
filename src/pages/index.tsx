@@ -1,5 +1,6 @@
 import Head from "next/head"
 import React, { FC } from "react"
+import { Card, Heading } from "theme-ui"
 import HomePage from "../components/homePage"
 
 interface Props {
@@ -26,6 +27,10 @@ const Home: FC<Props> = () => (
       {/*  }} */}
       {/* /> */}
     </Head>
+
+    <Heading sx={{ fontSize: 6 }} p={3} pt={4}>
+      Cari Konser
+    </Heading>
 
     <main>
       <HomePage data={["", "", "", "", "", ""]} />
