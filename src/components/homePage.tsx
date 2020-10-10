@@ -1,51 +1,61 @@
 import Link from "next/link"
-import React, { FC } from "react"
-import { Box, Card, Flex, Heading, Text } from "theme-ui"
+import React, { FC, useState } from "react"
+import { Box, Card, Flex, Heading, Input, Text } from "theme-ui"
+import { ConcertEvent } from "../domain"
 
 interface Props {
-  events: Array<{
-    attendance: 0
-    date: string
-    id: number
-    name: string
-    price: number
-    ticketsSold: number
-    totalTickets: number
-  }>
+  events: ConcertEvent[]
 }
 const HomePage: FC<Props> = ({ events }) => {
+  const [search, setSearch] = useState("")
+
   return (
     <main>
+      <Box p={3}>
+        <Input
+          placeholder="Cari"
+          sx={{
+            shadow:
+              "0 6px 12px -2px rgba(50,50,93,.12),0 3px 7px -3px rgba(0,0,0,.15)",
+            backgroundColor: "rgba(0,0,0,0.05)",
+            maxWidth: 400,
+          }}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </Box>
       <Flex sx={{ flexWrap: "wrap", width: "100%" }}>
-        {events.map((event) => {
-          return (
-            <Link href="/concerts/1" key={event.id}>
-              <Box
-                p={3}
-                sx={{
-                  cursor: "pointer",
-                  width: ["100%", "50%", "25%"],
-                }}
-              >
-                <Card
+        {events
+          .filter(({ name }) => name.match(search))
+          .map((event) => {
+            return (
+              <Link href={`/concerts/${event.id}`} key={event.id}>
+                <Box
+                  p={3}
                   sx={{
-                    height: "10rem",
-                    backgroundColor: "black",
+                    cursor: "pointer",
+                    width: ["100%", "50%", "25%"],
                   }}
-                  mb={2}
-                />
-                <Heading>{event.name}</Heading>
-                <Text>Nama Artist</Text>
-                <Text>
-                  {Intl.NumberFormat("id", {
-                    style: "currency",
-                    currency: "IDR",
-                  }).format(event.price)}
-                </Text>
-              </Box>
-            </Link>
-          )
-        })}
+                >
+                  <Card
+                    sx={{
+                      height: "10rem",
+                      backgroundColor: "black",
+                    }}
+                    mb={2}
+                  />
+                  <Heading mb={2}>{event.name}</Heading>
+                  <Text mb={2}>Nama Artist</Text>
+                  <Text>
+                    {Intl.NumberFormat("id", {
+                      style: "currency",
+                      currency: "IDR",
+                    }).format(event.price)}
+                  </Text>
+                </Box>
+              </Link>
+            )
+          })}
       </Flex>
     </main>
   )

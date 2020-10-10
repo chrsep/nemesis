@@ -3,17 +3,10 @@ import React, { FC } from "react"
 import { Heading } from "theme-ui"
 import HomePage from "../components/homePage"
 import { listEvents } from "../db"
+import { ConcertEvent } from "../domain"
 
 interface Props {
-  events: Array<{
-    attendance: 0
-    date: string
-    id: number
-    name: string
-    price: number
-    ticketsSold: number
-    totalTickets: number
-  }>
+  events: ConcertEvent[]
 }
 
 const Home: FC<Props> = ({ events }) => {
@@ -42,9 +35,7 @@ const Home: FC<Props> = ({ events }) => {
         Cari Konser
       </Heading>
 
-      <main>
-        <HomePage events={events} />
-      </main>
+      <HomePage events={events} />
     </div>
   )
 }

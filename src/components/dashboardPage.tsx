@@ -2,18 +2,12 @@ import Link from "next/link"
 import React, { FC } from "react"
 import { Box, Card, Flex, Heading, Input, Text } from "theme-ui"
 import dayjs from "dayjs"
+import { ConcertEvent } from "../domain"
 
 interface Props {
-  events: Array<{
-    attendance: 0
-    date: string
-    id: number
-    name: string
-    price: number
-    ticketsSold: number
-    totalTickets: number
-  }>
+  events: ConcertEvent[]
 }
+
 const DashboardPage: FC<Props> = ({ events }) => {
   return (
     <main>
@@ -71,7 +65,7 @@ const DashboardPage: FC<Props> = ({ events }) => {
             </Text>
           </Flex>
           {events.map((event) => (
-            <Link href="/dashboard/analytics/1">
+            <Link href={`/dashboard/analytics/${event.id}`} key={event.id}>
               <Flex
                 p={3}
                 sx={{

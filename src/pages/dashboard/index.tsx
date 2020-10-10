@@ -2,17 +2,10 @@ import React, { FC } from "react"
 import { Heading } from "theme-ui"
 import DashboardPage from "../../components/dashboardPage"
 import { listEvents } from "../../db"
+import { ConcertEvent } from "../../domain"
 
 interface Props {
-  events: Array<{
-    attendance: 0
-    date: string
-    id: number
-    name: string
-    price: number
-    ticketsSold: number
-    totalTickets: number
-  }>
+  events: ConcertEvent[]
 }
 const Dashboard: FC<Props> = ({ events }) => {
   return (

@@ -1,8 +1,18 @@
-import React from "react"
+import React, { FC } from "react"
 import { Box, Button, Card, Flex, Heading, Text } from "theme-ui"
 import Link from "next/link"
+import { GetStaticPaths, GetStaticProps } from "next"
+import { ConcertEvent } from "../../domain"
+import { findEventsById } from "../../db"
 
-const ConcertPage = () => {
+interface Props {
+  event?: ConcertEvent
+}
+const ConcertPage: FC<Props> = ({ event }) => {
+  if (!event) {
+    return <div />
+  }
+
   return (
     <Box mx="auto" sx={{ maxWidth: 1200 }}>
       <Card
@@ -31,7 +41,11 @@ const ConcertPage = () => {
                   Harga
                 </Heading>
                 <Text sx={{ fontSize: [1, 2] }} as="h3">
-                  Rp. 200.000/pax
+                  {Intl.NumberFormat("id", {
+                    style: "currency",
+                    currency: "IDR",
+                  }).format(event?.price)}
+                  /pax
                 </Text>
               </div>
               {/* TODO: use real page id */}
@@ -42,7 +56,7 @@ const ConcertPage = () => {
           </Card>
         </Box>
         <Box p={3} sx={{ width: "100%" }}>
-          <Heading>Nama Concert</Heading>
+          <Heading mb={3}>{event.name}</Heading>
           <Text mb={3}>John Mayer</Text>
           <Text sx={{ opacity: 0.75, fontSize: 3 }} mb={3}>
             The guitar is a fretted musical instrument that usually has six
@@ -62,6 +76,23 @@ const ConcertPage = () => {
       </Flex>
     </Box>
   )
+}
+
+export const getStaticProps: GetStaticProps<Props, { id: string }> = async ({
+  params,
+}) => {
+  const id = params?.id ?? ""
+
+  return {
+    props: {
+      event: await findEventsById(id),
+    },
+    revalidate: 3600,
+  }
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return { paths: [], fallback: true }
 }
 
 export default ConcertPage

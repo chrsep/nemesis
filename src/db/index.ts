@@ -1,4 +1,5 @@
 import { Pool } from "pg"
+import { ConcertEvent } from "../domain"
 
 const pgPool = new Pool({
   user: process.env.PG_USER,
@@ -48,17 +49,7 @@ export const insertUser = async (
   }
 }
 
-interface Event {
-  attendance: 0
-  date: string
-  id: number
-  name: string
-  price: number
-  ticketsSold: number
-  totalTickets: number
-}
-
-export const listEvents = async (): Promise<Event[]> => {
+export const listEvents = async (): Promise<ConcertEvent[]> => {
   // language=PostgreSQL
   const result = await query(
     `
@@ -70,7 +61,7 @@ export const listEvents = async (): Promise<Event[]> => {
   return result.rows
 }
 
-export const findEventsById = async (id: string) => {
+export const findEventsById = async (id: string): Promise<ConcertEvent> => {
   // language=PostgreSQL
   const result = await query(
     `
