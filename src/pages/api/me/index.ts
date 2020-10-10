@@ -1,6 +1,6 @@
 import auth0 from "../../../utils/auth0"
 
-export interface UserData {
+export interface GetMeResponse {
   family_name: string
   given_name: string
   locale: string

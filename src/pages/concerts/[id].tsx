@@ -13,6 +13,7 @@ import { GetStaticPaths, GetStaticProps } from "next"
 import { ConcertEvent } from "../../domain"
 import { findEventsById, listEventIds } from "../../db"
 import useIsLoggedIn from "../../hooks/useIsLoggedIn"
+import formatCurrency from "../../utils/formatter"
 
 interface Props {
   event?: ConcertEvent
@@ -60,16 +61,13 @@ const ConcertPage: FC<Props> = ({ event }) => {
                   Harga
                 </Heading>
                 <Text sx={{ fontSize: [1, 2] }} as="h3">
-                  {Intl.NumberFormat("id", {
-                    style: "currency",
-                    currency: "IDR",
-                  }).format(event?.price)}
+                  {formatCurrency(event.price)}
                   /pax
                 </Text>
               </div>
               {/* TODO: use real page id */}
               {isLoggedIn ? (
-                <Link href={`/payment?redirectUrl=/concerts/${event.id}`}>
+                <Link href={`/buy/${event.id}`}>
                   <Button sx={{ ml: "auto" }}>Beli tiket</Button>
                 </Link>
               ) : (

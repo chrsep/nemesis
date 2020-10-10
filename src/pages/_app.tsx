@@ -33,7 +33,7 @@ const Layout: FC = ({ children }) => {
             <Button>Log In</Button>
           </LinkComponent>
         ) : (
-          <LinkComponent href="/api/auth/login" ml="auto">
+          <LinkComponent href="/api/auth/logout" ml="auto">
             <Button variant="outline">Log Out</Button>
           </LinkComponent>
         )}

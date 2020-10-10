@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next"
+import { destroyCookie } from "nookies"
 import auth0 from "../../../utils/auth0"
 
 export default async function logout(
@@ -6,6 +7,7 @@ export default async function logout(
   res: NextApiResponse
 ) {
   try {
+    destroyCookie({ res }, "loggedIn")
     await auth0.handleLogout(req, res)
   } catch (error) {
     console.error(error)
