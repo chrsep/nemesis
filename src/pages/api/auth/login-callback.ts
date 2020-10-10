@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import auth0 from "../../utils/auth0"
+import auth0 from "../../../utils/auth0"
 
 export default async function callback(
   req: NextApiRequest,

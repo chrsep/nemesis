@@ -1,5 +1,5 @@
 import { NextApiHandler } from "next"
-import auth0 from "../../utils/auth0"
+import auth0 from "../../../utils/auth0"
 
 const login: NextApiHandler = async (req, res) => {
   try {
