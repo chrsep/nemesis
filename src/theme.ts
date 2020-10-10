@@ -1,4 +1,6 @@
 // example theme.js
+import { Theme } from "theme-ui"
+
 export default {
   space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
   fonts: {
@@ -20,7 +22,7 @@ export default {
   colors: {
     text: "#000",
     background: "#fff",
-    primary: "#07c",
+    primary: "black",
     secondary: "#30c",
     muted: "#f6f6f6",
   },
@@ -29,6 +31,11 @@ export default {
       fontFamily: "body",
       lineHeight: "body",
       fontWeight: "body",
+    },
+    a: {
+      color: "inherit",
+      textDecoration: "none",
+      cursor: "pointer",
     },
     h1: {
       color: "text",
@@ -78,9 +85,6 @@ export default {
       fontWeight: "body",
       lineHeight: "body",
     },
-    a: {
-      color: "primary",
-    },
     code: {
       fontFamily: "monospace",
       fontSize: "inherit",
@@ -89,4 +93,24 @@ export default {
       maxWidth: "100%",
     },
   },
-}
+  cards: {
+    primary: {
+      borderRadius: 6,
+      boxShadow:
+        "0 6px 12px -2px rgba(50,50,93,.12),0 3px 7px -3px rgba(0,0,0,.15)",
+      border: 1,
+      borderColor: "rgba(0,0,0,0.2)",
+      borderStyle: "solid",
+    },
+  },
+  buttons: {
+    primary: {
+      borderRadius: 6,
+      boxShadow:
+        "0 6px 12px -2px rgba(50,50,93,.12),0 3px 7px -3px rgba(0,0,0,.15)",
+      border: 1,
+      borderColor: "black",
+      cursor: "pointer",
+    },
+  },
+} as Theme

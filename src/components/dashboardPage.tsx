@@ -17,7 +17,7 @@ const DashboardPage: FC<Props> = ({ data }) => {
                 p={3}
                 sx={{
                   cursor: "pointer",
-                  width: ["100%", "50%", "25%", "20%"],
+                  width: ["100%", "50%", "25%"],
                 }}
               >
                 <Box
@@ -25,6 +25,7 @@ const DashboardPage: FC<Props> = ({ data }) => {
                     height: "10rem",
                     backgroundColor: "black",
                   }}
+                  mb={2}
                 />
                 <Heading>Nama Concert</Heading>
                 <Text>Nama Artist</Text>

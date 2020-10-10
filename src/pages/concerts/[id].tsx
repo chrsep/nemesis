@@ -31,12 +31,11 @@ const ConcertPage = () => {
           sx={{
             maxWidth: [undefined, 400],
             width: "100%",
-            backgroundColor: "grey",
           }}
         >
           <Flex sx={{ flexDirection: "column" }}>
             <Heading mb={2}>Harga</Heading>
-            <Heading as="h3">Rp. 99999999/pax</Heading>
+            <Text as="h3">Rp. 200.000/pax</Text>
             {/* TODO: use real page id */}
             <Link href="/payment?redirectUrl=/concerts/1">
               <Button sx={{ ml: "auto" }}>Beli tiket</Button>

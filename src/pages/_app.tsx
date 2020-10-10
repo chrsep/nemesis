@@ -1,6 +1,13 @@
 import React, { FC } from "react"
 import { AppPropsType } from "next/dist/next-server/lib/utils"
-import { Box, Button, Flex, Heading, ThemeProvider } from "theme-ui"
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  ThemeProvider,
+  Link as LinkComponent,
+} from "theme-ui"
 import Link from "next/link"
 import theme from "../theme"
 
@@ -14,9 +21,9 @@ const Layout: FC = ({ children }) => {
         mx="auto"
       >
         <Link href="/">
-          <a>
+          <LinkComponent>
             <Heading>Nemesis</Heading>
-          </a>
+          </LinkComponent>
         </Link>
         <Link href="/api/auth/login">
           <Button ml="auto">Log In</Button>
