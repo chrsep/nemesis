@@ -8,7 +8,21 @@ const ConcertPage = () => {
       <Flex sx={{ flexDirection: ["column", "row"] }}>
         <Box m={3} sx={{ width: "100%" }}>
           <Heading>Nama Concert</Heading>
-          <Text>John Mayer</Text>
+          <Text mb={3}>John Mayer</Text>
+          <Text sx={{ opacity: 0.75, fontSize: 3 }} mb={3}>
+            The guitar is a fretted musical instrument that usually has six
+            strings.[1] It is typically played with both hands by strumming or
+            plucking the strings with either a guitar pick or the
+            fingers/fingernails of one hand, while simultaneously fretting
+            (pressing the strings against the frets) with the fingers of the
+            other hand.
+          </Text>
+          <Text sx={{ opacity: 0.75, fontSize: 3 }}>
+            The modern guitar was preceded by the gittern, the vihuela, the
+            four-course Renaissance guitar, and the five-course baroque guitar,
+            all of which contributed to the development of the modern six-string
+            instrument.
+          </Text>
         </Box>
         <Card
           m={[0, 3]}
@@ -22,7 +36,7 @@ const ConcertPage = () => {
           <Flex sx={{ flexDirection: "column" }}>
             <Heading mb={2}>Harga</Heading>
             <Heading as="h3">Rp. 99999999/pax</Heading>
-            <Button ml="auto">Beli</Button>
+            <Button ml="auto">Beli tiket</Button>
           </Flex>
         </Card>
       </Flex>
