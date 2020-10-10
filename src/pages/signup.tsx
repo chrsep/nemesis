@@ -15,11 +15,13 @@ const Home: FC = () => (
     >
       <Card pb={6} sx={{ display: "flex", flexDirection: "column" }}>
         <Heading mb={4} sx={{ textAlign: "center" }}>
-          Sign Up PLZ
+          Sign Up
         </Heading>
         <Label>e-mail</Label>
-        <Input mb={3} />
-        <Button ml="auto">Log In</Button>
+        <Input mb={2} />
+        <Label>name</Label>
+        <Input mb={2} />
+        <Button ml="auto">Sign Up</Button>
       </Card>
     </Flex>
   </div>

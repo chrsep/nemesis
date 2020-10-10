@@ -16,7 +16,7 @@ const Home: FC = () => (
     >
       <Card pb={6} sx={{ display: "flex", flexDirection: "column" }}>
         <Heading mb={4} sx={{ textAlign: "center" }}>
-          Login PLZ
+          Login
         </Heading>
         <Label>e-mail</Label>
         <Input mb={3} />

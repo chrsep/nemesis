@@ -1,28 +1,35 @@
 import Head from "next/head"
-import { FC } from "react"
+import React, { FC } from "react"
+import HomePage from "../components/homePage"
 
-const Home: FC = () => (
+interface Props {
+  data: string[]
+}
+
+const Home: FC<Props> = () => (
   <div>
     <Head>
       <title>Create Next App</title>
       <link rel="icon" href="/favicon.ico" />
 
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            (function() {
-              const cookies = document.cookie.replace(" ", "").split(";")
-              const isLoggedIn = cookies.findIndex((item) => item === "loggedIn=1")
-              if (isLoggedIn < 0) {
-                window.location.href  = "/login"
-              }    
-            })()
-        `,
-        }}
-      />
+      {/* <script */}
+      {/*  dangerouslySetInnerHTML={{ */}
+      {/*    __html: ` */}
+      {/*      (function() { */}
+      {/*        const cookies = document.cookie.replace(" ", "").split(";") */}
+      {/*        const isLoggedIn = cookies.findIndex((item) => item === "loggedIn=1") */}
+      {/*        if (isLoggedIn < 0) { */}
+      {/*          window.location.href  = "/login" */}
+      {/*        }    */}
+      {/*      })() */}
+      {/*  `, */}
+      {/*  }} */}
+      {/* /> */}
     </Head>
 
-    <main>app</main>
+    <main>
+      <HomePage data={["", "", "", "", "", ""]} />
+    </main>
   </div>
 )
 
