@@ -1,6 +1,6 @@
 import Head from "next/head"
 import React, { FC } from "react"
-import { Card, Heading } from "theme-ui"
+import { Heading } from "theme-ui"
 import HomePage from "../components/homePage"
 
 interface Props {
