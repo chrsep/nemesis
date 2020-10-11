@@ -7,10 +7,10 @@ import { ConcertEvent } from "../../domain"
 interface Props {
   events: ConcertEvent[]
   topThree: ConcertEvent[]
-  revenues: {
+  revenues: Array<{
     date: string
     revenue: number
-  }
+  }>
 }
 const Dashboard: FC<Props> = ({ events, topThree, revenues }) => {
   return (

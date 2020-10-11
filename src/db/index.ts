@@ -10,8 +10,8 @@ const pgPool = new Pool({
   port: parseInt(process.env.PG_PORT ?? "5432", 10),
   max: parseInt(process.env.MAX_CLIENTS ?? "10", 10),
   ssl: {
-    rejectUnauthorized: false,
-  },
+    rejectUnauthorized: false
+  }
 })
 
 pgPool.on("error", (err) => {
@@ -69,7 +69,7 @@ export const listEvents = async (): Promise<ConcertEvent[]> => {
     return {
       ...row,
       startTime: dayjs(row.startTime).toISOString(),
-      endTime: dayjs(row.endTime).toISOString(),
+      endTime: dayjs(row.endTime).toISOString()
     }
   })
 }
@@ -99,7 +99,7 @@ export const findEventsById = async (id: string): Promise<ConcertEvent> => {
   return {
     ...result.rows[0],
     startTime: dayjs(result.rows[0].startTime).toISOString(),
-    endTime: dayjs(result.rows[0].endTime).toISOString(),
+    endTime: dayjs(result.rows[0].endTime).toISOString()
   }
 }
 
@@ -214,8 +214,9 @@ export const deleteOrder = async (id: string) => {
 export const listDailyRevenues = async () => {
   const order = await query(
     `
-          select *
-          from generate_series(now() - interval '364' day, now(),  '1 day'::interval) as date
+          select sum(orders.price), orders."buyDate"
+          from orders
+          group by orders."buyDate"
       `,
     []
   )

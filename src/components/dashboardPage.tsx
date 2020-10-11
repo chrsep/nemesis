@@ -1,7 +1,7 @@
 import Link from "next/link"
 import React, { FC, useState } from "react"
 import { Box, Card, Flex, Heading, Image, Input, Text } from "theme-ui"
-import dayjs from "dayjs"
+import dayjs, { Dayjs } from "dayjs"
 import Head from "next/head"
 import { ResponsiveLine } from "@nivo/line"
 import { ConcertEvent } from "../domain"
@@ -10,14 +10,23 @@ import formatCurrency from "../utils/formatter"
 interface Props {
   events: ConcertEvent[]
   topThree: ConcertEvent[]
-  revenues: {
+  revenues: Array<{
     date: string
     revenue: number
-  }
+  }>
 }
 
-const DashboardPage: FC<Props> = ({ topThree, events }) => {
+const DashboardPage: FC<Props> = ({ topThree, events, revenues }) => {
   const [search, setSearch] = useState("")
+
+  const dates: string[] = []
+  for (let i = 0; i < 30; i += 1) {
+    dates.push(
+      dayjs()
+        .add(-1 * i, "day")
+        .format("DD MMMM")
+    )
+  }
 
   return (
     <>
@@ -83,19 +92,14 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
               <Box sx={{ height: "8rem" }} mb={4}>
                 <ResponsiveLine
                   enableGridX={false}
-                  gridYValues={[0, 10, 100, 200, 300, 400]}
                   useMesh={false}
                   data={[
                     {
                       id: "Revenue",
                       color: "#004daa",
-                      data: [
-                        { x: dayjs().date(), y: 0 },
-                        { x: 1, y: 100 },
-                        { x: 2, y: 300 },
-                        { x: 5, y: 300 },
-                        { x: 6, y: 700 },
-                      ],
+                      data: dates.map((date) => {
+                        return { x: date, y: 0 }
+                      }),
                     },
                   ]}
                 />
@@ -149,18 +153,14 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
 
               <Box sx={{ height: "8rem" }} mb={4}>
                 <ResponsiveLine
-                  useMesh={false}
+                  enableGridX={false}
                   data={[
                     {
                       id: "Revenue",
                       color: "#004daa",
-                      data: [
-                        { x: 0, y: 0 },
-                        { x: 1, y: 100 },
-                        { x: 2, y: 300 },
-                        { x: 5, y: 300 },
-                        { x: 6, y: 700 },
-                      ],
+                      data: dates.map((date) => {
+                        return { x: date, y: 0 }
+                      }),
                     },
                   ]}
                 />
