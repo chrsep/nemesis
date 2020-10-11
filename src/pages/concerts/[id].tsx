@@ -88,7 +88,9 @@ const ConcertPage: FC<Props> = ({ event }) => {
           }}
         >
           {dayjs(event.startTime).isBefore(dayjs(), "date") ? (
-            ""
+            <Card p={3} sx={{ backgroundColor: "white" }}>
+              <Heading>Konser Telah Berlalu</Heading>
+            </Card>
           ) : (
             <Card p={3} sx={{ backgroundColor: "white" }}>
               {isBought && (
