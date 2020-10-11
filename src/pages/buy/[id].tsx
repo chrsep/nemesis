@@ -7,7 +7,7 @@ import { findEventsById, listEventIds } from "../../db"
 import { ConcertEvent } from "../../domain"
 import formatCurrency from "../../utils/formatter"
 import useGetMe from "../../hooks/useGetMe"
-import createOrder from "../api/order/createOrder"
+import useCreateOrder from "../../hooks/useCreateOrder"
 
 interface Props {
   event?: ConcertEvent
@@ -114,7 +114,7 @@ const Payment: FC<{ event: ConcertEvent; onBack: () => void }> = ({
 }) => {
   const me = useGetMe()
   const router = useRouter()
-  const [mutate] = createOrder()
+  const [mutate] = useCreateOrder()
   const postNewOrder = async (): Promise<void> => {
     const result = await mutate({
       eventId: event.id.toString(),

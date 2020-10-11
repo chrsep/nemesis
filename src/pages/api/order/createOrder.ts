@@ -1,4 +1,3 @@
-import { useMutation } from "react-query"
 import { insertOrder } from "../../../db"
 
 export interface PostNewOrder {
@@ -7,20 +6,19 @@ export interface PostNewOrder {
   userId?: string
 }
 
-const createOrder = () => {
-  const fetchApi = async (newOrder: PostNewOrder): Promise<void> => {
-    const result = await insertOrder(
+const createOrder = (newOrder: PostNewOrder) => {
+  try {
+    const result = insertOrder(
       newOrder.userId!,
       newOrder.eventId,
       newOrder.price
     )
-
     if (!result) {
-      console.log("error create order")
+      console.log("error insert order")
     }
+  } catch (error) {
+    console.log(error)
   }
-
-  return useMutation(fetchApi)
 }
 
 export default createOrder
