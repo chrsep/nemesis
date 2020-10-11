@@ -27,10 +27,11 @@ export async function getStaticProps() {
   const events = await listEvents()
   const revenues = await listDailyRevenues()
 
-  const sortByRevenue = [...events].sort((a, b) => {
-    return a.ticketsSold * a.price - b.ticketsSold * b.price
-  })
-
+  const sortByRevenue = [...events]
+    .map((el) => ({ ...el, revenue: el.ticketsSold * el.price }))
+    .sort((a, b) => {
+      return b.revenue - a.revenue
+    })
   return {
     props: {
       events,
