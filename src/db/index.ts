@@ -10,8 +10,8 @@ const pgPool = new Pool({
   port: parseInt(process.env.PG_PORT ?? "5432", 10),
   max: parseInt(process.env.MAX_CLIENTS ?? "10", 10),
   ssl: {
-    rejectUnauthorized: false
-  }
+    rejectUnauthorized: false,
+  },
 })
 
 pgPool.on("error", (err) => {
@@ -69,7 +69,7 @@ export const listEvents = async (): Promise<ConcertEvent[]> => {
     return {
       ...row,
       startTime: dayjs(row.startTime).toISOString(),
-      endTime: dayjs(row.endTime).toISOString()
+      endTime: dayjs(row.endTime).toISOString(),
     }
   })
 }
@@ -86,6 +86,46 @@ export const listEventIds = async (): Promise<{ id: string }[]> => {
   return result.rows
 }
 
+export const listUpcomingEvents = async (): Promise<{ id: string }[]> => {
+  // language=PostgreSQL
+  const result = await query(
+    `
+        select *
+        from events s
+        where "startTime" > now()
+        order by "startTime" desc
+    `,
+    []
+  )
+  return result.rows.map((row) => {
+    return {
+      ...row,
+      startTime: dayjs(row.startTime).toISOString(),
+      endTime: dayjs(row.endTime).toISOString(),
+    }
+  })
+}
+
+export const listPastEvents = async (): Promise<{ id: string }[]> => {
+  // language=PostgreSQL
+  const result = await query(
+    `
+        select *
+        from events s
+        where "startTime" < now()
+        order by "startTime" desc
+    `,
+    []
+  )
+  return result.rows.map((row) => {
+    return {
+      ...row,
+      startTime: dayjs(row.startTime).toISOString(),
+      endTime: dayjs(row.endTime).toISOString(),
+    }
+  })
+}
+
 export const findEventsById = async (id: string): Promise<ConcertEvent> => {
   // language=PostgreSQL
   const result = await query(
@@ -99,7 +139,7 @@ export const findEventsById = async (id: string): Promise<ConcertEvent> => {
   return {
     ...result.rows[0],
     startTime: dayjs(result.rows[0].startTime).toISOString(),
-    endTime: dayjs(result.rows[0].endTime).toISOString()
+    endTime: dayjs(result.rows[0].endTime).toISOString(),
   }
 }
 
@@ -146,7 +186,7 @@ export const updateEventTicketSold = async (
   const result = await query(
     `
         update events
-        set ticketsSold = $1
+        set "ticketsSold" = $1
         where id = $2
     `,
     [ticketsSold, id]

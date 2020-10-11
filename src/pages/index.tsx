@@ -1,15 +1,16 @@
 import Head from "next/head"
 import React, { FC } from "react"
-import { Heading } from "theme-ui"
+import { Box, Heading } from "theme-ui"
 import HomePage from "../components/homePage"
-import { listEvents } from "../db"
+import { listPastEvents, listUpcomingEvents } from "../db"
 import { ConcertEvent } from "../domain"
 
 interface Props {
-  events: ConcertEvent[]
+  upcomingEvents: ConcertEvent[]
+  pastEvents: ConcertEvent[]
 }
 
-const Home: FC<Props> = ({ events }) => {
+const Home: FC<Props> = ({ upcomingEvents, pastEvents }) => {
   return (
     <div>
       <Head>
@@ -31,11 +32,26 @@ const Home: FC<Props> = ({ events }) => {
         {/* /> */}
       </Head>
 
-      <Heading sx={{ fontSize: 6 }} p={3} pt={4}>
-        Cari Konser
+      <Heading
+        sx={{ fontSize: 6, fontWeight: 900, lineHeight: 0.9 }}
+        px={3}
+        pt={5}
+      >
+        Konser Mendatang
       </Heading>
 
-      <HomePage events={events} />
+      <HomePage events={upcomingEvents} />
+
+      <Heading
+        sx={{ fontSize: 6, fontWeight: 900, lineHeight: 0.9 }}
+        px={3}
+        pt={5}
+      >
+        Konser Yang lalu
+      </Heading>
+      <Box sx={{ opacity: 0.7 }}>
+        <HomePage events={pastEvents} />
+      </Box>
     </div>
   )
 }
@@ -43,7 +59,8 @@ const Home: FC<Props> = ({ events }) => {
 export async function getStaticProps() {
   return {
     props: {
-      events: await listEvents(),
+      upcomingEvents: await listUpcomingEvents(),
+      pastEvents: await listPastEvents(),
     },
     // we will attempt to re-generate the page:
     // - when a request comes in

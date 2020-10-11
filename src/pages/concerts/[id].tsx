@@ -11,6 +11,7 @@ import {
   Image,
 } from "theme-ui"
 import { GetStaticPaths, GetStaticProps } from "next"
+import dayjs from "dayjs"
 import { ConcertEvent } from "../../domain"
 import { findEventsById, listEventIds } from "../../db"
 import useIsLoggedIn from "../../hooks/useIsLoggedIn"
@@ -101,8 +102,12 @@ const ConcertPage: FC<Props> = ({ event }) => {
           </Card>
         </Box>
         <Box p={3} pb={6} sx={{ width: "100%" }}>
-          <Heading mb={3}>{event.name}</Heading>
-          <Text mb={3}>{event.artists}</Text>
+          <Heading mb={2}>{event.name}</Heading>
+          <Flex>
+            <Text mb={3}>{event.artists}</Text>
+            <Text px={2}>•</Text>
+            <Text mb={3}>{dayjs(event.startTime).format("DD MMMM YYYY")}</Text>
+          </Flex>
           <Text sx={{ opacity: 0.75, fontSize: 3 }} mb={3}>
             {event.description}
           </Text>
