@@ -96,7 +96,7 @@ const ConcertPage: FC<Props> = ({ event }) => {
             <Flex>
               <Box p={3}>
                 <Image
-                  src="/video.png"
+                  src="/ticket.png"
                   sx={{
                     objectFit: "cover",
                     maxWidth: "100%",
