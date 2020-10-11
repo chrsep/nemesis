@@ -1,5 +1,5 @@
 import React, { FC } from "react"
-import { Box, Card, Flex, Heading, Image, Text } from "theme-ui"
+import { Box, Card, Flex, Heading, Text, Image } from "theme-ui"
 import { GetStaticPaths, GetStaticProps } from "next"
 import dayjs from "dayjs"
 import { ResponsivePie } from "@nivo/pie"
@@ -40,6 +40,7 @@ const ConcertPage: FC<Props> = ({ event }) => {
         mb={2}
       >
         <Image
+          alt="thumbnail"
           src={event.thumbnailUrl}
           sx={{
             objectFit: "cover",
@@ -57,7 +58,7 @@ const ConcertPage: FC<Props> = ({ event }) => {
             position: "absolute",
             top: 0,
             left: 0,
-            backgroundImage:
+            backgroundimg:
               "linear-gradient(to top, rgba(0,0,0,0), rgba(0,0,0,1))",
           }}
         >
@@ -69,9 +70,10 @@ const ConcertPage: FC<Props> = ({ event }) => {
         <Box px={3} sx={{ width: ["100%", "33%"] }}>
           <Card my={2}>
             <Flex>
-              <Box p={3}>
-                <Image
-                  src="/money.png"
+              <Box p={2}>
+                <img
+                  alt="money"
+                  src="/money.svg"
                   sx={{
                     objectFit: "cover",
                     maxWidth: "100%",
@@ -94,9 +96,10 @@ const ConcertPage: FC<Props> = ({ event }) => {
         <Box px={3} sx={{ width: ["100%", "33%"] }}>
           <Card my={2}>
             <Flex>
-              <Box p={3}>
-                <Image
-                  src="/ticket.png"
+              <Box p={2}>
+                <img
+                  alt="video"
+                  src="/ticket.svg"
                   sx={{
                     objectFit: "cover",
                     maxWidth: "100%",
@@ -121,9 +124,10 @@ const ConcertPage: FC<Props> = ({ event }) => {
         <Box px={3} sx={{ width: ["100%", "33%"] }}>
           <Card my={2}>
             <Flex>
-              <Box p={3}>
-                <Image
-                  src="/person.png"
+              <Box p={2}>
+                <img
+                  alt="person"
+                  src="/person.svg"
                   sx={{
                     objectFit: "cover",
                     maxWidth: "100%",
@@ -142,8 +146,8 @@ const ConcertPage: FC<Props> = ({ event }) => {
             </Flex>
           </Card>
         </Box>
-        <Box px={3} sx={{ width: ["50%", "50%"] }}>
-          <Card my={2}>
+        <Box px={3} sx={{ width: ["100%", "50%"] }}>
+          <Card my={2} sx={{ height: "20rem" }}>
             <ResponsivePie
               data={[
                 {
@@ -176,7 +180,7 @@ const ConcertPage: FC<Props> = ({ event }) => {
               radialLabelsLinkColor={{ from: "color" }}
               slicesLabelsSkipAngle={10}
               slicesLabelsTextColor="#333333"
-              animate
+              // animate
               motionStiffness={90}
               motionDamping={15}
               defs={[
@@ -236,47 +240,80 @@ const ConcertPage: FC<Props> = ({ event }) => {
             />
           </Card>
         </Box>
-        <Box px={3} sx={{ width: ["50%", "50%"] }}>
+        <Box px={3} sx={{ width: ["100%", "50%"] }}>
           <Card my={2}>
             <Heading p={2}>Social Media Interactions</Heading>
-            <Flex>
-              <Box p={3}>
-                <Image
-                  src="/twitter.png"
-                  sx={{
-                    objectFit: "cover",
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    height: ["auto", "100%"],
-                    width: ["100%", "auto"],
-                  }}
-                />
+            <Flex sx={{ flexWrap: "wrap" }}>
+              <Box sx={{ width: ["100%", "33.33%"] }}>
+                {/* <Flex> */}
+                <Box p={3}>
+                  <img
+                    alt="twitter"
+                    src="/twitter.svg"
+                    sx={{
+                      objectFit: "cover",
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                      height: ["auto", "100%"],
+                      width: ["100%", "auto"],
+                    }}
+                  />
+                </Box>
+                <Box p={2}>
+                  <Text sx={{ fontSize: 3, fontWeight: "bolder" }}>
+                    Twitter
+                  </Text>
+                  <Text sx={{ fontSize: 1 }}>
+                    1,000,000 <Text sx={{ opacity: 0.5 }}>tweets</Text>
+                  </Text>
+                </Box>
+                {/* </Flex> */}
               </Box>
-              <Box p={2}>
-                <Text sx={{ fontSize: 3, fontWeight: "bolder" }}>Twitter</Text>
-                <Text sx={{ fontSize: 1 }}>
-                  1,000,000 <Text sx={{ opacity: 0.5 }}>tweets</Text>
-                </Text>
+              <Box sx={{ width: ["100%", "33.33%"] }}>
+                <Box p={3}>
+                  <img
+                    alt="instagram"
+                    src="/instagram.svg"
+                    sx={{
+                      objectFit: "cover",
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                      height: ["auto", "100%"],
+                      width: ["100%", "auto"],
+                    }}
+                  />
+                </Box>
+                <Box p={2}>
+                  <Text sx={{ fontSize: 3, fontWeight: "bolder" }}>
+                    Instagram
+                  </Text>
+                  <Text sx={{ fontSize: 1 }}>
+                    1,307,400 <Text sx={{ opacity: 0.5 }}>mentions</Text>
+                  </Text>
+                </Box>
               </Box>
-              <Box p={3}>
-                <Image
-                  src="/instagram.png"
-                  sx={{
-                    objectFit: "cover",
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    height: ["auto", "100%"],
-                    width: ["100%", "auto"],
-                  }}
-                />
-              </Box>
-              <Box p={2}>
-                <Text sx={{ fontSize: 3, fontWeight: "bolder" }}>
-                  Instagram
-                </Text>
-                <Text sx={{ fontSize: 1 }}>
-                  1,307,400 <Text sx={{ opacity: 0.5 }}>mentions</Text>
-                </Text>
+              <Box sx={{ width: ["100%", "33.33%"] }}>
+                <Box p={3}>
+                  <img
+                    alt="facebook"
+                    src="/facebook.svg"
+                    sx={{
+                      objectFit: "cover",
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                      height: ["auto", "100%"],
+                      width: ["100%", "auto"],
+                    }}
+                  />
+                </Box>
+                <Box p={2}>
+                  <Text sx={{ fontSize: 3, fontWeight: "bolder" }}>
+                    Facebook
+                  </Text>
+                  <Text sx={{ fontSize: 1 }}>
+                    2,307,400 <Text sx={{ opacity: 0.5 }}>posts</Text>
+                  </Text>
+                </Box>
               </Box>
             </Flex>
           </Card>
