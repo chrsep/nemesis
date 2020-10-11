@@ -59,7 +59,8 @@ const ConcertPage: FC<Props> = ({ event, streamKey }) => {
           mb={2}
         >
           <Image
-            alt="thumbnail"src={event.thumbnailUrl}
+            alt="thumbnail"
+            src={event.thumbnailUrl}
             sx={{
               objectFit: "cover",
               maxWidth: "100%",
