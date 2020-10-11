@@ -56,6 +56,7 @@ export const listEvents = async (): Promise<ConcertEvent[]> => {
     `
         select *
         from events s
+        order by "startTime" desc
     `,
     []
   )
@@ -72,7 +73,7 @@ export const listEventIds = async (): Promise<{ id: string }[]> => {
   // language=PostgreSQL
   const result = await query(
     `
-        select id 
+        select id
         from events s
     `,
     []
@@ -90,7 +91,11 @@ export const findEventsById = async (id: string): Promise<ConcertEvent> => {
     `,
     [id]
   )
-  return result.rows[0]
+  return {
+    ...result.rows[0],
+    startTime: dayjs(result.rows[0].startTime).toISOString(),
+    endTime: dayjs(result.rows[0].endTime).toISOString(),
+  }
 }
 
 export const insertEvent = async (
@@ -192,7 +197,8 @@ export const deleteOrder = async (id: string) => {
   // language=PostgreSQL
   const result = await query(
     `
-        delete from orders
+        delete
+        from orders
         where id = $2
     `,
     [id]
