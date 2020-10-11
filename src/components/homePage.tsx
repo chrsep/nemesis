@@ -1,6 +1,7 @@
 import Link from "next/link"
 import React, { FC, useState } from "react"
 import { Box, Card, Flex, Heading, Image, Input, Text } from "theme-ui"
+import dayjs from "dayjs"
 import { ConcertEvent } from "../domain"
 import formatCurrency from "../utils/formatter"
 
@@ -61,7 +62,13 @@ const HomePage: FC<Props> = ({ events }) => {
                   {event.artists}
                 </Text>
                 <Text mb={1}>{event.name}</Text>
-                <Text>{formatCurrency(event.price)}</Text>
+                <Flex>
+                  <Text mb={3}>
+                    {dayjs(event.startTime).format("DD MMM YYYY")}
+                  </Text>
+                  <Text px={2}>•</Text>
+                  <Text>{formatCurrency(event.price)}</Text>
+                </Flex>
               </Box>
             </Link>
           )

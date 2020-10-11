@@ -114,7 +114,6 @@ const ConcertPage: FC<Props> = ({ event }) => {
                     {formatCurrency(event.price)}
                   </Text>
                 </div>
-                {/* TODO: use real page id */}
                 {isLoggedIn ? (
                   <Link href={`/buy/${event.id}`}>
                     <Button sx={{ ml: "auto" }} disabled={isBought}>
@@ -135,11 +134,16 @@ const ConcertPage: FC<Props> = ({ event }) => {
           )}
         </Box>
         <Box p={3} pb={6} sx={{ width: "100%" }}>
-          <Heading mb={2}>{event.name}</Heading>
-          <Flex>
-            <Text mb={3}>{event.artists}</Text>
+          <Text mb={2} sx={{ fontWeight: "bold" }}>
+            {event.artists}
+          </Text>
+          <Heading mb={2} sx={{ fontWeight: 900 }}>
+            {event.name}
+          </Heading>
+          <Flex sx={{ alignItems: "center" }} mb={2}>
+            <Text>{dayjs(event.startTime).format("DD MMM YYYY")}</Text>
             <Text px={2}>•</Text>
-            <Text mb={3}>{dayjs(event.startTime).format("DD MMMM YYYY")}</Text>
+            <Text>{dayjs(event.startTime).format("hh:mm A")}</Text>
           </Flex>
           <Text sx={{ opacity: 0.75 }} mb={3}>
             {event.description}
