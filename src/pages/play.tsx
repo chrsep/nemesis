@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import React, { useEffect, useRef, useState } from "react"
-import { jsx, Box, Heading, Button, Flex } from "theme-ui"
+import { Box, Heading, jsx } from "theme-ui"
 import Hls from "hls.js"
 import { useQueryString } from "../hooks/useQueryString"
 import useGetPlaybackId from "../hooks/useGetPlaybackId"
@@ -33,6 +33,7 @@ const Play = () => {
 
   return (
     <Box>
+      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <video
         id="player"
         ref={ref}
