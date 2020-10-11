@@ -38,9 +38,14 @@ const Layout: FC = ({ children }) => {
             <Button>Log In</Button>
           </LinkComponent>
         ) : (
-          <LinkComponent href="/api/auth/logout" ml="auto">
-            <Button variant="outline">Log Out</Button>
-          </LinkComponent>
+          <>
+            <LinkComponent href="/dashboard" ml="auto">
+              <Button variant="outline">Dashboard</Button>
+            </LinkComponent>
+            <LinkComponent href="/api/auth/logout" ml={2}>
+              <Button variant="outline">Log Out</Button>
+            </LinkComponent>
+          </>
         )}
       </Flex>
       <Box
