@@ -10,4 +10,6 @@ export interface ConcertEvent {
   artists: string
   description: string
   genre: string
+  startTime: string
+  endTime: string
 }

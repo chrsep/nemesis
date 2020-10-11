@@ -32,6 +32,7 @@ export const insertUser = async (
   name: string,
   role: string
 ) => {
+  console.log("inserting user", id, email, name, role)
   try {
     // language=PostgreSQL
     await query(`BEGIN TRANSACTION`, [])
@@ -39,13 +40,13 @@ export const insertUser = async (
       `
           insert into users (id, email, name, role)
           values ($1, $2, $3, $4)
-          ON CONFLICT (did) DO NOTHING
+          ON CONFLICT (id) DO NOTHING
       `,
       [id, email, name, role]
     )
     return true
   } catch (e) {
-    console.log('user exists')
+    console.log("user exists", e)
     await query(`ROLLBACK`, [])
     throw e
   }
@@ -60,7 +61,11 @@ export const listEvents = async (): Promise<ConcertEvent[]> => {
     `,
     []
   )
-  return result.rows
+  return result.rows.map((el) => ({
+    ...el,
+    startTime: el.startTime.toString(),
+    endTime: el.endTime.toString(),
+  }))
 }
 
 export const listEventIds = async (): Promise<{ id: string }[]> => {
