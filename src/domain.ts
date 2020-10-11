@@ -9,4 +9,5 @@ export interface ConcertEvent {
   thumbnailUrl: string
   artists: string
   description: string
+  genre: string
 }

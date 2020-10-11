@@ -39,11 +39,13 @@ export const insertUser = async (
       `
           insert into users (id, email, name, role)
           values ($1, $2, $3, $4)
+          ON CONFLICT (did) DO NOTHING
       `,
       [id, email, name, role]
     )
     return true
   } catch (e) {
+    console.log('user exists')
     await query(`ROLLBACK`, [])
     throw e
   }

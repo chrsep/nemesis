@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import { setCookie } from "nookies"
 import auth0 from "../../../utils/auth0"
+import { insertUser } from "../../../db"
 
 export default async function callback(
   req: NextApiRequest,
@@ -9,6 +10,8 @@ export default async function callback(
   try {
     await auth0.handleCallback(req, res, {
       onUserLoaded: async (authReq, authRes, session) => {
+        const { user } = session
+        await insertUser(user.sub, user.email, user.email, "customer")
         setCookie({ res: authRes }, "loggedIn", "1", {
           maxAge: 5184000,
           expires: new Date(Date.now() + 60 * 60 * 24 * 60 * 1000),

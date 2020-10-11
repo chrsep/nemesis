@@ -13,7 +13,7 @@ const Home: FC<Props> = ({ events }) => {
   return (
     <div>
       <Head>
-        <title>Create Next App</title>
+        <title>Nemesis</title>
         <link rel="icon" href="/favicon.ico" />
 
         {/* <script */}
