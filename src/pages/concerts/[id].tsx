@@ -47,7 +47,6 @@ const ConcertPage: FC<Props> = ({ event }) => {
 
   const isBought =
     (data?.upcomingEvents?.findIndex(({ id }) => {
-      console.log(id)
       return id === event?.id
     }) ?? -1) > -1
 
@@ -159,7 +158,7 @@ const ConcertPage: FC<Props> = ({ event }) => {
             <Text px={2}>•</Text>
             <Text mb={3}>{dayjs(event.startTime).format("DD MMMM YYYY")}</Text>
           </Flex>
-          <Text sx={{ opacity: 0.75, fontSize: 3 }} mb={3}>
+          <Text sx={{ opacity: 0.75 }} mb={3}>
             {event.description}
           </Text>
         </Box>

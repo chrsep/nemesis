@@ -9,6 +9,7 @@ const handlerPost: NextApiHandler = async (req, res) => {
   const session = await auth0.getSession(req)
   const body = await JSON.parse(req.body)
   await insertOrder(session?.user.sub, body.eventId)
+  res.status(201).end()
 }
 
 const order: NextApiHandler = auth0.requireAuthentication(async (req, res) => {
