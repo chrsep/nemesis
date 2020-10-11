@@ -1,26 +1,31 @@
 import React, { FC } from "react"
 import { Heading } from "theme-ui"
 import DashboardPage from "../../components/dashboardPage"
-import { listEvents } from "../../db"
+import { listDailyRevenues, listEvents } from "../../db"
 import { ConcertEvent } from "../../domain"
 
 interface Props {
   events: ConcertEvent[]
   topThree: ConcertEvent[]
+  revenues: {
+    date: string
+    revenue: number
+  }
 }
-const Dashboard: FC<Props> = ({ events, topThree }) => {
+const Dashboard: FC<Props> = ({ events, topThree, revenues }) => {
   return (
     <div>
       <Heading sx={{ fontSize: 5 }} p={3}>
         Dashboard
       </Heading>
-      <DashboardPage events={events} topThree={topThree} />
+      <DashboardPage events={events} topThree={topThree} revenues={revenues} />
     </div>
   )
 }
 
 export async function getStaticProps() {
   const events = await listEvents()
+  const revenues = await listDailyRevenues()
 
   const sortByRevenue = [...events].sort((a, b) => {
     return a.ticketsSold * a.price - b.ticketsSold * b.price
@@ -30,6 +35,7 @@ export async function getStaticProps() {
     props: {
       events,
       topThree: [sortByRevenue[0], sortByRevenue[1], sortByRevenue[2]],
+      revenues,
     },
     // we will attempt to re-generate the page:
     // - when a request comes in

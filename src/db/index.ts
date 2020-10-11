@@ -211,13 +211,15 @@ export const deleteOrder = async (id: string) => {
   return result.rowCount
 }
 
-export const getLastMonthRevenue = async (userId: string) => {
+export const listDailyRevenues = async () => {
   const order = await query(
     `
-          select  from  orders
-          where userId = $1
+          select *
+          from generate_series(now() - interval '364' day, now(),  '1 day'::interval) as date
       `,
-    [userId]
+    []
   )
-  return order
+  return order.rows.map((row) => {
+    return { date: dayjs(row.data).toISOString() }
+  })
 }

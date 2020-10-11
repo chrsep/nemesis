@@ -10,6 +10,10 @@ import formatCurrency from "../utils/formatter"
 interface Props {
   events: ConcertEvent[]
   topThree: ConcertEvent[]
+  revenues: {
+    date: string
+    revenue: number
+  }
 }
 
 const DashboardPage: FC<Props> = ({ topThree, events }) => {
