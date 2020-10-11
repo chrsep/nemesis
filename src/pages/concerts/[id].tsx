@@ -140,7 +140,7 @@ const ConcertPage: FC<Props> = ({ event }) => {
           <Heading mb={1} sx={{ fontWeight: 900 }}>
             {event.name}
           </Heading>
-          <Flex sx={{ alignItems: "center" }} mb={1}>
+          <Flex sx={{ alignItems: "center", opacity: 0.8 }} mb={1}>
             <Text>{dayjs(event.startTime).format("DD MMM YYYY")}</Text>
             <Text px={2}>•</Text>
             <Text>{dayjs(event.startTime).format("hh:mm A")}</Text>
@@ -159,7 +159,7 @@ const ConcertPage: FC<Props> = ({ event }) => {
           >
             {event.genre}
           </Card>
-          <Text sx={{ opacity: 0.75 }} mb={3}>
+          <Text sx={{ opacity: 0.75 }} mb={6}>
             {event.description}
           </Text>
         </Box>
