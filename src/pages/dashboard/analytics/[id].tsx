@@ -99,7 +99,7 @@ const ConcertPage: FC<Props> = ({ event }) => {
               <Box p={2}>
                 <img
                   alt="video"
-                  src="/video.svg"
+                  src="/ticket.svg"
                   sx={{
                     objectFit: "cover",
                     maxWidth: "100%",
