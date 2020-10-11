@@ -111,34 +111,36 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
                 </Text>
               </Flex>
               <Box sx={{ height: "20em" }} mb={4}>
-                <LineChart
-                  width={550}
-                  height={300}
-                  data={Object.values(month)}
-                  margin={{
-                    top: 20,
-                    right: 0,
-                    left: 40,
-                    bottom: 5,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" interval="preserveStartEnd" />
-                  <YAxis interval="preserveEnd" />
-                  <Tooltip
-                    formatter={(value, name) => [
-                      formatCurrency(value as number),
-                      name,
-                    ]}
-                  />
-                  <Legend />
-                  <Line
-                    type="monotone"
-                    dataKey="y"
-                    stroke="#8884d8"
-                    activeDot={{ r: 8 }}
-                  />
-                </LineChart>
+                <ResponsiveContainer>
+                  <LineChart
+                    width={550}
+                    height={300}
+                    data={Object.values(month)}
+                    margin={{
+                      top: 20,
+                      right: 0,
+                      left: 40,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" interval="preserveStartEnd" />
+                    <YAxis interval="preserveEnd" />
+                    <Tooltip
+                      formatter={(value, name) => [
+                        formatCurrency(value as number),
+                        name,
+                      ]}
+                    />
+                    <Legend />
+                    <Line
+                      type="monotone"
+                      dataKey="y"
+                      stroke="#8884d8"
+                      activeDot={{ r: 8 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
               </Box>
             </Card>
           </Box>
