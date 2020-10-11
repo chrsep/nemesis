@@ -1,5 +1,5 @@
 import React, { FC } from "react"
-import { Box, Card, Flex, Heading, Text } from "theme-ui"
+import { Box, Card, Flex, Heading, Image, Text } from "theme-ui"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { findEventsById, listEventIds } from "../../../db"
 import { ConcertEvent } from "../../../domain"
@@ -19,12 +19,30 @@ const ConcertPage: FC<Props> = ({ event }) => {
           height: 382,
           backgroundColor: "black",
           borderRadius: [0, 6],
+          position: "relative",
+          display: "flex",
+          justifyContent: "center",
         }}
         mb={2}
       >
-        <Box p={3} sx={{ width: "100%", color: "white" }}>
+        <Image
+          src={event.thumbnailUrl}
+          style={{ maxWidth: "100%", maxHeight: "100%", height: "100%" }}
+        />
+        <Box
+          p={3}
+          sx={{
+            width: "100%",
+            color: "white",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            backgroundImage:
+              "linear-gradient(to top, rgba(0,0,0,0), rgba(0,0,0,1))",
+          }}
+        >
           <Heading>{event.name}</Heading>
-          <Text mb={3}>John Mayer</Text>
+          <Text mb={3}>{event.artists}</Text>
         </Box>
       </Card>
       <Flex sx={{ flexWrap: "wrap" }}>

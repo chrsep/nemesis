@@ -8,4 +8,5 @@ export interface ConcertEvent {
   totalTickets: number
   thumbnailUrl: string
   artists: string
+  description: string
 }

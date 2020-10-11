@@ -1,6 +1,6 @@
 import Link from "next/link"
 import React, { FC, useState } from "react"
-import { Box, Card, Flex, Heading, Input, Text, Image } from "theme-ui"
+import { Box, Card, Flex, Image, Input, Text } from "theme-ui"
 import { ConcertEvent } from "../domain"
 import formatCurrency from "../utils/formatter"
 
