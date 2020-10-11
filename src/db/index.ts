@@ -372,3 +372,17 @@ export const listDailyTicketSold = async (id?: number) => {
     return { date: dayjs(row.data).toISOString() }
   })
 }
+
+export const listUserUpcomingEvents = async (userId: string) => {
+  // language=PostgreSQL
+  const result = await query(
+    `
+          select e.id 
+          from orders as o
+          join events e on o.price = e.price
+          where o."userId" = $1 and e."startTime" > now()
+      `,
+    [userId]
+  )
+  return result.rows
+}

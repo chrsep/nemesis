@@ -119,6 +119,10 @@ export default {
       cursor: "pointer",
       fontWeight: "bold",
       fontSize: 1,
+      "&:disabled": {
+        boxShadow: "none",
+        opacity: 0.4,
+      },
     },
     outline: {
       borderWidth: 1,
