@@ -211,14 +211,29 @@ export const deleteOrder = async (id: string) => {
   return result.rowCount
 }
 
-export const listDailyRevenues = async () => {
+export const listDailyRevenues = async (id?: number) => {
+  if (id === undefined) {
+    const order = await query(
+      `
+          select sum(orders.price), date_trunc('day', orders."buyDate")
+          from orders
+          group by date_trunc('day', orders."buyDate")
+      `,
+      []
+    )
+    return order.rows.map((row) => {
+      return { date: dayjs(row.data).toISOString() }
+    })
+  }
+
   const order = await query(
     `
           select sum(orders.price), orders."buyDate"
           from orders
+          where "eventId"=$1
           group by orders."buyDate"
       `,
-    []
+    [id]
   )
   return order.rows.map((row) => {
     return { date: dayjs(row.data).toISOString() }
@@ -284,6 +299,35 @@ export const listMonthlyTicketSold = async (id?: number) => {
         where "eventId"=$1
         group by 1,2;
     `,
+    [id]
+  )
+  return result.rows.map((row) => {
+    return { date: dayjs(row.data).toISOString() }
+  })
+}
+
+export const listDailyTicketSold = async (id?: number) => {
+  if (id === undefined) {
+    const result = await query(
+      `
+          select count(*), date_trunc('day', orders."buyDate")
+          from orders
+          group by date_trunc('day', orders."buyDate")
+      `,
+      []
+    )
+    return result.rows.map((row) => {
+      return { date: dayjs(row.data).toISOString() }
+    })
+  }
+
+  const result = await query(
+    `
+          select count(*), date_trunc('day', orders."buyDate")
+          from orders
+          where "eventId"=$1
+          group by date_trunc('day', orders."buyDate")
+      `,
     [id]
   )
   return result.rows.map((row) => {
