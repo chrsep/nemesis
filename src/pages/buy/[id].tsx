@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react"
 import Link from "next/link"
-import { Button, Card, Flex, Input, Label, Text } from "theme-ui"
+import { Button, Flex, Heading, Image, Input, Label, Text } from "theme-ui"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { findEventsById, listEventIds } from "../../db"
 import { ConcertEvent } from "../../domain"
@@ -35,10 +35,21 @@ const BuyPage: FC<Props> = ({ event }) => {
           }}
         />
       </head>
-      <Flex pt={[0, 5]} sx={{ flexDirection: "column", width: "100%" }}>
-        <Card
+      <Flex pt={[0, 4]} sx={{ flexDirection: "column", width: "100%" }}>
+        <Heading mb={4} sx={{ textAlign: "center" }}>
+          Beli Tiket
+        </Heading>
+        <Image
           mx="auto"
-          sx={{ width: "6rem", height: "6rem", backgroundColor: "black" }}
+          src={event.thumbnailUrl}
+          sx={{
+            boxShadow:
+              "0 6px 12px -2px rgba(50,50,93,.12),0 3px 7px -3px rgba(0,0,0,.15)",
+            borderRadius: 6,
+            maxWidth: "18rem",
+            maxHeight: "18rem",
+            backgroundColor: "black",
+          }}
           mb={3}
         />
         <Text sx={{ fontWeight: "bold", textAlign: "center" }}>

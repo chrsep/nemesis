@@ -36,13 +36,19 @@ const HomePage: FC<Props> = ({ events }) => {
                     sx={{
                       height: "10rem",
                       textAlign: "center",
+                      backgroundColor: "black",
+                      overflow: "hidden",
                     }}
                     mb={2}
                   >
                     <Image
                       src={event.thumbnailUrl}
-                      variant="avatar"
-                      style={{ maxWidth: "100%", maxHeight: "100%" }}
+                      style={{
+                        objectFit: "cover",
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                        height: "100%",
+                      }}
                     />
                   </Card>
                   <Heading mb={2}>{event.name}</Heading>

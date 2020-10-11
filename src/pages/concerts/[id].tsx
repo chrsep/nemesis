@@ -41,11 +41,11 @@ const ConcertPage: FC<Props> = ({ event }) => {
             height: 382,
             textAlign: "center",
             borderRadius: [0, 6],
+            backgroundColor: "black",
           }}
         >
           <Image
             src={event.thumbnailUrl}
-            variant="avatar"
             style={{ maxWidth: "100%", maxHeight: "100%" }}
           />
         </Card>

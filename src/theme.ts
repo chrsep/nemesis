@@ -128,9 +128,8 @@ export default {
   },
   forms: {
     input: {
-      backgroundColor: "rgba(0,0,0,0.05)",
-      shadow:
-        "0 6px 12px -2px rgba(50,50,93,.12),0 3px 7px -3px rgba(0,0,0,.15)",
+      boxShadow:
+        "0 6px 12px -2px rgba(50,50,93,.10),0 3px 7px -3px rgba(0,0,0,.12)",
       borderColor: "rgba(0,0,0,0.2)",
       borderRadius: 6,
     },

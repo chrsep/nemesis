@@ -1,6 +1,6 @@
 import Link from "next/link"
 import React, { FC, useState } from "react"
-import { Box, Card, Flex, Heading, Input, Text } from "theme-ui"
+import { Box, Card, Flex, Heading, Image, Input, Text } from "theme-ui"
 import dayjs from "dayjs"
 import { ConcertEvent } from "../domain"
 
@@ -107,8 +107,11 @@ const DashboardPage: FC<Props> = ({ events }) => {
                     },
                   }}
                 >
-                  <Card
+                  <Image
+                    src={event.thumbnailUrl}
                     sx={{
+                      objectFit: "cover",
+                      borderRadius: 6,
                       height: "2rem",
                       width: "3rem",
                       backgroundColor: "black",
