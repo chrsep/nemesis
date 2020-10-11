@@ -6,12 +6,17 @@ function msToHMS(ms: number) {
   const minutes = Math.floor((ms / 1000 / 60) % 60)
   const hours = Math.floor((ms / 1000 / 3600) % 24)
 
-  return `${hours}h ${minutes}m ${seconds}s`
+  return {
+    formatted: `${hours}h ${minutes}m ${seconds}s`,
+    hours,
+    minutes,
+    seconds,
+  }
 }
 
 const useCountdown = (date: Dayjs) => {
   const [countdown, setCountdown] = useState(0)
-  const formattedCountdown = msToHMS(countdown)
+  const { seconds, minutes, formatted, hours } = msToHMS(countdown)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -23,8 +28,11 @@ const useCountdown = (date: Dayjs) => {
   }, [])
 
   return {
-    formattedCountdown,
+    formattedCountdown: formatted,
     countdown,
+    hours,
+    minutes,
+    seconds,
   }
 }
 

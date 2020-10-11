@@ -104,7 +104,7 @@ const ConcertPage: FC<Props> = ({ event, playbackId }) => {
                   >
                     Terbeli
                   </Text>
-                  {!livePlaybackId ? (
+                  {!livePlaybackId.data?.playbackId ? (
                     <Box mb={2}>
                       <Text sx={{ fontSize: [1, 2] }}>Countdown</Text>
                       <Text sx={{ fontSize: [1, 2] }} as="h3">
@@ -135,19 +135,19 @@ const ConcertPage: FC<Props> = ({ event, playbackId }) => {
                     <Button>Beli tiket</Button>
                   </ThemeUiLink>
                 )}
-                {isLoggedIn && !livePlaybackId && (
+                {isLoggedIn && !livePlaybackId.data?.playbackId && (
                   <Link href={`/buy/${event.id}`}>
                     <Button sx={{ ml: "auto" }} disabled={isBought}>
                       {isBought ? "Belum Mulai" : "Beli tiket"}
                     </Button>
                   </Link>
                 )}
-                {isLoggedIn && livePlaybackId && isBought && (
-                  <Link href={`/play?eventId${event.id}`}>
+                {isLoggedIn && livePlaybackId.data?.playbackId && isBought && (
+                  <Link href={`/play?eventId=${event.id}`}>
                     <Button sx={{ ml: "auto" }}>Tonton Live</Button>
                   </Link>
                 )}
-                {isLoggedIn && livePlaybackId && !isBought && (
+                {isLoggedIn && livePlaybackId.data?.playbackId && !isBought && (
                   <Link href={`/buy/${event.id}`}>
                     <Button sx={{ ml: "auto" }}>Beli tiket</Button>
                   </Link>
