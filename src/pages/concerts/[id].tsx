@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, Fragment, useEffect, useState } from "react"
 import Link from "next/link"
 import {
   Box,
@@ -6,9 +6,9 @@ import {
   Card,
   Flex,
   Heading,
+  Image,
   Link as ThemeUiLink,
   Text,
-  Image,
 } from "theme-ui"
 import { GetStaticPaths, GetStaticProps } from "next"
 import dayjs from "dayjs"
@@ -18,12 +18,32 @@ import useIsLoggedIn from "../../hooks/useIsLoggedIn"
 import formatCurrency from "../../utils/formatter"
 import useGetMe from "../../hooks/useGetMe"
 
+function msToHMS(ms: number) {
+  const seconds = Math.floor((ms / 1000) % 60)
+  const minutes = Math.floor((ms / 1000 / 60) % 60)
+  const hours = Math.floor((ms / 1000 / 3600) % 24)
+
+  return `${hours}h ${minutes}m ${seconds}s`
+}
+
 interface Props {
   event?: ConcertEvent
 }
 const ConcertPage: FC<Props> = ({ event }) => {
   const isLoggedIn = useIsLoggedIn()
   const { data } = useGetMe()
+  const [countdown, setCountdown] = useState(0)
+
+  const formattedCountdown = msToHMS(countdown)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCountdown(dayjs(event?.startTime).diff(dayjs()))
+    }, 1000)
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
 
   const isBought =
     (data?.upcomingEvents?.findIndex(({ id }) => {
@@ -89,12 +109,27 @@ const ConcertPage: FC<Props> = ({ event }) => {
             ""
           ) : (
             <Card p={3} sx={{ backgroundColor: "white" }}>
+              {isBought && (
+                <Fragment>
+                  <Text
+                    mb={2}
+                    sx={{ fontWeight: "bold", fontSize: 1, color: "green" }}
+                  >
+                    Terbeli
+                  </Text>
+                  <Box mb={2}>
+                    <Text sx={{ fontSize: [1, 2] }}>Countdown</Text>
+                    <Text sx={{ fontSize: [1, 2] }} as="h3">
+                      {formattedCountdown}
+                    </Text>
+                  </Box>
+                </Fragment>
+              )}
               <Flex sx={{ alignItems: "center" }}>
                 <div>
                   <Text sx={{ fontSize: [1, 2] }}>Harga</Text>
                   <Text sx={{ fontSize: [1, 2] }} as="h3">
                     {formatCurrency(event.price)}
-                    /pax
                   </Text>
                 </div>
                 {/* TODO: use real page id */}
@@ -102,7 +137,7 @@ const ConcertPage: FC<Props> = ({ event }) => {
                   <Link href={`/buy/${event.id}`}>
                     <Button sx={{ ml: "auto" }} disabled={isBought}>
                       {" "}
-                      {isBought ? "Terbeli" : "Beli tiket"}
+                      {isBought ? "Belum Mulai" : "Beli tiket"}
                     </Button>
                   </Link>
                 ) : (
