@@ -380,7 +380,7 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
                         textOverflow: "ellipsis",
                       }}
                     >
-                      {dayjs(event.date).format("DD MMM YYYY")}
+                      {dayjs(event.startTime).format("DD MMM YYYY")}
                     </Text>
                     <Text
                       ml={2}
