@@ -42,6 +42,7 @@ module.exports = {
     "jsx-a11y/anchor-is-valid": 0,
     "react/no-unescaped-entities": 0,
     "@typescript-eslint/no-use-before-define": 0,
+    "no-console": 0,
   },
   globals: {
     document: true,
