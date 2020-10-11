@@ -18,7 +18,7 @@ const Layout: FC = ({ children }) => {
   useGetMe() // just so that me will always be in cache.
 
   return (
-    <Box>
+    <Box sx={{ position: "relative" }}>
       <Flex
         as="nav"
         p={3}
