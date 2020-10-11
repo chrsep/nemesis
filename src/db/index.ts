@@ -1,4 +1,5 @@
 import { Pool } from "pg"
+import dayjs from "dayjs"
 import { ConcertEvent } from "../domain"
 
 const pgPool = new Pool({
@@ -61,11 +62,14 @@ export const listEvents = async (): Promise<ConcertEvent[]> => {
     `,
     []
   )
-  return result.rows.map((el) => ({
-    ...el,
-    startTime: el.startTime.toString(),
-    endTime: el.endTime.toString(),
-  }))
+
+  return result.rows.map((row) => {
+    return {
+      ...row,
+      startTime: dayjs(row.startTime).toISOString(),
+      endTime: dayjs(row.endTime).toISOString(),
+    }
+  })
 }
 
 export const listEventIds = async (): Promise<{ id: string }[]> => {
@@ -198,4 +202,15 @@ export const deleteOrder = async (id: string) => {
     [id]
   )
   return result.rowCount
+}
+
+export const getLastMonthRevenue = async (userId: string) => {
+  const order = await query(
+    `
+          select  from  orders
+          where userId = $1
+      `,
+    [userId]
+  )
+  return order
 }
