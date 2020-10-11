@@ -2,7 +2,9 @@ const formatCurrency = (price: number) => {
   return Intl.NumberFormat("id", {
     style: "currency",
     currency: "IDR",
-  }).format(price)
+  })
+    .format(price)
+    .replace(",00", "")
 }
 
 export default formatCurrency

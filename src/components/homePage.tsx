@@ -2,6 +2,7 @@ import Link from "next/link"
 import React, { FC, useState } from "react"
 import { Box, Card, Flex, Heading, Input, Text, Image } from "theme-ui"
 import { ConcertEvent } from "../domain"
+import formatCurrency from "../utils/formatter"
 
 interface Props {
   events: ConcertEvent[]
@@ -51,14 +52,11 @@ const HomePage: FC<Props> = ({ events }) => {
                       }}
                     />
                   </Card>
-                  <Heading mb={2}>{event.name}</Heading>
-                  <Text mb={2}>{event.artists}</Text>
-                  <Text>
-                    {Intl.NumberFormat("id", {
-                      style: "currency",
-                      currency: "IDR",
-                    }).format(event.price)}
+                  <Text mb={1} sx={{ fontWeight: "bold" }}>
+                    {event.artists}
                   </Text>
+                  <Text mb={1}>{event.name}</Text>
+                  <Text>{formatCurrency(event.price)}</Text>
                 </Box>
               </Link>
             )
