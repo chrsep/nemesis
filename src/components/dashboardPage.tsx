@@ -4,7 +4,6 @@ import { Box, Card, Flex, Heading, Image, Input, Text } from "theme-ui"
 import dayjs from "dayjs"
 import Head from "next/head"
 import { ResponsiveLine } from "@nivo/line"
-import { LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts"
 import { ConcertEvent } from "../domain"
 import formatCurrency from "../utils/formatter"
 
@@ -309,12 +308,6 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
         <Heading as="h2" mb={2} px={3} pb={2}>
           Konser
         </Heading>
-        {/* <LineChart width={600} height={300} data={[]}>
-          <Line type="monotone" dataKey="uv" stroke="#8884d8" />
-          <CartesianGrid stroke="#ccc" />
-          <XAxis dataKey="name" />
-          <YAxis />
-        </LineChart> */}
         <Box sx={{ height: "700px", width: "80%" }}>
           <ResponsiveLine
             margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
