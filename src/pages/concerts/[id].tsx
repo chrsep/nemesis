@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useEffect, useState } from "react"
+import React, { FC, Fragment } from "react"
 import Link from "next/link"
 import {
   Box,
@@ -17,14 +17,7 @@ import { findEventsById, listEventIds } from "../../db"
 import useIsLoggedIn from "../../hooks/useIsLoggedIn"
 import formatCurrency from "../../utils/formatter"
 import useGetMe from "../../hooks/useGetMe"
-
-function msToHMS(ms: number) {
-  const seconds = Math.floor((ms / 1000) % 60)
-  const minutes = Math.floor((ms / 1000 / 60) % 60)
-  const hours = Math.floor((ms / 1000 / 3600) % 24)
-
-  return `${hours}h ${minutes}m ${seconds}s`
-}
+import useCountdown from "../../hooks/useCountdown"
 
 interface Props {
   event?: ConcertEvent
@@ -32,18 +25,8 @@ interface Props {
 const ConcertPage: FC<Props> = ({ event }) => {
   const isLoggedIn = useIsLoggedIn()
   const { data } = useGetMe()
-  const [countdown, setCountdown] = useState(0)
 
-  const formattedCountdown = msToHMS(countdown)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCountdown(dayjs(event?.startTime).diff(dayjs()))
-    }, 1000)
-    return () => {
-      clearInterval(interval)
-    }
-  }, [])
+  const { formattedCountdown } = useCountdown(dayjs(event?.startTime))
 
   const isBought =
     (data?.upcomingEvents?.findIndex(({ id }) => {
