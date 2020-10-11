@@ -17,6 +17,7 @@ interface Props {
 }
 
 const DashboardPage: FC<Props> = ({ topThree, events }) => {
+  const today = dayjs()
   const [search, setSearch] = useState("")
 
   const dates: string[] = []
@@ -304,7 +305,9 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
                 }}
                 mr={3}
               />
-              <Text sx={{ width: "30%", fontWeight: "bold" }}>Konser</Text>
+              <Text ml={2} sx={{ width: "30%", fontWeight: "bold" }}>
+                Konser
+              </Text>
               <Text ml={2} sx={{ width: "25%", fontWeight: "bold" }}>
                 Artis
               </Text>
@@ -325,80 +328,101 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
             </Flex>
             {events
               .filter(({ name }) => name.match(search))
-              .map((event) => (
-                <Link href={`/dashboard/analytics/${event.id}`} key={event.id}>
-                  <Flex
-                    p={3}
-                    sx={{
-                      minWidth: "30rem",
-                      cursor: "pointer",
-                      alignItems: "center",
-                      borderBottomStyle: "solid",
-                      borderBottomWidth: 1,
-                      borderColor: "rgba(0,0,0,0.2)",
-                      fontSize: [0, 1],
-                      whiteSpace: "nowrap",
-                      "&:hover": {
-                        backgroundColor: "rgba(0,0,0,0.04)",
-                      },
-                    }}
+              .map((event) => {
+                const startDiff = today.diff(event.startTime)
+                const endDiff = today.diff(event.endTime)
+                let color = "black"
+                if (startDiff < 0) color = "#008a4e"
+                if (startDiff > 0 && endDiff < 0) color = "blue"
+                if (endDiff > 0) color = "black"
+
+                return (
+                  <Link
+                    href={`/dashboard/analytics/${event.id}`}
+                    key={event.id}
                   >
-                    <Image
-                      src={event.thumbnailUrl}
+                    <Flex
+                      py={3}
+                      pr={3}
                       sx={{
-                        objectFit: "cover",
-                        borderRadius: 6,
-                        height: "2rem",
-                        width: "3rem",
-                        backgroundColor: "black",
-                        display: ["none", "block"],
-                        borderWidth: 2,
-                        borderStyle: "solid",
-                      }}
-                      mr={3}
-                    />
-                    <Text
-                      sx={{
-                        width: "30%",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
+                        minWidth: "30rem",
+                        cursor: "pointer",
+                        alignItems: "center",
+                        borderBottomStyle: "solid",
+                        borderBottomWidth: 1,
+                        borderColor: "rgba(0,0,0,0.2)",
+                        fontSize: [0, 1],
+                        whiteSpace: "nowrap",
+                        "&:hover": {
+                          backgroundColor: "rgba(0,0,0,0.04)",
+                        },
                       }}
                     >
-                      {event.name}
-                    </Text>
-                    <Text
-                      ml={2}
-                      sx={{
-                        width: "25%",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {event.artists}
-                    </Text>
-                    <Text
-                      ml={2}
-                      sx={{
-                        width: "25%",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {dayjs(event.startTime).format("DD MMM YYYY")}
-                    </Text>
-                    <Text
-                      ml={2}
-                      sx={{
-                        width: "20%",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {formatCurrency(event.price * event.ticketsSold)}
-                    </Text>
-                  </Flex>
-                </Link>
-              ))}
+                      <Box
+                        mx={2}
+                        sx={{
+                          flexShrink: 0,
+                          borderRadius: 100,
+                          backgroundColor: color,
+                          height: "8px",
+                          width: "8px",
+                        }}
+                      />
+                      <Image
+                        src={event.thumbnailUrl}
+                        sx={{
+                          objectFit: "cover",
+                          borderRadius: 6,
+                          height: "2rem",
+                          width: "3rem",
+                          backgroundColor: "black",
+                          display: ["none", "block"],
+                        }}
+                        mr={3}
+                      />
+                      <Text
+                        sx={{
+                          width: "30%",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {event.name}
+                      </Text>
+                      <Text
+                        ml={2}
+                        sx={{
+                          width: "25%",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {event.artists}
+                      </Text>
+                      <Text
+                        ml={2}
+                        sx={{
+                          width: "25%",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {dayjs(event.startTime).format("DD MMM YYYY")}
+                      </Text>
+                      <Text
+                        ml={2}
+                        sx={{
+                          width: "20%",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {formatCurrency(event.price * event.ticketsSold)}
+                      </Text>
+                    </Flex>
+                  </Link>
+                )
+              })}
           </Card>
         </Box>
       </main>
