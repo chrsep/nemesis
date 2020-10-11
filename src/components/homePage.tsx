@@ -11,15 +11,10 @@ const HomePage: FC<Props> = ({ events }) => {
 
   return (
     <main>
-      <Box p={3}>
+      <Box px={3} pt={3}>
         <Input
           placeholder="Cari"
-          sx={{
-            shadow:
-              "0 6px 12px -2px rgba(50,50,93,.12),0 3px 7px -3px rgba(0,0,0,.15)",
-            backgroundColor: "rgba(0,0,0,0.05)",
-            maxWidth: 400,
-          }}
+          sx={{ maxWidth: 400 }}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />

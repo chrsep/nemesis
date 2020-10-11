@@ -52,13 +52,16 @@ const ConcertPage: FC<Props> = ({ event }) => {
       </Box>
       <Flex sx={{ flexDirection: ["column", "row"], alignItems: "flex-start" }}>
         <Box
-          p={3}
+          px={3}
+          pt={3}
           sx={{
             width: "100%",
-            position: ["fixed", "sticky"],
-            maxWidth: [undefined, 400],
-            top: [undefined, 0],
-            bottom: [0, undefined],
+            // position: ["fixed", "sticky"],
+            // maxWidth: [undefined, 400],
+            // top: [undefined, 0],
+            // bottom: [0, undefined],
+            top: 0,
+            position: "sticky",
             zIndex: 100,
           }}
         >
