@@ -25,6 +25,8 @@ export default {
     primary: "black",
     secondary: "#30c",
     muted: "#f6f6f6",
+    border: "rgba(0,0,0,0.2)",
+    darkBackground: "rgba(0,0,0,0.07)",
   },
   styles: {
     root: {
