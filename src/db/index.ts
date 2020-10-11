@@ -18,7 +18,7 @@ pgPool.on("error", (err) => {
   console.error("Unexpected error in PostgresSQL connection pool", err)
 })
 
-const query = async (sql: string, params: string[]) => {
+const query = async (sql: string, params: Array<string | number>) => {
   const client = await pgPool.connect()
   try {
     return await client.query(sql, params)
@@ -167,7 +167,7 @@ export const insertOrder = async (
           insert into orders (userId,eventId,price,buyDate)
           values ($1,$2,$3,NOW())
       `,
-      [userId, eventId, price]
+      [userId, Number(eventId), Number(price)]
     )
     return true
   } catch (e) {
@@ -193,7 +193,7 @@ export const getOrderById = async (id: string): Promise<OrderData[]> => {
           select * from  orders
           where id = $1
       `,
-    [id]
+    [Number(id)]
   )
   return result.rows
 }
@@ -206,7 +206,7 @@ export const deleteOrder = async (id: string) => {
         from orders
         where id = $2
     `,
-    [id]
+    [Number(id)]
   )
   return result.rowCount
 }
