@@ -18,7 +18,7 @@ pgPool.on("error", (err) => {
   console.error("Unexpected error in PostgresSQL connection pool", err)
 })
 
-const query = async (sql: string, params: string[]) => {
+const query = async (sql: string, params: Array<string | number>) => {
   const client = await pgPool.connect()
   try {
     return await client.query(sql, params)
@@ -207,7 +207,7 @@ export const insertOrder = async (
           insert into orders (userId,eventId,price,buyDate)
           values ($1,$2,$3,NOW())
       `,
-      [userId, eventId, price]
+      [userId, Number(eventId), Number(price)]
     )
     return true
   } catch (e) {
@@ -233,7 +233,7 @@ export const getOrderById = async (id: string): Promise<OrderData[]> => {
           select * from  orders
           where id = $1
       `,
-    [id]
+    [Number(id)]
   )
   return result.rows
 }
@@ -246,21 +246,131 @@ export const deleteOrder = async (id: string) => {
         from orders
         where id = $2
     `,
-    [id]
+    [Number(id)]
   )
   return result.rowCount
 }
 
-export const listDailyRevenues = async () => {
+export const listDailyRevenues = async (id?: number) => {
+  if (id === undefined) {
+    const order = await query(
+      `
+          select sum(orders.price), date_trunc('day', orders."buyDate")
+          from orders
+          group by date_trunc('day', orders."buyDate")
+      `,
+      []
+    )
+    return order.rows.map((row) => {
+      return { date: dayjs(row.data).toISOString() }
+    })
+  }
+
   const order = await query(
     `
           select sum(orders.price), orders."buyDate"
           from orders
+          where "eventId"=$1
           group by orders."buyDate"
       `,
-    []
+    [id]
   )
   return order.rows.map((row) => {
+    return { date: dayjs(row.data).toISOString() }
+  })
+}
+
+export const listMonthlyRevenues = async (id?: number) => {
+  if (id === undefined) {
+    const result = await query(
+      `
+        select to_char("buyDate",'Mon') as mon,
+               extract(year from "buyDate") as yyyy,
+               sum(orders.price)
+        from orders
+        group by 1,2;
+    `,
+      []
+    )
+    return result.rows.map((row) => {
+      return { date: dayjs(row.data).toISOString() }
+    })
+  }
+
+  const result = await query(
+    `
+        select to_char("buyDate",'Mon') as mon,
+               extract(year from "buyDate") as yyyy,
+               sum(orders.price)
+        from orders
+        where "eventId"=$1
+        group by 1,2;
+    `,
+    [id]
+  )
+  return result.rows.map((row) => {
+    return { date: dayjs(row.data).toISOString() }
+  })
+}
+
+export const listMonthlyTicketSold = async (id?: number) => {
+  if (id === undefined) {
+    const result = await query(
+      `
+        select to_char("buyDate",'Mon') as mon,
+               extract(year from "buyDate") as yyyy,
+               count(*) as ticketsold
+        from orders
+        group by 1,2;
+    `,
+      []
+    )
+    return result.rows.map((row) => {
+      return { date: dayjs(row.data).toISOString() }
+    })
+  }
+
+  const result = await query(
+    `
+        select to_char("buyDate",'Mon') as mon,
+               extract(year from "buyDate") as yyyy,
+               count(*) as ticketsold
+        from orders
+        where "eventId"=$1
+        group by 1,2;
+    `,
+    [id]
+  )
+  return result.rows.map((row) => {
+    return { date: dayjs(row.data).toISOString() }
+  })
+}
+
+export const listDailyTicketSold = async (id?: number) => {
+  if (id === undefined) {
+    const result = await query(
+      `
+          select count(*), date_trunc('day', orders."buyDate")
+          from orders
+          group by date_trunc('day', orders."buyDate")
+      `,
+      []
+    )
+    return result.rows.map((row) => {
+      return { date: dayjs(row.data).toISOString() }
+    })
+  }
+
+  const result = await query(
+    `
+          select count(*), date_trunc('day', orders."buyDate")
+          from orders
+          where "eventId"=$1
+          group by date_trunc('day', orders."buyDate")
+      `,
+    [id]
+  )
+  return result.rows.map((row) => {
     return { date: dayjs(row.data).toISOString() }
   })
 }
