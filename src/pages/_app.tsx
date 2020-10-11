@@ -30,6 +30,7 @@ const Layout: FC = ({ children }) => {
             </Heading>
           </LinkComponent>
         </Link>
+
         {!isLoggedIn ? (
           <LinkComponent href="/api/auth/login" ml="auto">
             <Button>Log In</Button>

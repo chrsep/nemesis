@@ -130,6 +130,7 @@ export default {
       color: "black",
       backgroundColor: "white",
       fontSize: 1,
+      cursor: "pointer",
     },
   },
   forms: {
