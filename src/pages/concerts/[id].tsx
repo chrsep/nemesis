@@ -200,9 +200,9 @@ export const getStaticProps: GetStaticProps<Props, { id: string }> = async ({
   return {
     props: {
       event: await findEventsById(id),
-      playbackId: playbackid,
+      playbackId: playbackid ?? null,
     },
-    revalidate: 3600,
+    revalidate: 1,
   }
 }
 

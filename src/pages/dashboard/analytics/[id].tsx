@@ -396,7 +396,7 @@ export const getStaticProps: GetStaticProps<Props, { id: string }> = async ({
       event: await findEventsById(id),
       streamKey: streamkey ?? null,
     },
-    revalidate: 3600,
+    revalidate: 1,
   }
 }
 

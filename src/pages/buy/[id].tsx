@@ -162,7 +162,7 @@ export const getStaticProps: GetStaticProps<Props, { id: string }> = async ({
     props: {
       event: await findEventsById(id),
     },
-    revalidate: 3600,
+    revalidate: 1,
   }
 }
 
