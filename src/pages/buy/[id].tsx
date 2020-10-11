@@ -96,7 +96,7 @@ const DataDiri: FC<{
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <Input mb={2} placeholder="Alamat" />
+      <Input mb={2} placeholder="Gender" />
       <Input mb={3} placeholder="Umur" />
 
       <Button mx="auto" sx={{ width: "100%" }} onClick={onNext}>

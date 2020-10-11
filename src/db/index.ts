@@ -33,6 +33,7 @@ export const insertUser = async (
   name: string,
   role: string
 ) => {
+  console.log("inserting user", id, email, name, role)
   try {
     // language=PostgreSQL
     await query(`BEGIN TRANSACTION`, [])
@@ -40,11 +41,13 @@ export const insertUser = async (
       `
           insert into users (id, email, name, role)
           values ($1, $2, $3, $4)
+          ON CONFLICT (id) DO NOTHING
       `,
       [id, email, name, role]
     )
     return true
   } catch (e) {
+    console.log("user exists", e)
     await query(`ROLLBACK`, [])
     throw e
   }
@@ -60,6 +63,7 @@ export const listEvents = async (): Promise<ConcertEvent[]> => {
     `,
     []
   )
+
   return result.rows.map((row) => {
     return {
       ...row,
