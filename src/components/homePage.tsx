@@ -1,7 +1,8 @@
 import Link from "next/link"
 import React, { FC, useState } from "react"
-import { Box, Card, Flex, Heading, Input, Text } from "theme-ui"
+import { Box, Card, Flex, Image, Input, Text } from "theme-ui"
 import { ConcertEvent } from "../domain"
+import formatCurrency from "../utils/formatter"
 
 interface Props {
   events: ConcertEvent[]
@@ -11,15 +12,10 @@ const HomePage: FC<Props> = ({ events }) => {
 
   return (
     <main>
-      <Box p={3}>
+      <Box px={3} pt={3}>
         <Input
           placeholder="Cari"
-          sx={{
-            shadow:
-              "0 6px 12px -2px rgba(50,50,93,.12),0 3px 7px -3px rgba(0,0,0,.15)",
-            backgroundColor: "rgba(0,0,0,0.05)",
-            maxWidth: 400,
-          }}
+          sx={{ maxWidth: 400 }}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -40,18 +36,27 @@ const HomePage: FC<Props> = ({ events }) => {
                   <Card
                     sx={{
                       height: "10rem",
+                      textAlign: "center",
                       backgroundColor: "black",
+                      overflow: "hidden",
                     }}
                     mb={2}
-                  />
-                  <Heading mb={2}>{event.name}</Heading>
-                  <Text mb={2}>Nama Artist</Text>
-                  <Text>
-                    {Intl.NumberFormat("id", {
-                      style: "currency",
-                      currency: "IDR",
-                    }).format(event.price)}
+                  >
+                    <Image
+                      src={event.thumbnailUrl}
+                      style={{
+                        objectFit: "cover",
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                        height: "100%",
+                      }}
+                    />
+                  </Card>
+                  <Text mb={1} sx={{ fontWeight: "bold" }}>
+                    {event.artists}
                   </Text>
+                  <Text mb={1}>{event.name}</Text>
+                  <Text>{formatCurrency(event.price)}</Text>
                 </Box>
               </Link>
             )

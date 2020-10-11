@@ -1,76 +1,102 @@
 import React, { FC } from "react"
-import { Box, Button, Card, Flex, Heading, Text } from "theme-ui"
 import Link from "next/link"
+import {
+  Box,
+  Button,
+  Card,
+  Flex,
+  Heading,
+  Link as ThemeUiLink,
+  Text,
+  Image,
+} from "theme-ui"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { ConcertEvent } from "../../domain"
 import { findEventsById, listEventIds } from "../../db"
+import useIsLoggedIn from "../../hooks/useIsLoggedIn"
+import formatCurrency from "../../utils/formatter"
 
 interface Props {
   event?: ConcertEvent
 }
 const ConcertPage: FC<Props> = ({ event }) => {
+  const isLoggedIn = useIsLoggedIn()
+
   if (!event) {
     return <div />
   }
 
   return (
     <Box mx="auto" sx={{ maxWidth: 1200 }}>
-      <Card
+      <Box
+        px={[0, 3]}
+        pb={[0, 3]}
         sx={{
           width: "100%",
-          height: 382,
-          backgroundColor: "black",
-          borderRadius: [0, 6],
         }}
-      />
-      <Flex sx={{ flexDirection: ["column", "row"], alignItems: "flex-start" }}>
-        <Box
-          p={3}
+      >
+        <Card
           sx={{
             width: "100%",
-            position: "sticky",
-            maxWidth: [undefined, 400],
+            height: 382,
+            textAlign: "center",
+            borderRadius: [0, 6],
+            backgroundColor: "black",
+          }}
+        >
+          <Image
+            src={event.thumbnailUrl}
+            style={{ maxWidth: "100%", maxHeight: "100%" }}
+          />
+        </Card>
+      </Box>
+      <Flex sx={{ flexDirection: ["column", "row"], alignItems: "flex-start" }}>
+        <Box
+          px={3}
+          pt={3}
+          sx={{
+            width: "100%",
+            // position: ["fixed", "sticky"],
+            // maxWidth: [undefined, 400],
+            // top: [undefined, 0],
+            // bottom: [0, undefined],
             top: 0,
+            position: "sticky",
             zIndex: 100,
           }}
         >
           <Card p={3} sx={{ backgroundColor: "white" }}>
-            <Flex>
+            <Flex sx={{ alignItems: "center" }}>
               <div>
                 <Heading sx={{ fontSize: [3, 4] }} mb={2}>
                   Harga
                 </Heading>
                 <Text sx={{ fontSize: [1, 2] }} as="h3">
-                  {Intl.NumberFormat("id", {
-                    style: "currency",
-                    currency: "IDR",
-                  }).format(event?.price)}
+                  {formatCurrency(event.price)}
                   /pax
                 </Text>
               </div>
               {/* TODO: use real page id */}
-              <Link href="/payment?redirectUrl=/concerts/1">
-                <Button sx={{ ml: "auto" }}>Beli tiket</Button>
-              </Link>
+              {isLoggedIn ? (
+                <Link href={`/buy/${event.id}`}>
+                  <Button sx={{ ml: "auto" }}>Beli tiket</Button>
+                </Link>
+              ) : (
+                <ThemeUiLink
+                  href={`/api/auth/login?redirectTo=/buy/${event.id}`}
+                  sx={{ ml: "auto", display: "block" }}
+                >
+                  <Button>Beli tiket</Button>
+                </ThemeUiLink>
+              )}
             </Flex>
           </Card>
         </Box>
-        <Box p={3} sx={{ width: "100%" }}>
+        <Box p={3} pb={6} sx={{ width: "100%" }}>
           <Heading mb={3}>{event.name}</Heading>
-          <Text mb={3}>John Mayer</Text>
+          <Text mb={3}>{event.artists}</Text>
           <Text sx={{ opacity: 0.75, fontSize: 3 }} mb={3}>
-            The guitar is a fretted musical instrument that usually has six
-            strings.[1] It is typically played with both hands by strumming or
-            plucking the strings with either a guitar pick or the
-            fingers/fingernails of one hand, while simultaneously fretting
-            (pressing the strings against the frets) with the fingers of the
-            other hand.
-          </Text>
-          <Text sx={{ opacity: 0.75, fontSize: 3 }}>
-            The modern guitar was preceded by the gittern, the vihuela, the
-            four-course Renaissance guitar, and the five-course baroque guitar,
-            all of which contributed to the development of the modern six-string
-            instrument.
+            {event.description}
           </Text>
         </Box>
       </Flex>

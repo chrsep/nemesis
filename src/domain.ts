@@ -6,6 +6,9 @@ export interface ConcertEvent {
   price: number
   ticketsSold: number
   totalTickets: number
+  thumbnailUrl: string
+  artists: string
+  description: string
 }
 
 export interface OrderData {

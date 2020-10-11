@@ -111,10 +111,25 @@ export default {
       border: 1,
       borderColor: "black",
       cursor: "pointer",
+      fontWeight: "bold",
+      fontSize: 1,
+    },
+    outline: {
+      borderWidth: 1,
+      borderStyle: "solid",
+      boxShadow:
+        "0 6px 12px -2px rgba(50,50,93,.12),0 3px 7px -3px rgba(0,0,0,.15)",
+      borderColor: "black",
+      fontWeight: "bold",
+      color: "black",
+      backgroundColor: "white",
+      fontSize: 1,
     },
   },
   forms: {
     input: {
+      boxShadow:
+        "0 6px 12px -2px rgba(50,50,93,.10),0 3px 7px -3px rgba(0,0,0,.12)",
       borderColor: "rgba(0,0,0,0.2)",
       borderRadius: 6,
     },
