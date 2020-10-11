@@ -1,4 +1,5 @@
 import { Pool } from "pg"
+import dayjs from "dayjs"
 import { ConcertEvent, OrderData } from "../domain"
 
 const pgPool = new Pool({
@@ -32,6 +33,7 @@ export const insertUser = async (
   name: string,
   role: string
 ) => {
+  console.log("inserting user", id, email, name, role)
   try {
     // language=PostgreSQL
     await query(`BEGIN TRANSACTION`, [])
@@ -39,11 +41,14 @@ export const insertUser = async (
       `
           insert into users (id, email, name, role)
           values ($1, $2, $3, $4)
+          ON CONFLICT (id) DO NOTHING
       `,
       [id, email, name, role]
     )
+    await query(`COMMIT TRANSACTION`, [])
     return true
   } catch (e) {
+    console.log("user exists", e)
     await query(`ROLLBACK`, [])
     throw e
   }
@@ -55,17 +60,25 @@ export const listEvents = async (): Promise<ConcertEvent[]> => {
     `
         select *
         from events s
+        order by "startTime" desc
     `,
     []
   )
-  return result.rows
+
+  return result.rows.map((row) => {
+    return {
+      ...row,
+      startTime: dayjs(row.startTime).toISOString(),
+      endTime: dayjs(row.endTime).toISOString(),
+    }
+  })
 }
 
 export const listEventIds = async (): Promise<{ id: string }[]> => {
   // language=PostgreSQL
   const result = await query(
     `
-        select id 
+        select id
         from events s
     `,
     []
@@ -83,7 +96,11 @@ export const findEventsById = async (id: string): Promise<ConcertEvent> => {
     `,
     [id]
   )
-  return result.rows[0]
+  return {
+    ...result.rows[0],
+    startTime: dayjs(result.rows[0].startTime).toISOString(),
+    endTime: dayjs(result.rows[0].endTime).toISOString(),
+  }
 }
 
 export const insertEvent = async (
@@ -185,10 +202,22 @@ export const deleteOrder = async (id: string) => {
   // language=PostgreSQL
   const result = await query(
     `
-        delete from orders
+        delete
+        from orders
         where id = $2
     `,
     [id]
   )
   return result.rowCount
+}
+
+export const getLastMonthRevenue = async (userId: string) => {
+  const order = await query(
+    `
+          select  from  orders
+          where userId = $1
+      `,
+    [userId]
+  )
+  return order
 }

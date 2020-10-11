@@ -3,14 +3,16 @@ import React, { FC, useState } from "react"
 import { Box, Card, Flex, Heading, Image, Input, Text } from "theme-ui"
 import dayjs from "dayjs"
 import Head from "next/head"
+import { ResponsiveLine } from "@nivo/line"
 import { ConcertEvent } from "../domain"
+import formatCurrency from "../utils/formatter"
 
 interface Props {
   events: ConcertEvent[]
   topThree: ConcertEvent[]
 }
 
-const DashboardPage: FC<Props> = ({ events }) => {
+const DashboardPage: FC<Props> = ({ topThree, events }) => {
   const [search, setSearch] = useState("")
 
   return (
@@ -33,23 +35,239 @@ const DashboardPage: FC<Props> = ({ events }) => {
       <main>
         <Flex sx={{ flexWrap: "wrap" }} mb={4} px={2}>
           <Box px={2} sx={{ width: ["100%", "33.3333%"] }}>
-            <Card p={3} my={2}>
-              <Heading as="h4">Revenue</Heading>
+            <Card my={2}>
+              <Box
+                p={3}
+                sx={{
+                  borderBottomColor: "border",
+                  borderBottomStyle: "solid",
+                  borderBottomWidth: 1,
+                }}
+              >
+                <Heading as="h3" mb={1}>
+                  Revenue
+                </Heading>
+                <Text sx={{ fontSize: 1, opacity: 0.7 }}>30 hari terakhir</Text>
+              </Box>
+              <Flex
+                px={3}
+                py={2}
+                sx={{
+                  cursor: "pointer",
+                  alignItems: "center",
+                  borderBottomStyle: "solid",
+                  borderBottomWidth: 1,
+                  borderColor: "rgba(0,0,0,0.2)",
+                  fontSize: 0,
+                  whiteSpace: "nowrap",
+                  backgroundColor: "darkBackground",
+                }}
+              >
+                <Text
+                  ml={2}
+                  sx={{
+                    width: "100%",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Revenue by Date
+                </Text>
+              </Flex>
+              <Box sx={{ height: "8rem" }} mb={4}>
+                <ResponsiveLine
+                  enableGridX={false}
+                  gridYValues={[0, 10, 100, 200, 300, 400]}
+                  useMesh={false}
+                  data={[
+                    {
+                      id: "Revenue",
+                      color: "#004daa",
+                      data: [
+                        { x: dayjs().date(), y: 0 },
+                        { x: 1, y: 100 },
+                        { x: 2, y: 300 },
+                        { x: 5, y: 300 },
+                        { x: 6, y: 700 },
+                      ],
+                    },
+                  ]}
+                />
+              </Box>
             </Card>
           </Box>
 
           <Box px={2} sx={{ width: ["100%", "33.3333%"] }}>
-            <Card p={3} my={2}>
-              <Heading as="h4">Audience</Heading>
+            <Card my={2}>
+              <Box
+                p={3}
+                sx={{
+                  borderBottomColor: "border",
+                  borderBottomStyle: "solid",
+                  borderBottomWidth: 1,
+                }}
+              >
+                <Heading as="h3" mb={1}>
+                  Tiket Terjual
+                </Heading>
+                <Text sx={{ fontSize: 1, opacity: 0.7 }}>30 hari terakhir</Text>
+              </Box>
+
+              <Flex
+                px={3}
+                py={2}
+                sx={{
+                  cursor: "pointer",
+                  alignItems: "center",
+                  borderBottomStyle: "solid",
+                  borderBottomWidth: 1,
+                  borderColor: "rgba(0,0,0,0.2)",
+                  fontSize: 0,
+                  whiteSpace: "nowrap",
+                  backgroundColor: "darkBackground",
+                }}
+              >
+                <Text
+                  ml={2}
+                  sx={{
+                    width: "100%",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Tiket Terjual by Date
+                </Text>
+              </Flex>
+
+              <Box sx={{ height: "8rem" }} mb={4}>
+                <ResponsiveLine
+                  useMesh={false}
+                  data={[
+                    {
+                      id: "Revenue",
+                      color: "#004daa",
+                      data: [
+                        { x: 0, y: 0 },
+                        { x: 1, y: 100 },
+                        { x: 2, y: 300 },
+                        { x: 5, y: 300 },
+                        { x: 6, y: 700 },
+                      ],
+                    },
+                  ]}
+                />
+              </Box>
             </Card>
           </Box>
 
           <Box px={2} sx={{ width: ["100%", "33.33333%"] }}>
-            <Card p={3} my={2}>
-              <Heading as="h4">Top Three by Revenue</Heading>
+            <Card my={2}>
+              <Box
+                p={3}
+                sx={{
+                  borderBottomColor: "border",
+                  borderBottomStyle: "solid",
+                  borderBottomWidth: 1,
+                }}
+              >
+                <Heading as="h3" mb={1}>
+                  Top Konser by Revenue
+                </Heading>
+                <Text sx={{ fontSize: 1, opacity: 0.7 }}>All Time</Text>
+              </Box>
+              <Flex
+                px={3}
+                py={2}
+                sx={{
+                  cursor: "pointer",
+                  alignItems: "center",
+                  borderBottomStyle: "solid",
+                  borderBottomWidth: 1,
+                  borderColor: "rgba(0,0,0,0.2)",
+                  fontSize: 0,
+                  whiteSpace: "nowrap",
+                  backgroundColor: "darkBackground",
+                }}
+              >
+                <Text
+                  sx={{
+                    width: "70%",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Konser
+                </Text>
+                <Text
+                  ml={2}
+                  sx={{
+                    width: "30%",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Revenue
+                </Text>
+              </Flex>
+              <Box>
+                {topThree
+                  .filter(({ name }) => name.match(search))
+                  .map((event) => (
+                    <Link
+                      href={`/dashboard/analytics/${event.id}`}
+                      key={event.id}
+                    >
+                      <Flex
+                        p={3}
+                        sx={{
+                          cursor: "pointer",
+                          alignItems: "center",
+                          borderBottomStyle: "solid",
+                          borderBottomWidth: 1,
+                          borderColor: "rgba(0,0,0,0.2)",
+                          fontSize: [0, 1],
+                          whiteSpace: "nowrap",
+                          "&:hover": {
+                            backgroundColor: "rgba(0,0,0,0.04)",
+                          },
+                        }}
+                      >
+                        <Text
+                          sx={{
+                            width: "70%",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                        >
+                          {event.name}
+                        </Text>
+                        <Text
+                          ml={2}
+                          sx={{
+                            width: "30%",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                        >
+                          {formatCurrency(event.ticketsSold * event.price)}
+                        </Text>
+                      </Flex>
+                    </Link>
+                  ))}
+              </Box>
             </Card>
           </Box>
         </Flex>
+
+        <Heading as="h2" mb={2} px={3} pb={2}>
+          Konser
+        </Heading>
 
         <Box sx={{ width: ["100%", 300] }} px={3}>
           <Input
@@ -82,12 +300,23 @@ const DashboardPage: FC<Props> = ({ events }) => {
                 }}
                 mr={3}
               />
-              <Text sx={{ width: "35%" }}>Konser</Text>
-              <Text ml={2} sx={{ width: "30%" }}>
+              <Text sx={{ width: "30%", fontWeight: "bold" }}>Konser</Text>
+              <Text ml={2} sx={{ width: "25%", fontWeight: "bold" }}>
                 Artis
               </Text>
-              <Text ml={2} sx={{ width: "35%" }}>
+              <Text ml={2} sx={{ width: "25%", fontWeight: "bold" }}>
                 Tanggal
+              </Text>
+              <Text
+                ml={2}
+                sx={{
+                  width: "20%",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  fontWeight: "bold",
+                }}
+              >
+                Total Revenue
               </Text>
             </Flex>
             {events
@@ -119,12 +348,14 @@ const DashboardPage: FC<Props> = ({ events }) => {
                         width: "3rem",
                         backgroundColor: "black",
                         display: ["none", "block"],
+                        borderWidth: 2,
+                        borderStyle: "solid",
                       }}
                       mr={3}
                     />
                     <Text
                       sx={{
-                        width: "35%",
+                        width: "30%",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
                       }}
@@ -134,7 +365,7 @@ const DashboardPage: FC<Props> = ({ events }) => {
                     <Text
                       ml={2}
                       sx={{
-                        width: "30%",
+                        width: "25%",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
                       }}
@@ -144,12 +375,22 @@ const DashboardPage: FC<Props> = ({ events }) => {
                     <Text
                       ml={2}
                       sx={{
-                        width: "35%",
+                        width: "25%",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
                       }}
                     >
-                      {dayjs(event.date).format("DD MMM YYYY")}
+                      {dayjs(event.startTime).format("DD MMM YYYY")}
+                    </Text>
+                    <Text
+                      ml={2}
+                      sx={{
+                        width: "20%",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {formatCurrency(event.price * event.ticketsSold)}
                     </Text>
                   </Flex>
                 </Link>
