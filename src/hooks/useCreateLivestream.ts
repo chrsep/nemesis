@@ -15,7 +15,7 @@ const useCreateLivestream = (eventId?: number) => {
       )
       queryCache.setQueryData<GetPlaybackIdResponse>(
         ["events", eventId, "playbackId"],
-        { livestreamId: body.livestream.playbackId }
+        { playbackId: body.livestream.playbackId }
       )
     },
   })
