@@ -11,9 +11,11 @@ import {
 import Link from "next/link"
 import theme from "../theme"
 import useIsLoggedIn from "../hooks/useIsLoggedIn"
+import useGetMe from "../hooks/useGetMe"
 
 const Layout: FC = ({ children }) => {
   const isLoggedIn = useIsLoggedIn()
+  useGetMe() // just so that me will always be in cache.
 
   return (
     <Box>
@@ -30,6 +32,7 @@ const Layout: FC = ({ children }) => {
             </Heading>
           </LinkComponent>
         </Link>
+
         {!isLoggedIn ? (
           <LinkComponent href="/api/auth/login" ml="auto">
             <Button>Log In</Button>

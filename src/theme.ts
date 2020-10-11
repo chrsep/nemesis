@@ -119,6 +119,10 @@ export default {
       cursor: "pointer",
       fontWeight: "bold",
       fontSize: 1,
+      "&:disabled": {
+        boxShadow: "none",
+        opacity: 0.4,
+      },
     },
     outline: {
       borderWidth: 1,
@@ -130,6 +134,7 @@ export default {
       color: "black",
       backgroundColor: "white",
       fontSize: 1,
+      cursor: "pointer",
     },
   },
   forms: {

@@ -3,6 +3,7 @@ import Link from "next/link"
 import { Button, Flex, Heading, Image, Input, Label, Text } from "theme-ui"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from "next/router"
+import Head from "next/head"
 import { findEventsById, listEventIds } from "../../db"
 import { ConcertEvent } from "../../domain"
 import formatCurrency from "../../utils/formatter"
@@ -22,7 +23,7 @@ const BuyPage: FC<Props> = ({ event }) => {
 
   return (
     <Flex p={3} sx={{ justifyContent: "center", maxWidth: 400 }} mx="auto">
-      <head>
+      <Head>
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -36,7 +37,7 @@ const BuyPage: FC<Props> = ({ event }) => {
         `,
           }}
         />
-      </head>
+      </Head>
       <Flex pt={[0, 4]} sx={{ flexDirection: "column", width: "100%" }}>
         <Heading mb={4} sx={{ textAlign: "center" }}>
           Beli Tiket
@@ -112,16 +113,13 @@ const Payment: FC<{ event: ConcertEvent; onBack: () => void }> = ({
   event,
   onBack,
 }) => {
-  const me = useGetMe()
   const router = useRouter()
   const [mutate] = useCreateOrder()
   const postNewOrder = async (): Promise<void> => {
     const result = await mutate({
-      eventId: event.id.toString(),
-      price: event.price.toString(),
-      userId: me.data?.sub,
+      eventId: event.id,
     })
-    if (result) {
+    if (result?.ok) {
       await router.push(`/concerts/${event.id}`)
     }
   }

@@ -1,4 +1,5 @@
 import auth0 from "../../../utils/auth0"
+import { listUserUpcomingEvents } from "../../../db"
 
 export interface GetMeResponse {
   family_name: string
@@ -11,12 +12,16 @@ export interface GetMeResponse {
   updated_at: string
   email: string
   email_verified: boolean
+  upcomingEvents: Array<{
+    id: number
+  }>
 }
 
 export default auth0.requireAuthentication(async function me(req, res) {
   try {
     const session = await auth0.getSession(req)
-    res.json(session?.user)
+    const upcomingEvents = await listUserUpcomingEvents(session?.user.sub)
+    res.json({ ...session?.user, upcomingEvents })
   } catch (error) {
     console.error(error)
     res.status(error.status || 500).end(error.message)

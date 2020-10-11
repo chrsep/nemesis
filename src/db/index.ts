@@ -194,21 +194,19 @@ export const updateEventTicketSold = async (
   return result.rowCount
 }
 
-export const insertOrder = async (
-  userId: string,
-  eventId: string,
-  price: string
-) => {
+export const insertOrder = async (userId: string, eventId: string) => {
   try {
+    const event = await findEventsById(eventId)
     // language=PostgreSQL
     await query(`BEGIN TRANSACTION`, [])
     await query(
       `
-          insert into orders (userId,eventId,price,buyDate)
-          values ($1,$2,$3,NOW())
+          insert into orders ("userId", "eventId", "price", "buyDate")
+          values ($1, $2, $3, now())
       `,
-      [userId, Number(eventId), Number(price)]
+      [userId, eventId, event.price]
     )
+    await query(`COMMIT TRANSACTION`, [])
     return true
   } catch (e) {
     await query(`ROLLBACK`, [])
@@ -373,4 +371,18 @@ export const listDailyTicketSold = async (id?: number) => {
   return result.rows.map((row) => {
     return { date: dayjs(row.data).toISOString() }
   })
+}
+
+export const listUserUpcomingEvents = async (userId: string) => {
+  // language=PostgreSQL
+  const result = await query(
+    `
+          select e.id 
+          from orders as o
+          join events e on o.price = e.price
+          where o."userId" = $1 and e."startTime" > now()
+      `,
+    [userId]
+  )
+  return result.rows
 }
