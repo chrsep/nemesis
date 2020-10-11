@@ -332,9 +332,9 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
                 const startDiff = today.diff(event.startTime)
                 const endDiff = today.diff(event.endTime)
                 let color = "black"
-                if (startDiff < 0) color = "#008a4e"
-                if (startDiff > 0 && endDiff < 0) color = "blue"
-                if (endDiff > 0) color = "black"
+                if (startDiff < 0) color = "upcoming"
+                if (startDiff > 0 && endDiff < 0) color = "live"
+                if (endDiff > 0) color = "past"
 
                 return (
                   <Link

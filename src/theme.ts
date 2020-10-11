@@ -28,9 +28,9 @@ export default {
     border: "rgba(0,0,0,0.2)",
     darkBackground: "rgba(0,0,0,0.07)",
 
-    upcoming: "red",
-    live: "red",
-    past: "red",
+    upcoming: "#008a4e",
+    live: "blue",
+    past: "black",
   },
   styles: {
     root: {
