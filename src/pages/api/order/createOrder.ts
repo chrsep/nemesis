@@ -1,26 +1,26 @@
-import auth0 from "../../../utils/auth0"
+import { useMutation } from "react-query"
 import { insertOrder } from "../../../db"
 
 export interface PostNewOrder {
-  event_id: string
+  eventId: string
   price: string
+  userId?: string
 }
 
-const createOrder = auth0.requireAuthentication(async function me(req, res) {
-  try {
-    const session = await auth0.getSession(req)
-    if (!session) {
-      res.status(401).end("unauthorized")
-      return
-    }
+const createOrder = () => {
+  const fetchApi = async (newOrder: PostNewOrder): Promise<void> => {
+    const result = await insertOrder(
+      newOrder.userId!,
+      newOrder.eventId,
+      newOrder.price
+    )
 
-    const body: PostNewOrder = JSON.parse(req.body)
-    await insertOrder(session?.user?.sub, body.event_id, body.price)
-    res.status(201).end()
-  } catch (error) {
-    console.error(error)
-    res.status(error.status || 500).end(error.message)
+    if (!result) {
+      console.log("error create order")
+    }
   }
-})
+
+  return useMutation(fetchApi)
+}
 
 export default createOrder
