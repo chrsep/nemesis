@@ -1,6 +1,5 @@
 import { Pool } from "pg"
 import dayjs from "dayjs"
-import exp from "constants"
 import { ConcertEvent, OrderData } from "../domain"
 
 const pgPool = new Pool({
