@@ -111,6 +111,7 @@ export default {
   },
   buttons: {
     primary: {
+      flexShrink: 0,
       borderRadius: 6,
       boxShadow:
         "0 6px 12px -2px rgba(50,50,93,.12),0 3px 7px -3px rgba(0,0,0,.15)",
@@ -123,6 +124,7 @@ export default {
         boxShadow: "none",
         opacity: 0.4,
       },
+      whiteSpace: "nowrap",
     },
     outline: {
       borderWidth: 1,

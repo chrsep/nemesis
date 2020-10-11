@@ -362,8 +362,12 @@ const GoLiveCard: FC<{
       <Flex>
         {streamKey ? (
           <Box>
-            <Text>Mux Livestream Key </Text>
-            <Heading as="h3">{streamKey}</Heading>
+            <Text sx={{ fontSize: 1 }} mb={1}>
+              Mux Livestream Key{" "}
+            </Text>
+            <Heading as="h3" sx={{ fontSize: [1, 2] }}>
+              {streamKey}
+            </Heading>
           </Box>
         ) : (
           <Box>
