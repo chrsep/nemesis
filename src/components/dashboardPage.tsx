@@ -4,6 +4,7 @@ import { Box, Card, Flex, Heading, Image, Input, Text } from "theme-ui"
 import dayjs from "dayjs"
 import Head from "next/head"
 import { ResponsiveLine } from "@nivo/line"
+import { LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts"
 import { ConcertEvent } from "../domain"
 import formatCurrency from "../utils/formatter"
 
@@ -19,16 +20,25 @@ interface Props {
 const DashboardPage: FC<Props> = ({ topThree, events }) => {
   const today = dayjs()
   const [search, setSearch] = useState("")
-
-  const dates: string[] = []
-  for (let i = 0; i < 30; i += 1) {
-    dates.push(
-      dayjs()
-        .add(-1 * i, "day")
-        .format("DD MMMM")
-    )
+  const month: any = {
+    1: { x: "Jan", y: 0 },
+    2: { x: "Feb", y: 0 },
+    3: { x: "Mar", y: 0 },
+    4: { x: "Apr", y: 0 },
+    5: { x: "May", y: 0 },
+    6: { x: "Jun", y: 0 },
+    7: { x: "Jul", y: 0 },
+    8: { x: "Aug", y: 0 },
+    9: { x: "Sept", y: 0 },
+    10: { x: "Oct", y: 0 },
+    11: { x: "Nov", y: 0 },
+    12: { x: "Dec", y: 0 },
   }
-
+  // eslint-disable-next-line no-restricted-syntax
+  for (const event of events) {
+    const m = dayjs(event.startTime).get("month")
+    month[m + 1].y = event.price * event.ticketsSold
+  }
   return (
     <>
       <Head>
@@ -48,7 +58,7 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
       </Head>
       <main>
         <Flex sx={{ flexWrap: "wrap" }} mb={4} px={2}>
-          <Box px={2} sx={{ width: ["100%", "33.3333%"] }}>
+          <Box px={2} sx={{ width: ["100%", "100%"] }}>
             <Card my={2}>
               <Box
                 p={3}
@@ -59,9 +69,9 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
                 }}
               >
                 <Heading as="h3" mb={1}>
-                  Revenue
+                  Monthly Revenue
                 </Heading>
-                <Text sx={{ fontSize: 1, opacity: 0.7 }}>30 hari terakhir</Text>
+                <Text sx={{ fontSize: 1, opacity: 0.7 }}>MTD</Text>
               </Box>
               <Flex
                 px={3}
@@ -87,28 +97,54 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
                     textAlign: "center",
                   }}
                 >
-                  Revenue by Date
+                  Revenue by Month
                 </Text>
               </Flex>
-              <Box sx={{ height: "8rem" }} mb={4}>
+              <Box sx={{ height: "25rem" }} mb={4}>
                 <ResponsiveLine
-                  enableGridX={false}
-                  useMesh={false}
+                  margin={{ top: 20, right: 90, bottom: 50, left: 90 }}
+                  enablePoints
+                  axisBottom={{
+                    orient: "bottom",
+                    tickSize: 5,
+                    tickPadding: 5,
+                    tickRotation: 0,
+                    legend: "month",
+                    legendOffset: 0,
+                    legendPosition: "middle",
+                  }}
                   data={[
                     {
                       id: "Revenue",
                       color: "#004daa",
-                      data: dates.map((date) => {
-                        return { x: date, y: 0 }
-                      }),
+                      data: Object.values(month),
                     },
                   ]}
+                  axisTop={null}
+                  axisRight={null}
+                  axisLeft={{
+                    orient: "left",
+                    tickSize: 5,
+                    tickPadding: 5,
+                    tickRotation: 0,
+                    legend: "",
+                    legendOffset: -40,
+                    legendPosition: "middle",
+                  }}
+                  colors={{ scheme: "nivo" }}
+                  pointSize={10}
+                  pointColor={{ theme: "background" }}
+                  pointBorderWidth={2}
+                  pointBorderColor={{ from: "serieColor" }}
+                  pointLabel="y"
+                  pointLabelYOffset={-12}
+                  useMesh
                 />
               </Box>
             </Card>
           </Box>
 
-          <Box px={2} sx={{ width: ["100%", "33.3333%"] }}>
+          <Box px={2} sx={{ width: ["100%", "100%"] }}>
             <Card my={2}>
               <Box
                 p={3}
@@ -153,7 +189,7 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
               </Flex>
 
               <Box sx={{ height: "8rem" }} mb={4}>
-                <ResponsiveLine
+                {/* <ResponsiveLine
                   enableGridX={false}
                   data={[
                     {
@@ -164,12 +200,12 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
                       }),
                     },
                   ]}
-                />
+                /> */}
               </Box>
             </Card>
           </Box>
 
-          <Box px={2} sx={{ width: ["100%", "33.33333%"] }}>
+          <Box px={2} sx={{ width: ["100%", "100%"] }}>
             <Card my={2}>
               <Box
                 p={3}
@@ -273,7 +309,128 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
         <Heading as="h2" mb={2} px={3} pb={2}>
           Konser
         </Heading>
-
+        {/* <LineChart width={600} height={300} data={[]}>
+          <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+          <CartesianGrid stroke="#ccc" />
+          <XAxis dataKey="name" />
+          <YAxis />
+        </LineChart> */}
+        <Box sx={{ height: "700px", width: "80%" }}>
+          <ResponsiveLine
+            margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+            enablePoints
+            axisBottom={{
+              orient: "bottom",
+              tickSize: 5,
+              tickPadding: 5,
+              tickRotation: 0,
+              legend: "transportation",
+              legendOffset: 0,
+              legendPosition: "middle",
+            }}
+            data={[
+              {
+                id: "Revenue",
+                color: "#004daa",
+                data: [
+                  {
+                    x: "plane",
+                    y: 75,
+                  },
+                  {
+                    x: "helicopter",
+                    y: 81,
+                  },
+                  {
+                    x: "boat",
+                    y: 213,
+                  },
+                  {
+                    x: "train",
+                    y: 160,
+                  },
+                  {
+                    x: "subway",
+                    y: 261,
+                  },
+                  {
+                    x: "bus",
+                    y: 57,
+                  },
+                  {
+                    x: "car",
+                    y: 239,
+                  },
+                  {
+                    x: "moto",
+                    y: 182,
+                  },
+                  {
+                    x: "bicycle",
+                    y: 25,
+                  },
+                  {
+                    x: "horse",
+                    y: 232,
+                  },
+                  {
+                    x: "skateboard",
+                    y: 134,
+                  },
+                  {
+                    x: "others",
+                    y: 245,
+                  },
+                ],
+              },
+            ]}
+            axisTop={null}
+            axisRight={null}
+            axisLeft={{
+              orient: "left",
+              tickSize: 5,
+              tickPadding: 5,
+              tickRotation: 0,
+              legend: "count",
+              legendOffset: -40,
+              legendPosition: "middle",
+            }}
+            colors={{ scheme: "nivo" }}
+            pointSize={10}
+            pointColor={{ theme: "background" }}
+            pointBorderWidth={2}
+            pointBorderColor={{ from: "serieColor" }}
+            pointLabel="y"
+            pointLabelYOffset={-12}
+            useMesh
+            legends={[
+              {
+                anchor: "bottom-right",
+                direction: "column",
+                justify: false,
+                translateX: 100,
+                translateY: 0,
+                itemsSpacing: 0,
+                itemDirection: "left-to-right",
+                itemWidth: 80,
+                itemHeight: 20,
+                itemOpacity: 0.75,
+                symbolSize: 12,
+                symbolShape: "circle",
+                symbolBorderColor: "rgba(0, 0, 0, .5)",
+                effects: [
+                  {
+                    on: "hover",
+                    style: {
+                      itemBackground: "rgba(0, 0, 0, .03)",
+                      itemOpacity: 1,
+                    },
+                  },
+                ],
+              },
+            ]}
+          />
+        </Box>
         <Box sx={{ width: ["100%", 300] }} px={3}>
           <Input
             p={2}

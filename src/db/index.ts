@@ -33,7 +33,6 @@ export const insertUser = async (
   name: string,
   role: string
 ) => {
-  console.log("inserting user", id, email, name, role)
   try {
     // language=PostgreSQL
     await query(`BEGIN TRANSACTION`, [])
@@ -48,7 +47,6 @@ export const insertUser = async (
     await query(`COMMIT TRANSACTION`, [])
     return true
   } catch (e) {
-    console.log("user exists", e)
     await query(`ROLLBACK`, [])
     throw e
   }
