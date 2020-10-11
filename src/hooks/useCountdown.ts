@@ -4,10 +4,11 @@ import dayjs, { Dayjs } from "dayjs"
 function msToHMS(ms: number) {
   const seconds = Math.floor((ms / 1000) % 60)
   const minutes = Math.floor((ms / 1000 / 60) % 60)
-  const hours = Math.floor(ms / 1000 / 3600)
+  const hours = Math.floor((ms / 1000 / 3600) % 24)
+  const days = Math.floor(ms / 1000 / (3600 * 24))
 
   return {
-    formatted: `${hours}h ${minutes}m ${seconds}s`,
+    formatted: `${days}h ${hours}j ${minutes}m ${seconds}d`,
     hours,
     minutes,
     seconds,
