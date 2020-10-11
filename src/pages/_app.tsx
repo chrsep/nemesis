@@ -25,7 +25,9 @@ const Layout: FC = ({ children }) => {
       >
         <Link href="/">
           <LinkComponent>
-            <Heading>Nemesis</Heading>
+            <Heading as="h1" sx={{ fontWeight: 900 }}>
+              NEMESIS
+            </Heading>
           </LinkComponent>
         </Link>
         {!isLoggedIn ? (
