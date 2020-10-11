@@ -45,6 +45,7 @@ export const insertUser = async (
       `,
       [id, email, name, role]
     )
+    await query(`COMMIT TRANSACTION`, [])
     return true
   } catch (e) {
     console.log("user exists", e)
