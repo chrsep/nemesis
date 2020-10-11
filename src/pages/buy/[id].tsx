@@ -2,10 +2,12 @@ import React, { FC, useState } from "react"
 import Link from "next/link"
 import { Button, Flex, Heading, Image, Input, Label, Text } from "theme-ui"
 import { GetStaticPaths, GetStaticProps } from "next"
+import { useRouter } from "next/router"
 import { findEventsById, listEventIds } from "../../db"
 import { ConcertEvent } from "../../domain"
 import formatCurrency from "../../utils/formatter"
 import useGetMe from "../../hooks/useGetMe"
+import useCreateOrder from "../../hooks/useCreateOrder"
 
 interface Props {
   event?: ConcertEvent
@@ -67,7 +69,7 @@ const BuyPage: FC<Props> = ({ event }) => {
             originalEmail={me.data?.email}
           />
         )}
-        {step === 1 && <Payment id={event.id} onBack={() => setStep(0)} />}
+        {step === 1 && <Payment event={event} onBack={() => setStep(0)} />}
       </Flex>
     </Flex>
   )
@@ -106,7 +108,24 @@ const DataDiri: FC<{
   )
 }
 
-const Payment: FC<{ id: number; onBack: () => void }> = ({ id, onBack }) => {
+const Payment: FC<{ event: ConcertEvent; onBack: () => void }> = ({
+  event,
+  onBack,
+}) => {
+  const me = useGetMe()
+  const router = useRouter()
+  const [mutate] = useCreateOrder()
+  const postNewOrder = async (): Promise<void> => {
+    const result = await mutate({
+      eventId: event.id.toString(),
+      price: event.price.toString(),
+      userId: me.data?.sub,
+    })
+    if (result) {
+      await router.push(`/concerts/${event.id}`)
+    }
+  }
+
   return (
     <>
       <Label mb={2}>Credit Card</Label>
@@ -126,8 +145,8 @@ const Payment: FC<{ id: number; onBack: () => void }> = ({ id, onBack }) => {
         >
           Kembali
         </Button>
-        <Link href={`/concerts/${id}`}>
-          <Button mx="auto" sx={{ width: "100%" }}>
+        <Link href={`/concerts/${event.id}`}>
+          <Button mx="auto" sx={{ width: "100%" }} onClick={postNewOrder}>
             Bayar
           </Button>
         </Link>

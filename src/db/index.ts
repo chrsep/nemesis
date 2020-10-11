@@ -1,6 +1,6 @@
 import { Pool } from "pg"
 import dayjs from "dayjs"
-import { ConcertEvent } from "../domain"
+import { ConcertEvent, OrderData } from "../domain"
 
 const pgPool = new Pool({
   user: process.env.PG_USER,
@@ -176,26 +176,26 @@ export const insertOrder = async (
   }
 }
 
-export const getOrderByUser = async (userId: string) => {
-  const order = await query(
+export const getOrderByUser = async (userId: string): Promise<OrderData[]> => {
+  const result = await query(
     `
           select * from  orders
           where userId = $1
       `,
     [userId]
   )
-  return order
+  return result.rows
 }
 
-export const getOrderById = async (id: string) => {
-  const order = await query(
+export const getOrderById = async (id: string): Promise<OrderData[]> => {
+  const result = await query(
     `
           select * from  orders
           where id = $1
       `,
     [id]
   )
-  return order
+  return result.rows
 }
 
 export const deleteOrder = async (id: string) => {

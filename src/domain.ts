@@ -13,3 +13,11 @@ export interface ConcertEvent {
   startTime: string
   endTime: string
 }
+
+export interface OrderData {
+  id: number
+  userId: string
+  eventId: number
+  price: number
+  buyDate: Date
+}
