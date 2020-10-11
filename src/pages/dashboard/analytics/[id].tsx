@@ -350,7 +350,7 @@ const GoLiveCard: FC<{
   eventId: number
 }> = ({ streamKey, startTime, eventId }) => {
   const [createLivestream] = useCreateLivestream(eventId)
-  const { formattedCountdown, minutes, hours } = useCountdown(dayjs(startTime))
+  const { formattedCountdown } = useCountdown(dayjs(startTime))
 
   return (
     <Card
@@ -374,7 +374,7 @@ const GoLiveCard: FC<{
 
         <Button
           ml="auto"
-          disabled={minutes > 30 || hours > 0 || streamKey !== undefined}
+          disabled={streamKey !== undefined}
           onClick={async () => {
             await createLivestream()
           }}
