@@ -74,32 +74,36 @@ const ConcertPage: FC<Props> = ({ event }) => {
             zIndex: 100,
           }}
         >
-          <Card p={3} sx={{ backgroundColor: "white" }}>
-            <Flex sx={{ alignItems: "center" }}>
-              <div>
-                <Heading sx={{ fontSize: [3, 4] }} mb={2}>
-                  Harga
-                </Heading>
-                <Text sx={{ fontSize: [1, 2] }} as="h3">
-                  {formatCurrency(event.price)}
-                  /pax
-                </Text>
-              </div>
-              {/* TODO: use real page id */}
-              {isLoggedIn ? (
-                <Link href={`/buy/${event.id}`}>
-                  <Button sx={{ ml: "auto" }}>Beli tiket</Button>
-                </Link>
-              ) : (
-                <ThemeUiLink
-                  href={`/api/auth/login?redirectTo=/buy/${event.id}`}
-                  sx={{ ml: "auto", display: "block" }}
-                >
-                  <Button>Beli tiket</Button>
-                </ThemeUiLink>
-              )}
-            </Flex>
-          </Card>
+          {dayjs(event.startTime).isBefore(dayjs(), "date") ? (
+            ""
+          ) : (
+            <Card p={3} sx={{ backgroundColor: "white" }}>
+              <Flex sx={{ alignItems: "center" }}>
+                <div>
+                  <Heading sx={{ fontSize: [3, 4] }} mb={2}>
+                    Harga
+                  </Heading>
+                  <Text sx={{ fontSize: [1, 2] }} as="h3">
+                    {formatCurrency(event.price)}
+                    /pax
+                  </Text>
+                </div>
+                {/* TODO: use real page id */}
+                {isLoggedIn ? (
+                  <Link href={`/buy/${event.id}`}>
+                    <Button sx={{ ml: "auto" }}>Beli tiket</Button>
+                  </Link>
+                ) : (
+                  <ThemeUiLink
+                    href={`/api/auth/login?redirectTo=/buy/${event.id}`}
+                    sx={{ ml: "auto", display: "block" }}
+                  >
+                    <Button>Beli tiket</Button>
+                  </ThemeUiLink>
+                )}
+              </Flex>
+            </Card>
+          )}
         </Box>
         <Box p={3} pb={6} sx={{ width: "100%" }}>
           <Heading mb={2}>{event.name}</Heading>
