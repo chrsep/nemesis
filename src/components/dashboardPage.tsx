@@ -348,6 +348,8 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
                         width: "3rem",
                         backgroundColor: "black",
                         display: ["none", "block"],
+                        borderWidth: 2,
+                        borderStyle: "solid",
                       }}
                       mr={3}
                     />
