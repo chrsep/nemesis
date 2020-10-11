@@ -95,7 +95,7 @@ const ConcertPage: FC<Props> = ({ event }) => {
                 <Fragment>
                   <Text
                     mb={2}
-                    sx={{ fontWeight: "bold", fontSize: 1, color: "green" }}
+                    sx={{ fontWeight: "bold", fontSize: 1, color: "secondary" }}
                   >
                     Terbeli
                   </Text>
@@ -134,17 +134,31 @@ const ConcertPage: FC<Props> = ({ event }) => {
           )}
         </Box>
         <Box p={3} pb={6} sx={{ width: "100%" }}>
-          <Text mb={2} sx={{ fontWeight: "bold" }}>
+          <Text mb={1} sx={{ fontWeight: "bold" }}>
             {event.artists}
           </Text>
-          <Heading mb={2} sx={{ fontWeight: 900 }}>
+          <Heading mb={1} sx={{ fontWeight: 900 }}>
             {event.name}
           </Heading>
-          <Flex sx={{ alignItems: "center" }} mb={2}>
+          <Flex sx={{ alignItems: "center" }} mb={1}>
             <Text>{dayjs(event.startTime).format("DD MMM YYYY")}</Text>
             <Text px={2}>•</Text>
             <Text>{dayjs(event.startTime).format("hh:mm A")}</Text>
           </Flex>
+          <Card
+            mb={3}
+            px={2}
+            py={1}
+            sx={{
+              fontSize: 0,
+              backgroundColor: "secondary",
+              boxRadius: 6,
+              display: "inline-block",
+              color: "white",
+            }}
+          >
+            {event.genre}
+          </Card>
           <Text sx={{ opacity: 0.75 }} mb={3}>
             {event.description}
           </Text>
