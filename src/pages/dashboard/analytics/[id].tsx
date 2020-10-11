@@ -1,22 +1,20 @@
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 import { Box, Button, Card, Flex, Heading, Text, Image } from "theme-ui"
 import { GetStaticPaths, GetStaticProps } from "next"
-import dayjs from "dayjs"
+import dayjs, { Dayjs } from "dayjs"
 import { ResponsivePie } from "@nivo/pie"
 
 import { findEventsById, listEventIds } from "../../../db"
 import { ConcertEvent } from "../../../domain"
 import formatCurrency from "../../../utils/formatter"
 import useCountdown from "../../../hooks/useCountdown"
+import useCreateLivestream from "../../../hooks/useCreateLivestream"
+import { PostNewLivestreamResponse } from "../../api/events/[id]/livestream"
 
 interface Props {
   event?: ConcertEvent
 }
 const ConcertPage: FC<Props> = ({ event }) => {
-  const { formattedCountdown, countdown } = useCountdown(
-    dayjs(event?.startTime)
-  )
-
   const notDone = dayjs(event?.endTime).isAfter(dayjs())
 
   if (!event) {
@@ -35,57 +33,48 @@ const ConcertPage: FC<Props> = ({ event }) => {
   return (
     <Box mx="auto" sx={{ maxWidth: 1200 }}>
       {notDone && (
-        <Card mb={3} p={3} sx={{ backgroundColor: "white" }}>
-          <Flex>
-            <Box>
-              <Text>Countdown</Text>
-              <Heading as="h3">{formattedCountdown}</Heading>
-            </Box>
-            <Button ml="auto" disabled={countdown > 30}>
-              GO LIVE
-            </Button>
-          </Flex>
-        </Card>
+        <GoLiveCard eventId={event.id} startTime={dayjs(event.startTime)} />
       )}
-      <Card
-        sx={{
-          width: "100%",
-          height: ["auto", 382],
-          backgroundColor: "black",
-          borderRadius: [0, 6],
-          position: "relative",
-          display: "flex",
-          justifyContent: "center",
-        }}
-        mb={2}
-      >
-        <Image
-          alt="thumbnail"
-          src={event.thumbnailUrl}
-          sx={{
-            objectFit: "cover",
-            maxWidth: "100%",
-            maxHeight: "100%",
-            height: ["auto", "100%"],
-            width: ["100%", "auto"],
-          }}
-        />
-        <Box
-          p={3}
+      <Box px={[0, 3]}>
+        <Card
           sx={{
             width: "100%",
-            color: "white",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            backgroundimg:
-              "linear-gradient(to top, rgba(0,0,0,0), rgba(0,0,0,1))",
+            height: ["auto", 382],
+            backgroundColor: "black",
+            borderRadius: [0, 6],
+            position: "relative",
+            display: "flex",
+            justifyContent: "center",
           }}
+          mb={2}
         >
-          <Heading>{event.name}</Heading>
-          <Text mb={3}>{event.artists}</Text>
-        </Box>
-      </Card>
+          <Image
+            alt="thumbnail"src={event.thumbnailUrl}
+            sx={{
+              objectFit: "cover",
+              maxWidth: "100%",
+              maxHeight: "100%",
+              height: ["auto", "100%"],
+              width: ["100%", "auto"],
+            }}
+          />
+          <Box
+            p={3}
+            sx={{
+              width: "100%",
+              color: "white",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              backgroundimg:
+                "linear-gradient(to top, rgba(0,0,0,0), rgba(0,0,0,1))",
+            }}
+          >
+            <Heading>{event.name}</Heading>
+            <Text mb={3}>{event.artists}</Text>
+          </Box>
+        </Card>
+      </Box>
       <Flex sx={{ flexWrap: "wrap" }}>
         <Box px={3} sx={{ width: ["100%", "33%"] }}>
           <Card my={2}>
@@ -341,6 +330,52 @@ const ConcertPage: FC<Props> = ({ event }) => {
         <Box />
       </Flex>
     </Box>
+  )
+}
+
+const GoLiveCard: FC<{ startTime: Dayjs; eventId: number }> = ({
+  startTime,
+  eventId,
+}) => {
+  const [key, setKey] = useState("")
+  const [createLivestream] = useCreateLivestream(eventId)
+  const { formattedCountdown, countdown } = useCountdown(dayjs(startTime))
+
+  return (
+    <Card
+      mx={[0, 3]}
+      mb={3}
+      p={3}
+      sx={{ backgroundColor: "white", borderRadius: [0, 6] }}
+    >
+      <Flex>
+        {key ? (
+          <Box>
+            <Text>Mux Livestream Key </Text>
+            <Heading as="h3">{key}</Heading>
+          </Box>
+        ) : (
+          <Box>
+            <Text>Countdown</Text>
+            <Heading as="h3">{formattedCountdown}</Heading>
+          </Box>
+        )}
+
+        <Button
+          ml="auto"
+          disabled={countdown > 1800000 || key !== ""}
+          onClick={async () => {
+            const response = await createLivestream()
+            if (response?.ok) {
+              const body: PostNewLivestreamResponse = await response.json()
+              setKey(body.livestream.key)
+            }
+          }}
+        >
+          GO LIVE
+        </Button>
+      </Flex>
+    </Card>
   )
 }
 

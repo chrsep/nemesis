@@ -3,6 +3,13 @@ import auth0, { getQueryString } from "../../../../utils/auth0"
 import { startLiveStream } from "../../../../utils/mux"
 import { insertNewLivestream } from "../../../../db"
 
+export interface PostNewLivestreamResponse {
+  livestream: {
+    id: string
+    key: string
+    url: string
+  }
+}
 const handlerPost: NextApiHandler = async (req, res) => {
   const eventId = getQueryString(req, "id")
   if (!eventId) {
