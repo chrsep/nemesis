@@ -384,3 +384,21 @@ export const listUserUpcomingEvents = async (userId: string) => {
   )
   return result.rows
 }
+
+export const insertNewLivestream = async (
+  eventId: string,
+  livestreamId: string,
+  streamKey: string,
+  playbackId: string
+) => {
+  // language=PostgreSQL
+  await query(`BEGIN TRANSACTION`, [])
+  await query(
+    `
+          insert into livestream ("id", "streamKey", "playbackId", "eventId")
+          values ($1, $2, $3, $4)
+      `,
+    [livestreamId, streamKey, playbackId, eventId]
+  )
+  return query(`COMMIT TRANSACTION`, [])
+}
