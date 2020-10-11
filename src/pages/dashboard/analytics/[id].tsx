@@ -1,5 +1,5 @@
 import React, { FC } from "react"
-import { Box, Card, Flex, Heading, Text, Image } from "theme-ui"
+import { Box, Button, Card, Flex, Heading, Text, Image } from "theme-ui"
 import { GetStaticPaths, GetStaticProps } from "next"
 import dayjs from "dayjs"
 import { ResponsivePie } from "@nivo/pie"
@@ -7,11 +7,18 @@ import { ResponsivePie } from "@nivo/pie"
 import { findEventsById, listEventIds } from "../../../db"
 import { ConcertEvent } from "../../../domain"
 import formatCurrency from "../../../utils/formatter"
+import useCountdown from "../../../hooks/useCountdown"
 
 interface Props {
   event?: ConcertEvent
 }
 const ConcertPage: FC<Props> = ({ event }) => {
+  const { formattedCountdown, countdown } = useCountdown(
+    dayjs(event?.startTime)
+  )
+
+  const notDone = dayjs(event?.endTime).isAfter(dayjs())
+
   if (!event) {
     return <div />
   }
@@ -27,6 +34,19 @@ const ConcertPage: FC<Props> = ({ event }) => {
 
   return (
     <Box mx="auto" sx={{ maxWidth: 1200 }}>
+      {notDone && (
+        <Card mb={3} p={3} sx={{ backgroundColor: "white" }}>
+          <Flex>
+            <Box>
+              <Text>Countdown</Text>
+              <Heading as="h3">{formattedCountdown}</Heading>
+            </Box>
+            <Button ml="auto" disabled={countdown > 30}>
+              GO LIVE
+            </Button>
+          </Flex>
+        </Card>
+      )}
       <Card
         sx={{
           width: "100%",
