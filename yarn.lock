@@ -1527,7 +1527,7 @@
     lodash "^4.17.11"
     react-motion "^0.5.2"
 
-"@nivo/bar@0.62.0":
+"@nivo/bar@0.62.0", "@nivo/bar@^0.62.0":
   version "0.62.0"
   resolved "https://registry.yarnpkg.com/@nivo/bar/-/bar-0.62.0.tgz#dfa982ce04be4267e25a5a6a0da2a4ea7a942389"
   integrity sha512-bRnQ2NMOM1Q60Tk++VEckTpTxjbxu1w87npq3S+u86mP8l1VqMoerj0f41qpfAQpZcFm+1Fj521xaQCnAW0E2g==
@@ -1716,7 +1716,7 @@
     react-motion "^0.5.2"
     recompose "^0.30.0"
 
-"@nivo/pie@0.62.0":
+"@nivo/pie@0.62.0", "@nivo/pie@^0.62.0":
   version "0.62.0"
   resolved "https://registry.yarnpkg.com/@nivo/pie/-/pie-0.62.0.tgz#90d938d6065671c77496ab584ea2e5d759162b8e"
   integrity sha512-mup24wL2Prf6ukNiTW0Gsyi5kznno9AsHsA74NQSUgS0sbPGD8sPPb9MK4QP5/0ofb4kYNfmZ9ajaHCuMAudWw==
