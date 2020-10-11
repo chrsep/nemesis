@@ -9,6 +9,8 @@ export default async function logout(
   try {
     destroyCookie({ res }, "loggedIn", {
       path: "/",
+      domain: process.env.AUTH0_COOKIE_DOMAIN,
+      expires: new Date(Date.now() - 10000),
     })
     await auth0.handleLogout(req, res)
   } catch (error) {

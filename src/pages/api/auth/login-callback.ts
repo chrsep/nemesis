@@ -10,9 +10,11 @@ export default async function callback(
     await auth0.handleCallback(req, res, {
       onUserLoaded: async (authReq, authRes, session) => {
         setCookie({ res: authRes }, "loggedIn", "1", {
-          domain: process.env.AUTH0_DOMAIN,
+          maxAge: 5184000,
+          expires: new Date(Date.now() + 60 * 60 * 24 * 60 * 1000),
+          domain: process.env.AUTH0_COOKIE_DOMAIN,
           secure: process.env.NODE_ENV === "production",
-          sameSite: true,
+          sameSite: "Lax",
           path: "/",
           httpOnly: false,
         })
