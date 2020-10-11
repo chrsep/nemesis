@@ -1,6 +1,6 @@
 import Link from "next/link"
 import React, { FC, useState } from "react"
-import { Box, Card, Flex, Heading, Input, Text } from "theme-ui"
+import { Box, Card, Flex, Heading, Input, Text, Image } from "theme-ui"
 import { ConcertEvent } from "../domain"
 
 interface Props {
@@ -40,12 +40,18 @@ const HomePage: FC<Props> = ({ events }) => {
                   <Card
                     sx={{
                       height: "10rem",
-                      backgroundColor: "black",
+                      textAlign: "center",
                     }}
                     mb={2}
-                  />
+                  >
+                    <Image
+                      src={event.thumbnailUrl}
+                      variant="avatar"
+                      style={{ maxWidth: "100%", maxHeight: "100%" }}
+                    />
+                  </Card>
                   <Heading mb={2}>{event.name}</Heading>
-                  <Text mb={2}>Nama Artist</Text>
+                  <Text mb={2}>{event.artists}</Text>
                   <Text>
                     {Intl.NumberFormat("id", {
                       style: "currency",

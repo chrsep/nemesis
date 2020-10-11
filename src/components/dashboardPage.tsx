@@ -133,7 +133,7 @@ const DashboardPage: FC<Props> = ({ events }) => {
                       textOverflow: "ellipsis",
                     }}
                   >
-                    Nama Artist
+                    {event.artists}
                   </Text>
                   <Text
                     ml={2}

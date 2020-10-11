@@ -8,6 +8,7 @@ import {
   Heading,
   Link as ThemeUiLink,
   Text,
+  Image,
 } from "theme-ui"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { ConcertEvent } from "../../domain"
@@ -38,10 +39,16 @@ const ConcertPage: FC<Props> = ({ event }) => {
           sx={{
             width: "100%",
             height: 382,
-            backgroundColor: "black",
+            textAlign: "center",
             borderRadius: [0, 6],
           }}
-        />
+        >
+          <Image
+            src={event.thumbnailUrl}
+            variant="avatar"
+            style={{ maxWidth: "100%", maxHeight: "100%" }}
+          />
+        </Card>
       </Box>
       <Flex sx={{ flexDirection: ["column", "row"], alignItems: "flex-start" }}>
         <Box
@@ -84,20 +91,9 @@ const ConcertPage: FC<Props> = ({ event }) => {
         </Box>
         <Box p={3} pb={6} sx={{ width: "100%" }}>
           <Heading mb={3}>{event.name}</Heading>
-          <Text mb={3}>John Mayer</Text>
+          <Text mb={3}>{event.artists}</Text>
           <Text sx={{ opacity: 0.75, fontSize: 3 }} mb={3}>
-            The guitar is a fretted musical instrument that usually has six
-            strings.[1] It is typically played with both hands by strumming or
-            plucking the strings with either a guitar pick or the
-            fingers/fingernails of one hand, while simultaneously fretting
-            (pressing the strings against the frets) with the fingers of the
-            other hand.
-          </Text>
-          <Text sx={{ opacity: 0.75, fontSize: 3 }}>
-            The modern guitar was preceded by the gittern, the vihuela, the
-            four-course Renaissance guitar, and the five-course baroque guitar,
-            all of which contributed to the development of the modern six-string
-            instrument.
+            {event.description}
           </Text>
         </Box>
       </Flex>
