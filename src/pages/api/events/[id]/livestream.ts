@@ -7,13 +7,13 @@ export interface PostNewLivestreamResponse {
   livestream: {
     id: string
     key: string
-    url: string
+    playbackId: string
   }
 }
 const handlerPost: NextApiHandler = async (req, res) => {
   const eventId = getQueryString(req, "id")
   if (!eventId) {
-    res.status(403).end()
+    res.status(400).end()
     return
   }
   const livestream = await startLiveStream()
@@ -36,7 +36,7 @@ const handlerPost: NextApiHandler = async (req, res) => {
     livestream: {
       id: livestream.id,
       key: livestream.stream_key,
-      url: livestream.playback_ids,
+      playbackId: livestream.playback_ids[0].id,
     },
   })
 }

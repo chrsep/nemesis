@@ -141,6 +141,36 @@ export const findEventsById = async (id: string): Promise<ConcertEvent> => {
   }
 }
 
+export const findPlaybackIdByEventId = async (
+  id: string
+): Promise<{ playbackid: string }> => {
+  // language=PostgreSQL
+  const result = await query(
+    `
+        select livestream."playbackId" as playbackId
+        from livestream
+        where livestream."eventId" = $1
+    `,
+    [id]
+  )
+  return { ...result.rows[0] }
+}
+
+export const findStreamKeyByEventId = async (
+  id: string
+): Promise<{ streamkey: string }> => {
+  // language=PostgreSQL
+  const result = await query(
+    `
+        select livestream."streamKey" as streamKey
+        from livestream
+        where livestream."eventId" = $1
+    `,
+    [id]
+  )
+  return { ...result.rows[0] }
+}
+
 export const insertEvent = async (
   name: string,
   date: string,

@@ -1,21 +1,27 @@
-import React, { FC, useState } from "react"
+import React, { FC } from "react"
 import { Box, Button, Card, Flex, Heading, Text, Image } from "theme-ui"
 import { GetStaticPaths, GetStaticProps } from "next"
 import dayjs, { Dayjs } from "dayjs"
 import { ResponsivePie } from "@nivo/pie"
 
-import { findEventsById, listEventIds } from "../../../db"
+import {
+  findEventsById,
+  findStreamKeyByEventId,
+  listEventIds,
+} from "../../../db"
 import { ConcertEvent } from "../../../domain"
 import formatCurrency from "../../../utils/formatter"
 import useCountdown from "../../../hooks/useCountdown"
 import useCreateLivestream from "../../../hooks/useCreateLivestream"
-import { PostNewLivestreamResponse } from "../../api/events/[id]/livestream"
+import useGetStreamKey from "../../../hooks/useGetStreamKey"
 
 interface Props {
   event?: ConcertEvent
+  streamKey: string
 }
-const ConcertPage: FC<Props> = ({ event }) => {
+const ConcertPage: FC<Props> = ({ event, streamKey }) => {
   const notDone = dayjs(event?.endTime).isAfter(dayjs())
+  const liveStreamKey = useGetStreamKey(event?.id, streamKey)
 
   if (!event) {
     return <div />
@@ -33,7 +39,11 @@ const ConcertPage: FC<Props> = ({ event }) => {
   return (
     <Box mx="auto" sx={{ maxWidth: 1200 }}>
       {notDone && (
-        <GoLiveCard eventId={event.id} startTime={dayjs(event.startTime)} />
+        <GoLiveCard
+          streamKey={liveStreamKey.data?.streamKey}
+          eventId={event.id}
+          startTime={dayjs(event.startTime)}
+        />
       )}
       <Box px={[0, 3]}>
         <Card
@@ -333,11 +343,11 @@ const ConcertPage: FC<Props> = ({ event }) => {
   )
 }
 
-const GoLiveCard: FC<{ startTime: Dayjs; eventId: number }> = ({
-  startTime,
-  eventId,
-}) => {
-  const [key, setKey] = useState("")
+const GoLiveCard: FC<{
+  streamKey?: string
+  startTime: Dayjs
+  eventId: number
+}> = ({ streamKey, startTime, eventId }) => {
   const [createLivestream] = useCreateLivestream(eventId)
   const { formattedCountdown, countdown } = useCountdown(dayjs(startTime))
 
@@ -349,10 +359,10 @@ const GoLiveCard: FC<{ startTime: Dayjs; eventId: number }> = ({
       sx={{ backgroundColor: "white", borderRadius: [0, 6] }}
     >
       <Flex>
-        {key ? (
+        {streamKey ? (
           <Box>
             <Text>Mux Livestream Key </Text>
-            <Heading as="h3">{key}</Heading>
+            <Heading as="h3">{streamKey}</Heading>
           </Box>
         ) : (
           <Box>
@@ -363,16 +373,12 @@ const GoLiveCard: FC<{ startTime: Dayjs; eventId: number }> = ({
 
         <Button
           ml="auto"
-          disabled={countdown > 1800000 || key !== ""}
+          disabled={countdown > 1800000 || streamKey !== ""}
           onClick={async () => {
-            const response = await createLivestream()
-            if (response?.ok) {
-              const body: PostNewLivestreamResponse = await response.json()
-              setKey(body.livestream.key)
-            }
+            await createLivestream()
           }}
         >
-          GO LIVE
+          {streamKey ? "YOU'RE LIVE" : "GO LIVE"}
         </Button>
       </Flex>
     </Card>
@@ -383,10 +389,12 @@ export const getStaticProps: GetStaticProps<Props, { id: string }> = async ({
   params,
 }) => {
   const id = params?.id ?? ""
+  const { streamkey } = await findStreamKeyByEventId(id)
 
   return {
     props: {
       event: await findEventsById(id),
+      streamKey: streamkey ?? null,
     },
     revalidate: 3600,
   }

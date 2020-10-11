@@ -13,16 +13,19 @@ import {
 import { GetStaticPaths, GetStaticProps } from "next"
 import dayjs from "dayjs"
 import { ConcertEvent } from "../../domain"
-import { findEventsById, listEventIds } from "../../db"
+import { findEventsById, findPlaybackIdByEventId, listEventIds } from "../../db"
 import useIsLoggedIn from "../../hooks/useIsLoggedIn"
 import formatCurrency from "../../utils/formatter"
 import useGetMe from "../../hooks/useGetMe"
 import useCountdown from "../../hooks/useCountdown"
+import useGetPlaybackId from "../../hooks/useGetPlaybackId"
 
 interface Props {
   event?: ConcertEvent
+  playbackId: string
 }
-const ConcertPage: FC<Props> = ({ event }) => {
+const ConcertPage: FC<Props> = ({ event, playbackId }) => {
+  const livePlaybackId = useGetPlaybackId(event?.id, playbackId)
   const isLoggedIn = useIsLoggedIn()
   const { data } = useGetMe()
 
@@ -101,12 +104,20 @@ const ConcertPage: FC<Props> = ({ event }) => {
                   >
                     Terbeli
                   </Text>
-                  <Box mb={2}>
-                    <Text sx={{ fontSize: [1, 2] }}>Countdown</Text>
-                    <Text sx={{ fontSize: [1, 2] }} as="h3">
-                      {formattedCountdown}
-                    </Text>
-                  </Box>
+                  {!livePlaybackId ? (
+                    <Box mb={2}>
+                      <Text sx={{ fontSize: [1, 2] }}>Countdown</Text>
+                      <Text sx={{ fontSize: [1, 2] }} as="h3">
+                        {formattedCountdown}
+                      </Text>
+                    </Box>
+                  ) : (
+                    <Box mb={2}>
+                      <Text sx={{ fontSize: [1, 2], fontWeight: "bold" }}>
+                        STREAMING NOW
+                      </Text>
+                    </Box>
+                  )}
                 </Fragment>
               )}
               <Flex sx={{ alignItems: "center" }}>
@@ -116,20 +127,30 @@ const ConcertPage: FC<Props> = ({ event }) => {
                     {formatCurrency(event.price)}
                   </Text>
                 </div>
-                {isLoggedIn ? (
-                  <Link href={`/buy/${event.id}`}>
-                    <Button sx={{ ml: "auto" }} disabled={isBought}>
-                      {" "}
-                      {isBought ? "Belum Mulai" : "Beli tiket"}
-                    </Button>
-                  </Link>
-                ) : (
+                {!isLoggedIn && (
                   <ThemeUiLink
                     href={`/api/auth/login?redirectTo=/buy/${event.id}`}
                     sx={{ ml: "auto", display: "block" }}
                   >
                     <Button>Beli tiket</Button>
                   </ThemeUiLink>
+                )}
+                {isLoggedIn && !livePlaybackId && (
+                  <Link href={`/buy/${event.id}`}>
+                    <Button sx={{ ml: "auto" }} disabled={isBought}>
+                      {isBought ? "Belum Mulai" : "Beli tiket"}
+                    </Button>
+                  </Link>
+                )}
+                {isLoggedIn && livePlaybackId && isBought && (
+                  <Link href={`/play?eventId${event.id}`}>
+                    <Button sx={{ ml: "auto" }}>Tonton Live</Button>
+                  </Link>
+                )}
+                {isLoggedIn && livePlaybackId && !isBought && (
+                  <Link href={`/buy/${event.id}`}>
+                    <Button sx={{ ml: "auto" }}>Beli tiket</Button>
+                  </Link>
                 )}
               </Flex>
             </Card>
@@ -174,10 +195,12 @@ export const getStaticProps: GetStaticProps<Props, { id: string }> = async ({
   params,
 }) => {
   const id = params?.id ?? ""
+  const { playbackid } = await findPlaybackIdByEventId(id)
 
   return {
     props: {
       event: await findEventsById(id),
+      playbackId: playbackid,
     },
     revalidate: 3600,
   }
