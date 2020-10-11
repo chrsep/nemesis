@@ -2,10 +2,12 @@ import Link from "next/link"
 import React, { FC, useState } from "react"
 import { Box, Card, Flex, Heading, Image, Input, Text } from "theme-ui"
 import dayjs from "dayjs"
+import Head from "next/head"
 import { ConcertEvent } from "../domain"
 
 interface Props {
   events: ConcertEvent[]
+  topThree: ConcertEvent[]
 }
 
 const DashboardPage: FC<Props> = ({ events }) => {
@@ -13,7 +15,7 @@ const DashboardPage: FC<Props> = ({ events }) => {
 
   return (
     <>
-      <head>
+      <Head>
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -27,7 +29,7 @@ const DashboardPage: FC<Props> = ({ events }) => {
         `,
           }}
         />
-      </head>
+      </Head>
       <main>
         <Flex sx={{ flexWrap: "wrap" }} mb={4} px={2}>
           <Box px={2} sx={{ width: ["100%", "33.3333%"] }}>
@@ -44,7 +46,7 @@ const DashboardPage: FC<Props> = ({ events }) => {
 
           <Box px={2} sx={{ width: ["100%", "33.33333%"] }}>
             <Card p={3} my={2}>
-              <Heading as="h4">Engangement Metric</Heading>
+              <Heading as="h4">Top Three by Revenue</Heading>
             </Card>
           </Box>
         </Flex>
