@@ -346,8 +346,8 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
           </Box>
         </Flex>
 
-        <Heading as="h2" mb={2} px={3} pb={2}>
-          Konser
+        <Heading as="h2" mb={2} px={3} sx={{ fontWeight: 900 }}>
+          Semua Konser-mu
         </Heading>
         <Box sx={{ width: ["100%", 300] }} px={3}>
           <Input

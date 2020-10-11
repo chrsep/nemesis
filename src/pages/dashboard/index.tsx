@@ -15,7 +15,7 @@ interface Props {
 const Dashboard: FC<Props> = ({ events, topThree, revenues }) => {
   return (
     <div>
-      <Heading sx={{ fontSize: 5 }} p={3}>
+      <Heading sx={{ fontSize: 5, fontWeight: 900 }} px={3} pt={4} pb={2}>
         Dashboard
       </Heading>
       <DashboardPage events={events} topThree={topThree} revenues={revenues} />
