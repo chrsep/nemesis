@@ -31,23 +31,23 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
   const today = dayjs()
   const [search, setSearch] = useState("")
   const month: any = {
-    1: { name: "Jan", y: 0 },
-    2: { name: "Feb", y: 0 },
-    3: { name: "Mar", y: 0 },
-    4: { name: "Apr", y: 0 },
-    5: { name: "May", y: 0 },
-    6: { name: "Jun", y: 0 },
-    7: { name: "Jul", y: 0 },
-    8: { name: "Aug", y: 0 },
-    9: { name: "Sept", y: 0 },
-    10: { name: "Oct", y: 0 },
-    11: { name: "Nov", y: 0 },
-    12: { name: "Dec", y: 0 },
+    1: { name: "Jan", revenue: 0 },
+    2: { name: "Feb", revenue: 0 },
+    3: { name: "Mar", revenue: 0 },
+    4: { name: "Apr", revenue: 0 },
+    5: { name: "May", revenue: 0 },
+    6: { name: "Jun", revenue: 0 },
+    7: { name: "Jul", revenue: 0 },
+    8: { name: "Aug", revenue: 0 },
+    9: { name: "Sept", revenue: 0 },
+    10: { name: "Oct", revenue: 0 },
+    11: { name: "Nov", revenue: 0 },
+    12: { name: "Dec", revenue: 0 },
   }
   // eslint-disable-next-line no-restricted-syntax
   for (const event of events) {
     const m = dayjs(event.startTime).get("month")
-    month[m + 1].y = event.price * event.ticketsSold
+    month[m + 1].revenue = event.price * event.ticketsSold
   }
   return (
     <>
@@ -135,7 +135,7 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
                     <Legend />
                     <Line
                       type="monotone"
-                      dataKey="y"
+                      dataKey="revenue"
                       stroke="#8884d8"
                       activeDot={{ r: 8 }}
                     />

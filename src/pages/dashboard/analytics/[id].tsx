@@ -207,8 +207,8 @@ const ConcertPage: FC<Props> = ({ event, streamKey }) => {
                 {
                   id: "dots",
                   type: "patternDots",
-                  background: "inherit",
-                  color: "rgba(255, 255, 255, 0.3)",
+                  background: "rgba(130, 202, 157, 1)",
+                  color: "rgba(130, 202, 157, 1)",
                   size: 4,
                   padding: 1,
                   stagger: true,
@@ -216,8 +216,8 @@ const ConcertPage: FC<Props> = ({ event, streamKey }) => {
                 {
                   id: "lines",
                   type: "patternLines",
-                  background: "inherit",
-                  color: "rgba(255, 255, 255, 0.3)",
+                  background: "rgba(136, 132, 216, 1)",
+                  color: "rgba(136, 132, 216, 1)",
                   rotation: -45,
                   lineWidth: 6,
                   spacing: 10,
