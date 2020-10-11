@@ -3,7 +3,18 @@ import React, { FC, useState } from "react"
 import { Box, Card, Flex, Heading, Image, Input, Text } from "theme-ui"
 import dayjs from "dayjs"
 import Head from "next/head"
-import { ResponsiveLine } from "@nivo/line"
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  PieChart,
+  Pie,
+  ResponsiveContainer,
+} from "recharts"
 import { ConcertEvent } from "../domain"
 import formatCurrency from "../utils/formatter"
 
@@ -20,18 +31,18 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
   const today = dayjs()
   const [search, setSearch] = useState("")
   const month: any = {
-    1: { x: "Jan", y: 0 },
-    2: { x: "Feb", y: 0 },
-    3: { x: "Mar", y: 0 },
-    4: { x: "Apr", y: 0 },
-    5: { x: "May", y: 0 },
-    6: { x: "Jun", y: 0 },
-    7: { x: "Jul", y: 0 },
-    8: { x: "Aug", y: 0 },
-    9: { x: "Sept", y: 0 },
-    10: { x: "Oct", y: 0 },
-    11: { x: "Nov", y: 0 },
-    12: { x: "Dec", y: 0 },
+    1: { name: "Jan", y: 0 },
+    2: { name: "Feb", y: 0 },
+    3: { name: "Mar", y: 0 },
+    4: { name: "Apr", y: 0 },
+    5: { name: "May", y: 0 },
+    6: { name: "Jun", y: 0 },
+    7: { name: "Jul", y: 0 },
+    8: { name: "Aug", y: 0 },
+    9: { name: "Sept", y: 0 },
+    10: { name: "Oct", y: 0 },
+    11: { name: "Nov", y: 0 },
+    12: { name: "Dec", y: 0 },
   }
   // eslint-disable-next-line no-restricted-syntax
   for (const event of events) {
@@ -57,7 +68,7 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
       </Head>
       <main>
         <Flex sx={{ flexWrap: "wrap" }} mb={4} px={2}>
-          <Box px={2} sx={{ width: ["100%", "100%"] }}>
+          <Box px={2} sx={{ width: ["100%", "50%"] }}>
             <Card my={2}>
               <Box
                 p={3}
@@ -99,51 +110,40 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
                   Revenue by Month
                 </Text>
               </Flex>
-              <Box sx={{ height: "25rem" }} mb={4}>
-                <ResponsiveLine
-                  margin={{ top: 20, right: 90, bottom: 50, left: 90 }}
-                  enablePoints
-                  axisBottom={{
-                    orient: "bottom",
-                    tickSize: 5,
-                    tickPadding: 5,
-                    tickRotation: 0,
-                    legend: "month",
-                    legendOffset: 0,
-                    legendPosition: "middle",
+              <Box sx={{ height: "20em" }} mb={4}>
+                <LineChart
+                  width={550}
+                  height={300}
+                  data={Object.values(month)}
+                  margin={{
+                    top: 20,
+                    right: 0,
+                    left: 40,
+                    bottom: 5,
                   }}
-                  data={[
-                    {
-                      id: "Revenue",
-                      color: "#004daa",
-                      data: Object.values(month),
-                    },
-                  ]}
-                  axisTop={null}
-                  axisRight={null}
-                  axisLeft={{
-                    orient: "left",
-                    tickSize: 5,
-                    tickPadding: 5,
-                    tickRotation: 0,
-                    legend: "",
-                    legendOffset: -40,
-                    legendPosition: "middle",
-                  }}
-                  colors={{ scheme: "nivo" }}
-                  pointSize={10}
-                  pointColor={{ theme: "background" }}
-                  pointBorderWidth={2}
-                  pointBorderColor={{ from: "serieColor" }}
-                  pointLabel="y"
-                  pointLabelYOffset={-12}
-                  useMesh
-                />
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" interval="preserveStartEnd" />
+                  <YAxis interval="preserveEnd" />
+                  <Tooltip
+                    formatter={(value, name) => [
+                      formatCurrency(value as number),
+                      name,
+                    ]}
+                  />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="y"
+                    stroke="#8884d8"
+                    activeDot={{ r: 8 }}
+                  />
+                </LineChart>
               </Box>
             </Card>
           </Box>
 
-          <Box px={2} sx={{ width: ["100%", "100%"] }}>
+          <Box px={2} sx={{ width: ["100%", "50%"] }}>
             <Card my={2}>
               <Box
                 p={3}
@@ -154,9 +154,9 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
                 }}
               >
                 <Heading as="h3" mb={1}>
-                  Tiket Terjual
+                  Device Usage %
                 </Heading>
-                <Text sx={{ fontSize: 1, opacity: 0.7 }}>30 hari terakhir</Text>
+                <Text sx={{ fontSize: 1, opacity: 0.7 }}>All events</Text>
               </Box>
 
               <Flex
@@ -183,23 +183,62 @@ const DashboardPage: FC<Props> = ({ topThree, events }) => {
                     textAlign: "center",
                   }}
                 >
-                  Tiket Terjual by Date
+                  Streaming Devices
                 </Text>
               </Flex>
 
-              <Box sx={{ height: "8rem" }} mb={4}>
-                {/* <ResponsiveLine
-                  enableGridX={false}
-                  data={[
-                    {
-                      id: "Revenue",
-                      color: "#004daa",
-                      data: dates.map((date) => {
-                        return { x: date, y: 0 }
-                      }),
-                    },
-                  ]}
-                /> */}
+              <Box sx={{ height: "20rem" }} mb={4}>
+                <ResponsiveContainer>
+                  <PieChart
+                    width={500}
+                    height={300}
+                    margin={{ top: 5, right: 5, bottom: 5, left: 5 }}
+                  >
+                    <Pie
+                      dataKey="value"
+                      isAnimationActive={false}
+                      data={[
+                        { name: "Android", value: 80 },
+                        { name: "ios", value: 20 },
+                      ]}
+                      // cx={200}
+                      // cy={200}
+                      // outerRadius={80}
+                      fill="#8884d8"
+                      label
+                    />
+                    <Pie
+                      dataKey="value"
+                      isAnimationActive={false}
+                      data={[
+                        { name: "Chrome", value: 50 },
+                        { name: "Safari", value: 30 },
+                        { name: "Firefox", value: 20 },
+                      ]}
+                      outerRadius={80}
+                      fill="#82ca9d"
+                      label
+                    />
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+                {/* <PieChart width={200} height={400}>
+                  <Pie
+                    dataKey="value"
+                    isAnimationActive={false}
+                    data={[
+                      { name: "Chrome", value: 50 },
+                      { name: "Safari", value: 30 },
+                      { name: "Firefox", value: 20 },
+                    ]}
+                    cx={200}
+                    cy={200}
+                    outerRadius={80}
+                    fill="#82ca9d"
+                    label
+                  />
+                  <Tooltip />
+                </PieChart> */}
               </Box>
             </Card>
           </Box>
