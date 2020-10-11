@@ -234,6 +234,15 @@ export const insertOrder = async (userId: string, eventId: string) => {
       `,
       [userId, eventId, event.price]
     )
+    // language=PostgreSQL
+    await query(
+      `
+          update events
+          set "ticketsSold" = "ticketsSold" + 1
+          where id = $1
+      `,
+      [eventId]
+    )
     await query(`COMMIT TRANSACTION`, [])
     return true
   } catch (e) {

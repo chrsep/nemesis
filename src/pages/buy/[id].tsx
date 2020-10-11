@@ -137,14 +137,14 @@ const Payment: FC<{ event: ConcertEvent; onBack: () => void }> = ({
         <Button
           variant="outline"
           mx="auto"
-          sx={{ width: "100%" }}
+          sx={{ width: "50%" }}
           mr={2}
           onClick={onBack}
         >
           Kembali
         </Button>
         <Link href={`/concerts/${event.id}`}>
-          <Button mx="auto" sx={{ width: "100%" }} onClick={postNewOrder}>
+          <Button mx="auto" sx={{ width: "50%" }} onClick={postNewOrder}>
             Bayar
           </Button>
         </Link>
