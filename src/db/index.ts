@@ -1,5 +1,6 @@
 import { Pool } from "pg"
 import dayjs from "dayjs"
+import exp from "constants"
 import { ConcertEvent, OrderData } from "../domain"
 
 const pgPool = new Pool({
@@ -10,8 +11,8 @@ const pgPool = new Pool({
   port: parseInt(process.env.PG_PORT ?? "5432", 10),
   max: parseInt(process.env.MAX_CLIENTS ?? "10", 10),
   ssl: {
-    rejectUnauthorized: false
-  }
+    rejectUnauthorized: false,
+  },
 })
 
 pgPool.on("error", (err) => {
@@ -69,7 +70,7 @@ export const listEvents = async (): Promise<ConcertEvent[]> => {
     return {
       ...row,
       startTime: dayjs(row.startTime).toISOString(),
-      endTime: dayjs(row.endTime).toISOString()
+      endTime: dayjs(row.endTime).toISOString(),
     }
   })
 }
@@ -99,7 +100,7 @@ export const findEventsById = async (id: string): Promise<ConcertEvent> => {
   return {
     ...result.rows[0],
     startTime: dayjs(result.rows[0].startTime).toISOString(),
-    endTime: dayjs(result.rows[0].endTime).toISOString()
+    endTime: dayjs(result.rows[0].endTime).toISOString(),
   }
 }
 
@@ -146,7 +147,7 @@ export const updateEventTicketSold = async (
   const result = await query(
     `
         update events
-        set ticketsSold = $1
+        set "ticketsSold" = $1
         where id = $2
     `,
     [ticketsSold, id]
@@ -221,6 +222,72 @@ export const listDailyRevenues = async () => {
     []
   )
   return order.rows.map((row) => {
+    return { date: dayjs(row.data).toISOString() }
+  })
+}
+
+export const listMonthlyRevenues = async (id?: number) => {
+  if (id === undefined) {
+    const result = await query(
+      `
+        select to_char("buyDate",'Mon') as mon,
+               extract(year from "buyDate") as yyyy,
+               sum(orders.price)
+        from orders
+        group by 1,2;
+    `,
+      []
+    )
+    return result.rows.map((row) => {
+      return { date: dayjs(row.data).toISOString() }
+    })
+  }
+
+  const result = await query(
+    `
+        select to_char("buyDate",'Mon') as mon,
+               extract(year from "buyDate") as yyyy,
+               sum(orders.price)
+        from orders
+        where "eventId"=$1
+        group by 1,2;
+    `,
+    [id]
+  )
+  return result.rows.map((row) => {
+    return { date: dayjs(row.data).toISOString() }
+  })
+}
+
+export const listMonthlyTicketSold = async (id?: number) => {
+  if (id === undefined) {
+    const result = await query(
+      `
+        select to_char("buyDate",'Mon') as mon,
+               extract(year from "buyDate") as yyyy,
+               count(*) as ticketsold
+        from orders
+        group by 1,2;
+    `,
+      []
+    )
+    return result.rows.map((row) => {
+      return { date: dayjs(row.data).toISOString() }
+    })
+  }
+
+  const result = await query(
+    `
+        select to_char("buyDate",'Mon') as mon,
+               extract(year from "buyDate") as yyyy,
+               count(*) as ticketsold
+        from orders
+        where "eventId"=$1
+        group by 1,2;
+    `,
+    [id]
+  )
+  return result.rows.map((row) => {
     return { date: dayjs(row.data).toISOString() }
   })
 }
