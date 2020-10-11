@@ -1,7 +1,7 @@
 import Link from "next/link"
 import React, { FC, useState } from "react"
 import { Box, Card, Flex, Heading, Image, Input, Text } from "theme-ui"
-import dayjs, { Dayjs } from "dayjs"
+import dayjs from "dayjs"
 import Head from "next/head"
 import { ResponsiveLine } from "@nivo/line"
 import { ConcertEvent } from "../domain"
