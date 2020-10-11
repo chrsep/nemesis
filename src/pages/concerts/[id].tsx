@@ -38,15 +38,23 @@ const ConcertPage: FC<Props> = ({ event }) => {
         <Card
           sx={{
             width: "100%",
-            height: 382,
+            height: ["auto", 382],
             textAlign: "center",
             borderRadius: [0, 6],
             backgroundColor: "black",
+            display: "flex",
+            justifyContent: "center",
           }}
         >
           <Image
             src={event.thumbnailUrl}
-            style={{ maxWidth: "100%", maxHeight: "100%" }}
+            sx={{
+              objectFit: "cover",
+              height: ["auto", "100%"],
+              width: ["100%", "auto"],
+              maxWidth: "100%",
+              maxHeight: "100%",
+            }}
           />
         </Card>
       </Box>

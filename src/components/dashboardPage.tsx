@@ -16,7 +16,7 @@ interface Props {
   }>
 }
 
-const DashboardPage: FC<Props> = ({ topThree, events, revenues }) => {
+const DashboardPage: FC<Props> = ({ topThree, events }) => {
   const [search, setSearch] = useState("")
 
   const dates: string[] = []

@@ -1,6 +1,8 @@
 import React, { FC } from "react"
 import { Box, Card, Flex, Heading, Image, Text } from "theme-ui"
 import { GetStaticPaths, GetStaticProps } from "next"
+import dayjs from "dayjs"
+import { ResponsiveLine } from "@nivo/line"
 import { findEventsById, listEventIds } from "../../../db"
 import { ConcertEvent } from "../../../domain"
 
@@ -11,12 +13,22 @@ const ConcertPage: FC<Props> = ({ event }) => {
   if (!event) {
     return <div />
   }
+
+  const dates: string[] = []
+  for (let i = 0; i < 30; i += 1) {
+    dates.push(
+      dayjs()
+        .add(-1 * i, "day")
+        .format("DD MMMM")
+    )
+  }
+
   return (
     <Box mx="auto" sx={{ maxWidth: 1200 }}>
       <Card
         sx={{
           width: "100%",
-          height: 382,
+          height: ["auto", 382],
           backgroundColor: "black",
           borderRadius: [0, 6],
           position: "relative",
@@ -27,7 +39,13 @@ const ConcertPage: FC<Props> = ({ event }) => {
       >
         <Image
           src={event.thumbnailUrl}
-          style={{ maxWidth: "100%", maxHeight: "100%", height: "100%" }}
+          sx={{
+            objectFit: "cover",
+            maxWidth: "100%",
+            maxHeight: "100%",
+            height: ["auto", "100%"],
+            width: ["100%", "auto"],
+          }}
         />
         <Box
           p={3}
@@ -47,14 +65,68 @@ const ConcertPage: FC<Props> = ({ event }) => {
       </Card>
       <Flex sx={{ flexWrap: "wrap" }}>
         <Box px={3} sx={{ width: ["100%", "33%"] }}>
-          <Card p={3} my={2}>
-            <Heading as="h4">Jumlah Terjual</Heading>
+          <Card my={2}>
+            <Box
+              p={3}
+              sx={{
+                borderBottomColor: "border",
+                borderBottomStyle: "solid",
+                borderBottomWidth: 1,
+              }}
+            >
+              <Heading as="h3" mb={1}>
+                Revenue
+              </Heading>
+              <Text sx={{ fontSize: 1, opacity: 0.7 }}>30 hari terakhir</Text>
+            </Box>
+            <Box sx={{ height: "8rem" }} mb={4}>
+              <ResponsiveLine
+                enableGridX={false}
+                useMesh={false}
+                data={[
+                  {
+                    id: "Revenue",
+                    color: "#004daa",
+                    data: dates.map((date) => {
+                      return { x: date, y: 0 }
+                    }),
+                  },
+                ]}
+              />
+            </Box>
           </Card>
         </Box>
 
         <Box px={3} sx={{ width: ["100%", "33%"] }}>
-          <Card p={3} my={2}>
-            <Heading as="h4">Jumlah Penonton</Heading>
+          <Card my={2}>
+            <Box
+              p={3}
+              sx={{
+                borderBottomColor: "border",
+                borderBottomStyle: "solid",
+                borderBottomWidth: 1,
+              }}
+            >
+              <Heading as="h3" mb={1}>
+                Tiket Terjual
+              </Heading>
+              <Text sx={{ fontSize: 1, opacity: 0.7 }}>30 hari terakhir</Text>
+            </Box>
+            <Box sx={{ height: "8rem" }} mb={4}>
+              <ResponsiveLine
+                enableGridX={false}
+                useMesh={false}
+                data={[
+                  {
+                    id: "Revenue",
+                    color: "#004daa",
+                    data: dates.map((date) => {
+                      return { x: date, y: 0 }
+                    }),
+                  },
+                ]}
+              />
+            </Box>
           </Card>
         </Box>
 
